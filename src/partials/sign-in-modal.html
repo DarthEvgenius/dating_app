@@ -1,0 +1,36 @@
+<div class="graph-modal sign-in-modal">
+  <div class="graph-modal__container" role="dialog" aria-modal="true" data-graph-target="sign-in">
+    <button class="btn-reset js-modal-close graph-modal__close" aria-label="Close modal window"></button>
+    <div class="graph-modal__content">
+
+      <div class="tabs" data-tabs="sign-in-tabs">
+        <ul class="tabs__nav">
+          <li class="tabs__nav-item">
+            <button class="tabs__nav-btn" type="button">
+              Log In
+            </button>
+          </li>
+
+          <li class="tabs__nav-item">
+            <button class="tabs__nav-btn" type="button">
+              Register
+            </button>
+          </li>
+        </ul>
+        <div class="tabs__content">
+          <div class="tabs__panel">
+
+            @include('log-in-form.html')
+
+          </div>
+          <div class="tabs__panel">
+
+            @include('register-form.html')
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

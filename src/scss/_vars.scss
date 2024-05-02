@@ -1,16 +1,21 @@
 // если вы хотите использовать sass-переменные - удалите root
 // colors
 :root {
-  --font-family: "SF UI Display", sans-serif;
-  --second-family: "Nebulous Content Regular", sans-serif;
-  --third-family: "Inter Regular", sans-serif;
-  --font3: "Sailec Regular", sans-serif;
-  --font4: "Orbitron SemiBold", sans-serif;
+  --font-sf: "SF UI Display", sans-serif;
+  --font-nebulous: "Nebulous Content Regular", sans-serif;
+  --font-inter: "Inter Regular", sans-serif;
+  --font-sailec: "Sailec Regular", sans-serif;
+  --font-orbitron: "Orbitron SemiBold", sans-serif;
 
-  --content-width: 1170px;
-  --container-offset: 15px;
+  --content-width: 1432px;
+  --container-offset: 40px;
   --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
 
   // colors
   --light-color: #fff;
+  --dark-color: #000;
+  --header-bg-color: rgba(0, 0, 0, 80%);
+  --btn-olive-color: #90a895;
+  --olive-dark-color: #415b4e;
+  --bd-color: #e4e7eb;
 }

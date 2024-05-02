@@ -1,0 +1,16 @@
+.nav {
+  margin: 0 auto;
+
+  &__list {
+    display: flex;
+    gap: 66px;
+  }
+
+  &__link {
+    font-family: var(--font-nebulous, sans-serif);
+    font-weight: 400;
+    font-size: rem(18);
+    line-height: 1.55;
+    color: currentColor;
+  }
+}

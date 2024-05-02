@@ -1,0 +1,17 @@
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  &__image {
+    width: 44px;
+    height: 44px;
+  }
+
+  &__text {
+    font-family: var(--font-orbitron), sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+}

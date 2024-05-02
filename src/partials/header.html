@@ -1,15 +1,63 @@
 <header class="header">
-  <div class="container">
+  <div class="container header__container">
 
-    <h2 class="SF-3">ASDFGH asdfgh</h2>
-    <h2 class="SF-4">ASDFGH asdfgh</h2>
-    <h2 class="SF-5">ASDFGH asdfgh</h2>
-    <h2 class="SF-6">ASDFGH asdfgh</h2>
-    <h2 class="SF-7">ASDFGH asdfgh</h2>
-    <h2 class="nebulos">ASDFGH asdfgh</h2>
-    <h2 class="inter">ASDFGH asdfgh</h2>
-    <h2 class="sailec">ASDFGH asdfgh</h2>
-    <h2 class="orbitron">ASDFGH asdfgh</h2>
+    <div class="logo header__logo">
+      <div class="logo__image">
+        <img loading="lazy" src="./img/eye.svg" class="logo__img" width="44" height="44" alt="Opened eye logo">
+      </div>
+      <p class="logo__text">TÊTE-À-TÊTE</p>
+    </div>
+
+    <nav class="nav header__nav" title="menu" aria-label="Main navigation">
+      <ul class="nav__list">
+
+        <li class="nav__item">
+          <a href="#" class="nav__link">
+            About Us
+          </a>
+        </li>
+
+        <li class="nav__item">
+          <a href="#" class="nav__link">
+            Security Tips
+          </a>
+        </li>
+
+        <li class="nav__item">
+          <a href="#" class="nav__link">
+            Feedbacks
+          </a>
+        </li>
+
+        <li class="nav__item">
+          <a href="#" class="nav__link">
+            Support
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <div class="lang-menu" aria-label="Select language" role="menu">
+
+      <button class="lang-menu__btn">
+        <img src="./img/flag-uk.png" alt="English" class="lang-menu__img" width="28" height="19">
+      </button>
+
+      <ul class="lang-menu__list">
+
+        <li class="lang-menu__option" data-lang="uk">
+          <img src="./img/flag-uk.png" alt="English" class="lang-menu__img" width="28" height="19">
+        </li>
+
+        <li class="lang-menu__option" data-lang="it">
+          <img src="./img/flag-it.png" alt="Italian" class="lang-menu__img" width="28" height="19">
+        </li>
+
+      </ul>
+    </div>
+
+    <button class="btn header__sign-in" data-graph-path="sign-in">Sign In</button>
 
   </div>
 </header>

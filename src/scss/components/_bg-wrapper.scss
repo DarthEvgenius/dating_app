@@ -1,0 +1,13 @@
+.bg-wrapper {
+  min-height: 100vh;
+  background-image: linear-gradient(
+    to bottom,
+    var(--header-bg-color) 90px,
+    rgba(0, 0, 0, 20%) 30%
+  );
+
+  @include image-set('../img/bg-hero');
+
+  background-repeat: no-repeat;
+  background-size: cover;
+}

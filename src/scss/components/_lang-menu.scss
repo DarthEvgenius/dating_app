@@ -1,0 +1,55 @@
+.lang-menu {
+  position: relative;
+
+  &__btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border-radius: 2px;
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      width: 18px;
+      height: 18px;
+      background-image: url('../img/arrow-down.png');
+    }
+  }
+
+  &__list {
+    position: absolute;
+    padding-block: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s,
+      visibility 0.3s;
+  }
+
+  &__btn:hover + &__list,
+  &__list:hover {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__option {
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    scale: 0.9;
+    transition: scale 0.3s;
+
+    @include hover {
+      scale: 1;
+    }
+  }
+
+  &__img {
+    width: 28px;
+    height: 19px;
+  }
+}

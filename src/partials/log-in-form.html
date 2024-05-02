@@ -1,0 +1,36 @@
+<form action="#" class="form sign-in-form sign-in-form--log-in">
+
+  <div class="sign-in-form__field">
+    <label class="sign-in-form__label" for="log-in-name">
+      Email or Phone
+    </label>
+    <input type="text" name="name" class="input-reset sign-in-form__input" id="log-in-name" placeholder="Enter your email or phone">
+  </div>
+
+  <div class="sign-in-form__field">
+    <label class="sign-in-form__label" for="sign-in-password">
+      Password
+    </label>
+    <input type="password" name="password" class="input-reset sign-in-form__input" id="sign-in-password" placeholder="Enter your password">
+  </div>
+
+  <button class="btn sign-in-form__btn" type="submit">Log In</button>
+
+  <hr class="sign-in-form__hr">
+
+  <button class="btn sign-in-form__btn sign-in-form__btn--google">
+    <picture>
+      <source srcset="./img/google.webp" type="image/webp">
+      <img loading="lazy" src="./img/google.png" class="image" width="28" height="28" alt="Google icon">
+    </picture>
+    Log In with Google
+  </button>
+
+  <button class="btn sign-in-form__btn sign-in-form__btn--fb">
+    <picture>
+      <source srcset="./img/fb.webp" type="image/webp">
+      <img loading="lazy" src="./img/fb.png" class="image" width="28" height="28" alt="Facebook icon">
+    </picture>
+    Log In with Facebook
+  </button>
+</form>

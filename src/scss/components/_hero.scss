@@ -1,0 +1,52 @@
+.hero {
+  height: 100%;
+  color: var(--light-color);
+
+  &__container {
+    display: grid;
+    justify-items: center;
+    grid-template-rows: repeat(3, min-content);
+    gap: 54px;
+  }
+
+  &__title {
+    margin: 0;
+    margin-top: 20vh;
+    font-family: var(--font-nebulous);
+    font-size: rem(88);
+    line-height: 80%;
+    letter-spacing: -0.018em;
+    text-align: center;
+  }
+
+  &__text {
+    max-width: 45%;
+    text-align: center;
+    font-family: var(--font-sf);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  &__btns {
+    display: flex;
+    gap: 29px;
+
+    & > * {
+      width: 180px;
+      height: 60px;
+      font-weight: 600;
+      font-size: rem(14);
+    }
+  }
+
+  &__btns-about {
+    display: grid;
+    place-content: center;
+    color: var(--dark-color);
+    background-color: var(--light-color);
+
+    &:hover {
+      background-color: hsl(0, 0%, 85%);
+    }
+  }
+}

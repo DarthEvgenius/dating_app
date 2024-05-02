@@ -1,36 +1,25 @@
-.SF-3 {
-  font-family: var(--font-family);
-  font-weight: 300;
-}
-.SF-4 {
-  font-family: var(--font-family);
-  font-weight: 400;
-}
-.SF-5 {
-  font-family: var(--font-family);
-  font-weight: 500;
-}
-.SF-6 {
-  font-family: var(--font-family);
-  font-weight: 600;
-}
-.SF-7 {
-  font-family: var(--font-family);
-  font-weight: 700;
-}
-.nebulos {
-  font-family: var(--second-family);
-  font-weight: 400;
-}
-.inter {
-  font-family: var(--third-family);
-  font-weight: 400;
-}
-.sailec {
-  font-family: var(--font3);
-  font-weight: 400;
-}
-.orbitron {
-  font-family: var(--font4);
-  font-weight: 600;
+.header {
+  height: rem(140);
+  color: var(--light-color);
+  background-image: linear-gradient(
+    to bottom,
+    var(--header-bg-color) 40%,
+    transparent
+  );
+
+  &__container {
+    height: rem(100);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 43px;
+  }
+
+  &__sign-in {
+    display: none;
+    padding-block: 18px;
+    padding-inline: 48px;
+    font-weight: 600;
+    font-size: rem(14);
+  }
 }
