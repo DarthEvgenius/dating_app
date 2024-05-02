@@ -1,5 +1,8 @@
 .bg-wrapper {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
   background-image: linear-gradient(
     to bottom,
     var(--header-bg-color) 90px,

@@ -1,17 +1,19 @@
 .hero {
-  height: 100%;
+  flex-grow: 1;
   color: var(--light-color);
+  display: flex;
+  align-items: center;
 
   &__container {
     display: grid;
     justify-items: center;
-    grid-template-rows: repeat(3, min-content);
+    // align-items: center;
+    // grid-template-rows: repeat(3, min-content);
     gap: 54px;
   }
 
   &__title {
     margin: 0;
-    margin-top: 20vh;
     font-family: var(--font-nebulous);
     font-size: rem(88);
     line-height: 80%;
