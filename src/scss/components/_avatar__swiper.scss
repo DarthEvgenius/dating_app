@@ -1,0 +1,28 @@
+.avatar__swiper {
+  --swiper-pagination-color: var(--accent-color);
+  --swiper-pagination-progressbar-bg-color: var(--grey-color);
+  --swiper-pagination-bullet-size: var(--swiper-pagination-size);
+  --swiper-pagination-bullet-width: var(--swiper-pagination-size);
+  --swiper-pagination-bullet-height: var(--swiper-pagination-size);
+  --swiper-pagination-bullet-horizontal-gap: 7px;
+  --swiper-pagination-bottom: 10;
+
+
+  &--main {
+    .swiper-wrapper {
+      padding-top:  28px;
+      padding-bottom: 17px;
+    }
+
+    .swiper-slide {
+      max-height: 360px;
+      height: auto;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+  }
+
+  .swiper-pagination--main {
+    text-align: center;
+  }
+}

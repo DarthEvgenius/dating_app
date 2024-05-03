@@ -1,0 +1,13 @@
+.avatar {
+  --swiper-padding-bottom: 17px;
+  --swiper-pagination-size: 10px;
+
+  // "container--main" is for avatar of main profile
+  // "container--main" supposed to include form for adding avatar
+  &__container--main {
+    position: relative;
+  }
+}
+
+  // "container-guest" is for avatar of matched people
+  // "container-guest" has no header and form, it has taller image
