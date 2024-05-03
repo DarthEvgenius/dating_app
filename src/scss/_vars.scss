@@ -1,21 +1,66 @@
 // если вы хотите использовать sass-переменные - удалите root
 // colors
 :root {
+  // font families
   --font-sf: "SF UI Display", sans-serif;
   --font-nebulous: "Nebulous Content Regular", sans-serif;
   --font-inter: "Inter Regular", sans-serif;
   --font-sailec: "Sailec Regular", sans-serif;
   --font-orbitron: "Orbitron SemiBold", sans-serif;
 
+  // font sizes
+  --fs-0-5: 0.8125rem; // 13px
+  --fs-1: 0.875rem; // 14px
+  --fs-2: 1rem; // 16px
+  --fs-3: 1.125rem; // 18px
+  --fs-4: 1.25rem; // 20px
+  --fs-5: 1.625rem; // 26px
+  --fs-6: 1.75rem; // 28px
+  --fs-7: 2rem; // 32px
+  --fs-8: 2.25rem; // 36px
+  --fs-9: 5.5rem; // 88px
+
+  // hero page font sizes
+  --fs-h1: var(--fs-9);
+  --fs-logo: var(--fs-2);
+  --fs-main-nav: var(--fs-3);
+  // app page font sizes
+  --fs-content-title: var(--fs-7);
+  --fs-content-subtitle: var(--fs-6);
+  --fs--profile-name: var(--fs-5);
+  --fs-profile-subtitle: var(--fs-2);
+  --fs-profile-placeholder: var(--fs-0-5);
+  --fs-app-text: var(--fs-1);
+  --fs-app-match-title: var(--fs-8);
+
+
+  // full screen layout
   --content-width: 1432px;
   --container-offset: 40px;
   --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
+  // small containers
+  --profile-container: 440px;
+  --content-container: 1072px;
 
-  // colors
+  // font colors
   --light-color: #fff;
   --dark-color: #000;
+  --grey-color: #8b8b8b;
+  --accent-color: #4285f4;
+  // background colors
   --header-bg-color: rgba(0, 0, 0, 80%);
   --btn-olive-color: #90a895;
   --olive-dark-color: #415b4e;
-  --bd-color: #e4e7eb;
+  --light-bg-color: #f9f9f9;
+  // border colors
+  --bd-sign-in: #e4e7eb;
+  --bd-avatar-edit: #eef0f2;
+  --bd-profile-edit: #ededed;
+  --bd-profile-separator: #d4d8de;
+  --bd-plans: var(--bd-profile-edit);
+  --bd-plans-separator: #e6e8eb;
+  // theme colors
+  --love-color: #e91e63;
+  --friends-color: #34a853;
+  --work-color: #1877f2;
 }

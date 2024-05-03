@@ -1,0 +1,15 @@
+// app main layout
+.app {
+  margin: auto;
+  min-height: 100vh;
+  height: 100%;
+  max-width: 1512px;
+  display: grid;
+  grid-template-columns: 440px 1fr;
+
+  background-color: var(--light-bg-color);
+
+  &__profile {
+    border-right: 1px solid var(--bd-profile-separator);
+  }
+}

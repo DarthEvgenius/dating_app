@@ -1,5 +1,5 @@
 .sign-in-modal {
-  // background-color: transparent;
+  background-color: transparent;
 
   .graph-modal__container {
     --modal-width: 580px;
@@ -29,7 +29,7 @@
         font-weight: 400;
         font-size: 1rem;
         line-height: 1.75;
-        border-bottom: 1px solid var(--bd-color);
+        border-bottom: 1px solid var(--bd-sign-in);
         transition:
           border 0.1s,
           font-weight 0.2s;
