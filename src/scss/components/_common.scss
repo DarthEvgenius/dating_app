@@ -8,3 +8,11 @@
     background-color: var(--olive-dark-color);
   }
 }
+
+.offset-container {
+  padding-inline: var(--container-offset);
+}
+
+.hidden {
+  display: none !important;
+}

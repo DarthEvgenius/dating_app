@@ -1,0 +1,27 @@
+<div class="profile__header offset-container">
+
+  @include('logo.html')
+
+  <nav class="profile__nav">
+    <button class="profile__nav-btn" id="profile__notification"  aria-label="Notifications">
+      <svg class="profile__nav-svg">
+        <use xlink:href="img/sprite.svg#notification"></use>
+      </svg>
+      <span class="notify-label" id="notify-label">2</span>
+    </button>
+
+    <button class="profile__nav-btn" id="profile__to-chat" aria-label="To chat">
+      <svg class="profile__nav-svg">
+        <use xlink:href="img/sprite.svg#arrow-right"></use>
+      </svg>
+    </button>
+
+    <!-- use toggle class "hidden" -->
+    <button class="profile__nav-btn hidden" id="profile__to-profile" aria-label="To profile" hidden>
+      <svg class="profile__nav-svg">
+        <use xlink:href="img/sprite.svg#profile"></use>
+      </svg>
+    </button>
+  </nav>
+
+</div>
