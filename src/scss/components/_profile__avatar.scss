@@ -9,5 +9,14 @@
   }
 }
 
+.profile__avatar {
+  margin-bottom: 31px;
+}
+
+// for case without avatar photo
+.profile__avatar:not(:has(.avatar__swiper)) {
+  margin-bottom: 21px;
+}
+
   // "container-guest" is for avatar of matched people
   // "container-guest" has no header and form, it has taller image

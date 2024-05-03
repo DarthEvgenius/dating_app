@@ -1,0 +1,63 @@
+<div class="offset-container">
+ <div class="profile__info">
+
+  <!-- on click toggle content/input via data-field attr -->
+
+    <div class="profile__info-field" id="profile-title">
+      <p class="profile__info-title" data-field="title">
+        <span id="profile-name">Alex Brandt</span>,
+        <span id="profile-age">31</span>
+      </p>
+      <button class="profile__info-edit">
+        <svg class="edit-svg">
+          <use xlink:href="img/sprite.svg#edit-pen"></use>
+        </svg>
+      </button>
+    </div>
+
+    <div class="profile__info-field" id="profile-about">
+      <h4 class="profile__info-subtitle">About me:</h4>
+      <button class="profile__info-edit">Edit</button>
+      <p class="profile__info-content" data-field="about">
+        Lorem ipsum dolor sit amet, consecteturis adipiscing elit se
+        do eiusmod temporata incididunt ut labore et dolore magna
+        aliqu. Ullamcorper malesuada consequat proin.
+      </p>
+    </div>
+
+    <div class="profile__info-field" id="profile-gender">
+      <h4 class="profile__info-subtitle">Gender:</h4>
+      <p class="profile__info-content" data-field="gender">
+        Male
+      </p>
+      <button class="profile__info-edit">Edit</button>
+    </div>
+
+    <div class="profile__info-field" id="profile-motherland">
+      <h4 class="profile__info-subtitle">Place of birth:</h4>
+      <p class="profile__info-content" data-field="motherland">
+        London, UK
+      </p>
+      <button class="profile__info-edit">Edit</button>
+    </div>
+
+    <div class="profile__info-field" id="profile-location">
+      <h4 class="profile__info-subtitle">Location:</h4>
+      <p class="profile__info-content" data-field="location">
+        Frankfurt, Germany
+      </p>
+      <button class="profile__info-edit">Edit</button>
+    </div>
+
+    <div class="profile__info-field" id="profile-languages">
+      <h4 class="profile__info-subtitle">Languages:</h4>
+      <p class="profile__info-content" data-field="languages">
+        English, German, French
+      </p>
+      <button class="profile__info-edit">Edit</button>
+    </div>
+
+    <button class="btn profile__info-logout">Log Out</button>
+
+  </div>
+ </div>

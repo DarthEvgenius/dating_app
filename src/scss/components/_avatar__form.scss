@@ -3,11 +3,11 @@
   overflow: hidden;
   transition: background-color 0.3s;
 
-  &:has(input:hover) & {
-    @include hover {
-      background-color: var(--bd-sign-in);
-    }
-  }
+  // &:has(input:hover) {
+  //   @include hover {
+  //     background-color: var(--bd-sign-in);
+  //   }
+  // }
 
   input[type="file"] {
     position: absolute;
@@ -80,9 +80,5 @@
   &--large &-svg {
     width: 44px;
     height: 44px;
-  }
-
-  &--large &-text {
-
   }
 }
