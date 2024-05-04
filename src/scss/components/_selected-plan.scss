@@ -1,0 +1,17 @@
+.selected-plan {
+  padding-top: 235px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+
+  &__title {
+    margin-bottom: 38px;
+    text-align: center;
+  }
+
+  &__description {
+    padding-bottom: 32px;
+    color: var(--grey-color);
+    border-bottom: 1px solid var(--bd-plans-separator);
+  }
+}
