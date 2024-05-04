@@ -1,0 +1,10 @@
+.content {
+  &-section {
+    padding-block: 27px;
+    padding-inline: 32px;
+    max-width: 600px;
+    background-color: var(--light-color);
+    border: 1px solid var(--bd-profile-edit);
+    border-radius: 10px;
+  }
+}
