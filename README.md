@@ -1,6 +1,6 @@
 # Dating app
 
-Находясь в корне проекта, запустите команду `npm i`, которая установит все находящиеся в package.json зависимости. После этого вы можете использовать любую из предложенных команд сборки. 
+Находясь в корне проекта, запустите команду `npm i`, которая установит все находящиеся в package.json зависимости. После этого вы можете использовать любую из предложенных команд сборки.
 
 Для работы необходимо: [node.js](https://nodejs.org/en), [gulp.js](https://gulpjs.com). 
 
@@ -54,3 +54,8 @@
 * `npm run backend` — команда для бэкенд-сборки проекта. Она лишена ненужных вещей из dev-сборки, но не сжата, для удобства бэкендера.
 * `npm run zip` — команда собирает ваш готовый код в zip-архив.
 
+## URL's
+
+* /index.html - landing page
+* /app_screen.html - app page with *"profile"* and *"choose"* sections
+* /app_screen-edit.html - app page with empty *"profile"* section *"choose"* section
