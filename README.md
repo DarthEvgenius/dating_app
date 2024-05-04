@@ -77,10 +77,15 @@
 
 *app__content* служит контейнером для секций с контентом. Есть следующие компоненты контента:
 
-* страница выбора планов - `@include('partials/content-plans.html')`
+* страница выбора контента - `@include('partials/content.html')`
+* секция с гостевым профилем
 
 ### URL's
 
 * /index.html - landing page
 * /app_screen.html - app page with *"profile"* and *"choose"* sections
 * /app_screen-edit.html - app page with empty *"profile"* section *"choose"* section
+
+## Примечания
+
+* В секции редактирования профиля стили сделаны строго по порядку элементов (селектор nth-of-type). Если менять порядок, то надо сделать стили по id. Также по id будет легче менять только одно поле принеобходимости.
