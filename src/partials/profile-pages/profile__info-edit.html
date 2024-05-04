@@ -1,0 +1,92 @@
+<div class="offset-container">
+  <div class="profile__info">
+
+   <!-- on click toggle content/input via data-field attr -->
+
+    <div class="profile__info-field edit-field" id="profile-title">
+      <p class="profile__info-title" data-field="title">
+        <input
+          type="text"
+          name="profile-name-edit"
+          id="profile-name-edit"
+          class="profile__input"
+          placeholder="Enter your full name here">
+
+        <input
+          type="number"
+          min="16"
+          max="150"
+          name="profile-age-edit"
+          id="profile-age-edit"
+          class="profile__input"
+          placeholder="Your age">
+      </p>
+    </div>
+
+    <div class="profile__info-field edit-field" id="profile-about">
+      <h4 class="profile__info-subtitle">About me:</h4>
+      <textarea
+        name="profile-about-edit"
+        id="profile-about-edit"
+        cols="100"
+        rows="10"
+        class="profile__input">Write info about you here</textarea>
+    </div>
+
+    <div class="profile__info-field edit-field" id="profile-gender">
+      <h4 class="profile__info-subtitle">Gender:</h4>
+
+      <label for="profile-gender-male" class="profile__input">male</label>
+      <input
+        type="radio"
+        name="profile-gender-edit"
+        id="profile-gender-male"
+        value="male"
+      >
+
+      <label for="profile-gender-female" class="profile__input">female</label>
+      <input type="radio"
+        name="profile-gender-edit"
+        id="profile-gender-female"
+        value="female"
+      >
+
+    </div>
+
+    <div class="profile__info-field edit-field" id="profile-motherland">
+      <h4 class="profile__info-subtitle">Place of birth:</h4>
+
+      <input
+        type="text"
+        name="profile-motherland-edit"
+        id="profile-motherland-edit"
+        class="profile__input"
+        placeholder="Enter your place of birth">
+    </div>
+
+    <div class="profile__info-field edit-field" id="profile-location">
+      <h4 class="profile__info-subtitle">Location:</h4>
+
+      <input
+        type="text"
+        name="profile-location-edit"
+        id="profile-location-edit"
+        class="profile__input"
+        placeholder="Enter your location">
+    </div>
+
+    <div class="profile__info-field edit-field" id="profile-languages">
+      <h4 class="profile__info-subtitle">Languages:</h4>
+
+      <input
+        type="text"
+        name="profile-languages-edit"
+        id="profile-languages-edit"
+        class="profile__input"
+        placeholder="Enter languages you know">
+    </div>
+
+    <button class="btn profile__info-logout">Log Out</button>
+
+   </div>
+  </div>
