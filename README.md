@@ -54,7 +54,32 @@
 * `npm run backend` — команда для бэкенд-сборки проекта. Она лишена ненужных вещей из dev-сборки, но не сжата, для удобства бэкендера.
 * `npm run zip` — команда собирает ваш готовый код в zip-архив.
 
-## URL's
+## Структура html подключений
+
+В папке проекта `src` есть *.html* файлы (все, кроме *`index.html`*), начинка которых сформирована в соответствии со страницами макета. С помощью *`@include`*, из разных компонентов проекта можно собрать любую страницу приложения, основой для которой служит *app_screen* layout.
+
+Есть два шлавных раздела *app_screen*:
+
+``` html
+<section class="app__profile">
+  @include('partials/profile.html')
+</section>
+
+<section class="app__content">
+    @include('partials/content.html')
+</section>
+```
+
+*app__profile* служит контейнером для секции с главным профилем пользователя. Есть следующие компоненты профиля:
+
+* заполненный - `@include('partials/profile.html')`
+* пустой - `@include('partials/profile-edit.html')`
+
+*app__content* служит контейнером для секций с контентом. Есть следующие компоненты контента:
+
+* страница выбора планов - `@include('partials/content-plans.html')`
+
+### URL's
 
 * /index.html - landing page
 * /app_screen.html - app page with *"profile"* and *"choose"* sections
