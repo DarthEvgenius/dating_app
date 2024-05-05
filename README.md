@@ -83,7 +83,8 @@
 ### URL's
 
 * /index.html - landing page
-* /app_screen.html - app page with *"profile"* and *"choose"* sections
-* /app_screen-edit.html - app page with empty *"profile"* section *"choose"* section
+* /app-choose.html - app page with *"profile"* and *"choose"* sections
+* /app-edit.html - app page with empty *"profile"* section and *"choose"* section
+* /app-plan.html - app page with *"profile"* section and information about chosen plan
 
 ## Примечания
