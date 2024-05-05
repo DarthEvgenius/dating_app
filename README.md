@@ -78,7 +78,9 @@
 *app__content* служит контейнером для секций с контентом. Есть следующие компоненты контента:
 
 * страница выбора контента - `@include('partials/content.html')`
-* секция с гостевым профилем
+  * секция с выбором плана - `@include('./content-pages/content__plans.html')`
+  * секция выбранного плана -`@include('./content-pages/selected-plan.html')`
+  * секция с выбором мэтчей `@include('./content-pages/find-match.html')`
 
 ### URL's
 
@@ -86,5 +88,6 @@
 * /app-choose.html - app page with *"profile"* and *"choose"* sections
 * /app-edit.html - app page with empty *"profile"* section and *"choose"* section
 * /app-plan.html - app page with *"profile"* section and information about chosen plan
+* /app-find.html - app page with matches and like/dislike content
 
 ## Примечания
