@@ -16,3 +16,43 @@
 .hidden {
   display: none !important;
 }
+
+.edit-field__input {
+  padding-inline: 21px;
+  height: 40px;
+  max-width: 100%;
+  font-family: var(--font-sailec);
+  font-weight: 400;
+  font-size: var(--fs-profile-placeholder);
+  background-color: var(--light-color);
+  border: 1px solid var(--bd-profile-edit);
+  border-radius: 4px;
+  &:focus-visible {
+    outline: solid var(--plan-color, --accent-color) 1px;
+  }
+}
+
+.radio-input {
+  // define color
+  --fill-color: var(--plan-color);
+
+  position: relative;
+  display: flex;
+
+  label {
+    text-transform: uppercase;
+    flex-basis: 100%;
+    display: grid;
+    place-content: center;
+  }
+
+  input[type="radio"] {
+    appearance: none;
+    position: absolute;
+  }
+
+  input:checked + label {
+    color: var(--light-color);
+    background-color: var(--fill-color);
+  }
+}

@@ -69,6 +69,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        text-transform: uppercase;
       }
 
       input[type="radio"] {
@@ -89,7 +90,6 @@
 
     }
 
-    // select from 4 to the end
     &#profile-motherland,
     &#profile-location,
     &#profile-languages {
@@ -102,27 +102,8 @@
       }
 
       .profile__info-input {
-        // width: 247px;
         flex-shrink: 1;
       }
     }
   }
-
-  // #profile-title.edit-field .profile__info-title {
-  //   width: 100%;
-  //   text-align: left;
-
-  //   & input:first-child {
-  //     margin-right: auto;
-  //     display: inline-block;
-  //     width: 100%;
-  //     max-width: 225px;
-  //   }
-
-  //   & input:nth-child(2) {
-  //     display: inline-block;
-  //     width: 125px;
-  //   }
-  // }
-
 }

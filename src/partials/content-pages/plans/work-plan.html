@@ -1,0 +1,84 @@
+<div class="content-section selected-plan--work" data-selected-plan="work">
+
+  <h2 class="content__plans-title selected-plan__title">
+    Find a job or a Business Partner
+  </h2>
+
+  <div class="content__plans-header content__plans-header--work">
+    <h3 class="content__plans-header__title">
+      Work
+    </h3>
+    <button type="submit" form="work-form" class="content__plans-header__btn btn">Confirm</button>
+  </div>
+
+  <p class="content__plans-description selected-plan__description">
+    Please provide us more information, so we’ll be able to provide you the best matches.
+    <br>
+    Fill in the field “My relationship goals” and choose your preferable gender.
+  </p>
+
+  <form action="#" name="work-form" id="work-form" class="selected-plan__form">
+
+    <fieldset class="work-fieldset">
+      <h4 class="profile__info-subtitle selected-plan__form-title">
+        Occupation:
+      </h4>
+
+      <input
+        type="text"
+        name="work-occupation"
+        id="work-occupation"
+        class="edit-field__input"
+        placeholder="House furniture and accessories">
+    </fieldset>
+
+    <fieldset class="input--streched">
+      <h4 class="profile__info-subtitle selected-plan__form-title">
+        Income:
+      </h4>
+
+      <input
+        type="text"
+        name="work-income"
+        id="work-income"
+        class="edit-field__input"
+        placeholder="$21,000">
+    </fieldset>
+
+    <fieldset>
+      <h4 class="profile__info-subtitle selected-plan__form-title">
+        Looking for:
+      </h4>
+
+      <div class="radio-input work-form__strategy">
+        <input
+          type="radio"
+          name="work-strategy"
+          id="strategy-employment"
+          value="male">
+        <label for="strategy-employment" class="edit-field__input">Employment</label>
+
+        <input type="radio"
+          name="work-strategy"
+          id="strategy-partner"
+          value="female">
+        <label for="strategy-partner" class="edit-field__input"> Business partner</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <h4 class="profile__info-subtitle selected-plan__form-title">
+        Skills:
+      </h4>
+
+      <select
+        name="work-skills"
+        id="work-skills"
+        class="edit-field__input">
+          <option value="" disabled selected>Choose your skills</option>
+          <option value="skill">skill</option>
+      </select>
+
+  </form>
+
+</div>

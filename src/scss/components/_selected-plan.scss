@@ -8,11 +8,66 @@
   &__title {
     margin-bottom: 25px;
     text-align: center;
+    text-transform: uppercase;
   }
 
   &__description {
+    margin-bottom: 32px;
     padding-bottom: 32px;
     color: var(--grey-color);
     border-bottom: 1px solid var(--bd-plans-separator);
+  }
+
+  &__form {
+    &-title {
+      margin-bottom: 16px;
+    }
+  }
+
+  fieldset {
+    padding: 0;
+    margin-bottom: 25px;
+  }
+
+  textarea {
+    width: 100%;
+    padding-top: 15px;
+    min-height: 180px;
+  }
+
+  &--friends {
+    --plan-color: var(--friends-color);
+  }
+
+  &--love {
+    --plan-color: var(--love-color);
+  }
+
+  &--work {
+    --plan-color: var(--work-color);
+
+    .selected-plan__title {
+      text-transform: none;
+    }
+
+    h4 {
+      margin: 0;
+    }
+
+    fieldset {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      align-items: center;
+      gap: 24px;
+    }
+  }
+
+  .love-form__gender,
+  .work-form__strategy {
+    gap: 11px;
+  }
+
+  .love-form__age {
+    gap: 6px;
   }
 }
