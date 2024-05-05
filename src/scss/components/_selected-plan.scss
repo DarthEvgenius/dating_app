@@ -1,11 +1,12 @@
 .selected-plan {
   padding-top: 235px;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
   align-items: start;
 
   &__title {
-    margin-bottom: 38px;
+    margin-bottom: 25px;
     text-align: center;
   }
 

@@ -5,6 +5,7 @@
 
   &-plan {
     padding-right: var(--container-offset);
+    flex-basis: calc(600px + var(--container-offset));
     border-right: 1px solid var(--bd-plans-separator);
   }
 
