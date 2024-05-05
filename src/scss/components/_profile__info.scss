@@ -1,5 +1,6 @@
 .profile__info {
   padding-bottom: 26px;
+  width: 100%;
 
   &-field {
     display: flex;
@@ -11,20 +12,20 @@
     margin-bottom: 23px;
   }
 
-  &-field:first-of-type {
+  &-field:last-of-type {
+    margin-bottom: 47px;
+  }
+
+  & #profile-title {
     margin-bottom: 31px;
     gap: 13px;
     justify-content: center;
   }
 
-  &-field:nth-of-type(2) {
+  & #profile-about {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 14px;
-  }
-
-  &-field:last-of-type {
-    margin-bottom: 47px;
   }
 
   &-subtitle {
