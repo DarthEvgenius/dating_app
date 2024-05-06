@@ -1,0 +1,35 @@
+.tabs {
+  &__panel {
+    display: none;
+
+    &--active {
+      display: block;
+    }
+  }
+
+  &__nav {
+    display: flex;
+
+    &-item {
+      padding-bottom: 7px;
+      flex-basis: 50%;
+      text-align: center;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.75;
+      border-bottom: 1px solid var(--bd-sign-in);
+      transition:
+        border 0.1s,
+        font-weight 0.2s;
+
+      &:has(.tabs__nav-btn--active) {
+        font-weight: 700;
+        border-bottom: 3px solid #000;
+      }
+    }
+
+    &-btn {
+      background-color: transparent;
+    }
+  }
+}
