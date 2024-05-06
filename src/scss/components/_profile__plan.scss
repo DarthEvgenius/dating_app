@@ -1,0 +1,56 @@
+.profile__plan {
+  width: 100%;
+  max-width: 360px;
+  padding-inline: 31px;
+  padding-block: 18px;
+
+  border-radius: 10px;
+  border: 2px solid var(--plan-color);
+
+  &-row {
+    margin-bottom: 17px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-nebulous);
+  }
+
+  &-subtitle {
+    font-weight: 400;
+    font-size: var(--fs-profile-subtitle);
+    line-height: 1.75;
+  }
+
+  &-close {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+
+    .close-svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 400;
+    font-size: var(--fs-profile-title);
+    line-height: 1.14;
+
+    .plan-svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--plan-color);
+    }
+  }
+
+  &-text {
+    font-weight: 400;
+    font-size: var(--fs-app-text);
+    line-height: 1.7;
+    color: var(--grey-color);
+  }
+}

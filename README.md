@@ -91,3 +91,5 @@
 * /app-find.html - app page with matches and like/dislike content
 
 ## Примечания
+
+Задать классу .profile кастомное свойство цвета выбранного плана.

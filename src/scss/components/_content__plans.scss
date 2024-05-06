@@ -44,16 +44,17 @@
       line-height: 32px;
     }
 
-    &__btn {
-      height: 40px;
-      padding-block: 11px;
-      padding-inline: 24px;
-      font-family: var(--font-sailec);
-      font-weight: 400;
-      font-size: var(--fs-0-5);
-      color: var(--light-color);
-      background-color: var(--dark-color);
-    }
+    // reworked to .plan-btn in /common.scss
+    // &__btn {
+    //   height: 40px;
+    //   padding-block: 11px;
+    //   padding-inline: 24px;
+    //   font-family: var(--font-sailec);
+    //   font-weight: 400;
+    //   font-size: var(--fs-0-5);
+    //   color: var(--light-color);
+    //   background-color: var(--dark-color);
+    // }
 
     &::before {
       content: '';
