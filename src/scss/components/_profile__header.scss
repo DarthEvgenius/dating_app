@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: space-between;
     color: var(--light-color);
-    background-color: var(--olive-dark-color);
+    background-color: var(--plan-color, var(--olive-dark-color));
   }
 
   &__nav {
