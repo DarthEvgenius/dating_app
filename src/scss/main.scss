@@ -8,6 +8,7 @@
 // подключения компонентов страницы
 @import "./components/common";
 @import "./components/tabs";
+
 @import "./components/bg-wrapper";
 @import "./components/logo";
 @import "./components/nav";
@@ -16,15 +17,20 @@
 @import "./components/hero";
 @import "./components/sign-in-modal";
 @import "./components/sign-in-form";
+
 @import "./components/app-screen";
+
 @import "./components/profile__header";
 @import "./components/profile__avatar";
 @import "./components/avatar__swiper";
 @import "./components/avatar__form";
 @import "./components/profile__info";
 @import "./components/profile__info-edit";
-@import "./components/profile-matches";
+@import "./components/profile-tabs";
 @import "./components/profile__plan";
+@import "./components/matches-tab";
+@import "./components/messages-tab";
+
 @import "./components/content";
 @import "./components/content__plans";
 @import "./components/choose-section";

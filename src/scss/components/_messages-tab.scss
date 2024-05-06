@@ -1,0 +1,99 @@
+.messages-tab {
+
+}
+
+.message {
+  margin-bottom: 20px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &.message--checked {
+    --message-checked: var(--checked-color);
+  }
+
+  padding-bottom: 20px;
+  display: grid;
+  grid-template-columns: 45px 1fr;
+  align-items: center;
+  gap: 19px;
+  border-bottom: 1px solid var(--bd-message);
+
+  &__img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+
+    picture {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__body {
+    width: 100%;
+    font-family: var(--font-sf);
+    font-size: var(--fs-app-text);
+  }
+
+  &__row {
+    margin-bottom: 6px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__companion {
+    font-weight: 600;
+    color: var(--dark-color);
+  }
+
+  &__text {
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  &__author {
+    color: var(--dark-color);
+  }
+
+  &__content {
+    color: var(--grey-color);
+  }
+
+  &__time {
+    font-family: var(--font-inter);
+    font-size: rem(12);
+  }
+
+  &__checked {
+    margin-left: auto;
+  }
+}
+
+.checked-group {
+  --group-color: var(--message-checked, var(--grey-color));
+
+  width: 9px;
+  height: 7px;
+  position: relative;
+
+  &.checked {
+    --group-color: var(--checked-color);
+  }
+
+  .checked-svg {
+    position: absolute;
+    width: 9px;
+    height: 7px;
+    left: 0;
+    fill: var(--group-color);
+  }
+
+  .checked-svg:first-of-type {
+    left: -4px;
+  }
+}

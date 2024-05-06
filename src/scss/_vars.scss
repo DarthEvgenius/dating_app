@@ -43,11 +43,12 @@
   --profile-container: 440px;
   --content-container: 1072px;
 
-  // font colors
+  // common colors
   --light-color: #fff;
   --dark-color: #000;
   --grey-color: #8b8b8b;
   --accent-color: #4285f4;
+  --checked-color: #34a853;
 
   // background colors
   --header-bg-color: rgba(0, 0, 0, 80%);
@@ -63,6 +64,7 @@
   --bd-profile-separator: #d4d8de;
   --bd-plans: var(--bd-profile-edit);
   --bd-plans-separator: #e6e8eb;
+  --bd-message: #d9d9d9;
 
   // theme colors
   --love-color: #e91e63;
