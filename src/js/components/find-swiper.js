@@ -16,4 +16,6 @@ const swiperFind = new Swiper('.find__swiper', {
     type: 'bullets',
     clickable: true,
   },
+  // prevent swiping
+  allowTouchMove: false,
 });
