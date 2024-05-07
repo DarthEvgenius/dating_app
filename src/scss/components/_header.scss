@@ -16,10 +16,10 @@
   }
 
   &__sign-in {
-    display: none;
     padding-block: 18px;
     padding-inline: 48px;
     font-weight: 600;
     font-size: rem(14);
+    background-color: var(--btn-olive-color);
   }
 }

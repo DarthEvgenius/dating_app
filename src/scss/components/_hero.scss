@@ -36,19 +36,48 @@
     & > * {
       width: 180px;
       height: 60px;
+      display: grid;
+      place-content: center;
       font-weight: 600;
       font-size: rem(14);
     }
-  }
 
-  &__btns-about {
-    display: grid;
-    place-content: center;
-    color: var(--dark-color);
-    background-color: var(--light-color);
+    &-about {
+      color: var(--dark-color);
+      background-color: var(--light-color);
 
-    &:hover {
-      background-color: hsl(0, 0%, 85%);
+      @include hover {
+        background-color: hsl(0, 0%, 85%);
+      }
+    }
+
+    &-signin {
+      background-color: var(--btn-olive-color);
+    }
+
+    &-try {
+      position: relative;
+      background-image:
+        linear-gradient(to right,
+          hsl(338, 78%, 51%),
+            hsl(205, 94%, 53%));
+
+      & span {
+        position: relative;
+        z-index: 5;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0);
+        transition: background-color 0.3s;
+      }
+
+      &:hover::after{
+          background-color: rgba(0, 0, 0, 0.2);
+      }
     }
   }
 }

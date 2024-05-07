@@ -54,10 +54,9 @@ textarea, select {
   background-color: transparent;
 }
 
-button, input[type="submit"] {
+button {
     display: inline-block;
     box-shadow: none;
-    // background-color: transparent;
     background: none;
     cursor: pointer;
 }
