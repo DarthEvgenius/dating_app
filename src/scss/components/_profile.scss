@@ -1,5 +1,8 @@
 .profile {
+  max-width: 440px;
+
   &__body {
-    max-height: 830px;
+    // max-height: 830px;
+    max-height: 100%;
   }
 }

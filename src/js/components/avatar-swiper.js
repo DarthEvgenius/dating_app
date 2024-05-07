@@ -4,7 +4,19 @@ Swiper.use([Navigation, Pagination]);
 
 
 
-const swiperAvatarMain = new Swiper('.avatar__swiper--main', {
+const swiperProfileMain = new Swiper('.avatar__swiper--main', {
+  slidesPerView: 'auto',
+  spaceBetween: 40,
+  a11y: true,
+  pagination: {
+    el: '.swiper-pagination--main',
+    type: 'bullets',
+    clickable: true,
+  },
+});
+
+
+const swiperProfileGuest = new Swiper('.avatar__swiper--guest', {
   slidesPerView: 'auto',
   spaceBetween: 40,
   a11y: true,
