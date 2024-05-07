@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: space-between;
     color: var(--light-color);
-    background-color: var(--plan-color, var(--olive-dark-color));
+    background-color: var(--plan-color-dark, var(--plan-color, var(--olive-dark-color)));
   }
 
   &__nav {
@@ -34,7 +34,7 @@
         place-items: center;
         font-size: 10px;
         border-radius: 50%;
-        background-color: var(--love-color);
+        background-color: var(--love-color-light);
       }
     }
 

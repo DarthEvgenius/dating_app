@@ -1,20 +1,24 @@
 <section class="profile">
 
-  <!-- header ############################# -->
+<!-- header ############################# -->
   @include('./profile-pages/profile__header.html')
 
-  <!-- plan section ############################# -->
-  @include('./profile-pages/profile__plan.html')
+<!-- plan section ############################# -->
+  <!-- @include('./profile-pages/profile__plan.html') -->
 
-  <!-- avatar states ############################# -->
-  <!-- @include('./profile-pages/profile/profile__avatar.html') -->
-  <!-- @include('./profile-pages/profile/profile__avatar-edit.html') -->
+  <div class="profile__body" data-simplebar>
+
+<!-- avatar states ############################# -->
+    @include('./profile-pages/profile/profile__avatar.html')
+    <!-- @include('./profile-pages/profile/profile__avatar-edit.html') -->
 
 
-  <!-- profile info states ############################# -->
-  <!-- @include('./profile-pages/profile/profile__info.html') -->
-  <!-- @include('./profile-pages/profile/profile__info-edit.html') -->
+<!-- profile info states ############################# -->
+    @include('./profile-pages/profile/profile__info.html')
+    <!-- @include('./profile-pages/profile/profile__info-edit.html') -->
 
-  <!-- matches tabs ############################# -->
-  @include('./profile-pages/matches/profile-tabs.html')
+<!-- matches tabs ############################# -->
+    <!-- @include('./profile-pages/matches/profile-tabs.html') -->
+
+  </div>
 </section>

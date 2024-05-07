@@ -1,5 +1,4 @@
 .find {
-  --plan-color: var(var(--plan-color), --friends-color);
 
   height: 100dvh;
   display: grid;
@@ -17,7 +16,7 @@
   }
 
   &__swiper {
-    --swiper-pagination-color: var(--plan-color);
+    --swiper-pagination-color: var(--plan-color, var(--olive-dark-color));
     --swiper-pagination-bullet-width: 140px;
     --swiper-pagination-bullet-height: 6px;
     --swiper-pagination-bullet-inactive-color: var(--light-color);
