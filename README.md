@@ -56,9 +56,7 @@
 
 ## Структура html подключений
 
-В папке проекта `src` есть *.html* файлы (все, кроме *`index.html`*), начинка которых сформирована в соответствии со страницами макета. С помощью *`@include`*, из разных компонентов проекта можно собрать любую страницу приложения, основой для которой служит *app_screen* layout.
-
-Есть два шлавных раздела *app_screen*:
+В папке проекта `src` есть *.html* файлы (все, кроме *`index.html`*), начинка которых сформирована в соответствии со страницами макета. С помощью *`@include`*, из разных компонентов проекта можно собрать любую страницу приложения, основыми контейнерами для которой служат *app__profile* и *app__content*.
 
 ``` html
 <section class="app__profile">
@@ -70,26 +68,28 @@
 </section>
 ```
 
-*app__profile* служит контейнером для секции с главным профилем пользователя. Есть следующие компоненты профиля:
+*app__profile* служит контейнером для секции с главным профилем пользователя. Сначала инклудится контейнер `@include('partials/profile.html')`, и затем в нём следующие компоненты:
 
-* заполненный - `@include('partials/profile.html')`
-* пустой - `@include('partials/profile-edit.html')`
+* шапка профиля - `@include('./profile-pages/profile__header.html')`
+* блок с отображением выбранного плана `@include('./profile-pages/profile__plan.html')`
 
-*app__content* служит контейнером для секций с контентом. Есть следующие компоненты контента:
+Далее идёт контейнер *profile__body* для возможного скролл-бара секции. Внутри инклудятся:
 
-* страница выбора контента - `@include('partials/content.html')`
-  * секция с выбором плана - `@include('./content-pages/content__plans.html')`
-  * секция выбранного плана -`@include('./content-pages/selected-plan.html')`
-  * секция с выбором мэтчей `@include('./content-pages/find-match.html')`
+* состояния профиля главного пользователя:
+  * заполненный профиль - `@include('./profile-pages/profile/profile__avatar.html')`
+  * пустой профиль - `@include('./profile-pages/profile/profile__avatar-edit.html')`
+* секция с мэтчами и выбором чата - `@include('./profile-pages/matches/profile-tabs.html')`
 
-### URL's
+Все компоненты можно добавлять/убирать в свободном порядке.
 
-* /index.html - landing page
-* /app-choose.html - app page with *"profile"* and *"choose"* sections
-* /app-edit.html - app page with empty *"profile"* section and *"choose"* section
-* /app-plan.html - app page with *"profile"* section and information about chosen plan
-* /app-find.html - app page with matches and like/dislike content
+*app__content* служит контейнером для секций с контентом. Сначала инклудится контейнер `@include('partials/content.html')`, и затем в нём следующие компоненты:
 
-## Примечания
+* секция с выбором плана - `@include('./content-pages/content__plans.html')`
+* секция выбранного плана -`@include('./content-pages/selected-plan.html')`
+* секция с выбором мэтчей `@include('./content-pages/find-match.html')`
 
-Задать классу .profile кастомное свойство цвета выбранного плана.
+## Цветовые схемы приложения
+
+В приложении предполагаются три главных выбора плана: *friends*, *love*, *work*. Для каждого из них есть своя цветовая схема у некоторых элементов интерфейса. 
+
+Чтобы установить цветовую схему, добавьте один из классов *friends*, *love* или *work* главному контейнеру приложения *`<div class="app"></div>`* в файле *src/app.html*, либо контейнеру элемента, который предлполагает смену цветового плана. Если класс не задан, используются стандартные цвета.
