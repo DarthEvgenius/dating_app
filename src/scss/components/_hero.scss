@@ -7,8 +7,6 @@
   &__container {
     display: grid;
     justify-items: center;
-    // align-items: center;
-    // grid-template-rows: repeat(3, min-content);
     gap: 54px;
   }
 
@@ -18,6 +16,7 @@
     font-size: rem(88);
     line-height: 80%;
     letter-spacing: -0.018em;
+    text-transform: uppercase;
     text-align: center;
   }
 

@@ -1,5 +1,5 @@
 .sign-in-modal {
-  background-color: transparent;
+  // background-color: transparent;
   transition: height 0.3s;
 
   .graph-modal__container {
@@ -7,6 +7,8 @@
     --modal-padding-inline: 80px;
 
     width: var(--modal-width);
+    margin-inline: auto;
+    margin-top: 50px;
     padding-inline: var(--modal-padding-inline);
     padding-block: 53px;
   }

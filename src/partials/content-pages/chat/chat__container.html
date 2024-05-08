@@ -14,10 +14,52 @@
     </p>
   </div>
 
-  <div class="chat__content offset-container">
-    <p class="chat__content__date-separator">
-      Yesterday
-    </p>
+  <div class="chat__chatbox offset-container">
+    <div class="chat__content" data-simplebar>
+
+      <div class="chat__date-separator">
+        <span>Yesterday</span>
+      </div>
+
+      <div class="chat__message chat__message--incoming">
+        <div class="message__img">
+          <picture>
+            <source srcset="./img/avatar2.webp" type="image/webp">
+            <img loading="lazy" src="./img/avatar2.jpg" class="image" width="55" height="55" alt="companion's photo">
+          </picture>
+        </div>
+
+        <p class="chat__message-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.
+        </p>
+      </div>
+
+      <div class="chat__message chat__message--outgoing">
+        <p class="chat-message-text">
+          Amet justo donec enim diam.
+        </p>
+      </div>
+
+    </div>
+
+    <form action="#" class="chat-form offset-container">
+      <textarea
+        name="chat-form__input"
+        id="chat-form__input"
+        class="chat-form__input"
+        rows="1"
+        placeholder="Write your message here..."></textarea>
+
+      <button class="chat-form__smiles">
+        <picture>
+          <source srcset="img/smile.webp" type="image/webp">
+          <img loading="lazy" src="img/smile.png" class="image" width="24" height="24" alt="Choose smile">
+        </picture>
+      </button>
+
+      <button type="submit" class="chat-form__submit plan-btn btn">Send</button>
+    </form>
+
   </div>
 
 </div>

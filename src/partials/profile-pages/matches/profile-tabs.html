@@ -1,4 +1,4 @@
-<section class="profile-tabs offset-container" data-simplebar>
+<section class="profile-tabs offset-container" >
 
   <div class="tabs" data-tabs="chat-tabs">
     <ul class="list-reset tabs__nav">
@@ -15,12 +15,12 @@
       </li>
     </ul>
 
-    <div class="tabs__content">
+    <div class="tabs__content" data-simplebar>
       <div class="tabs__panel">
         @include('matches-tab.html')
       </div>
 
-      <div class="tabs__panel">
+      <div class="tabs__panel" data-simplebar>
         @include('messages-tab.html')
       </div>
     </div>

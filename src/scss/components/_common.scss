@@ -51,13 +51,13 @@
   border: 1px solid var(--bd-profile-edit);
   border-radius: 4px;
   &:focus-visible {
-    outline: solid var(--plan-color, --accent-color) 1px;
+    outline: solid var(--plan-color, var(--accent-color)) 1px;
   }
 }
 
 .radio-input {
   // define color
-  --fill-color: var(--plan-color);
+  --fill-color: var(--plan-color, var(--accent-color));
 
   position: relative;
   display: flex;

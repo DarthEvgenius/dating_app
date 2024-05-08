@@ -51,7 +51,6 @@
         padding-top: 15px;
         height: 123px;
         color: var(--fs-profile-placeholder);
-
       }
     }
 
@@ -79,7 +78,7 @@
 
       input:checked + label {
         color: var(--light-color);
-        background-color: var(--accent-color);
+        background-color: var(--plan-color, var(--accent-color));
       }
 
       // solution for the opposite order label+input. Browser support lower
