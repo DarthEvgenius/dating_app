@@ -87,6 +87,7 @@
 * секция с выбором плана - `@include('./content-pages/content__plans.html')`
 * секция выбранного плана -`@include('./content-pages/selected-plan.html')`
 * секция с выбором мэтчей `@include('./content-pages/find-match.html')`
+* секции с чатом и гостеввым профилем `@include('./content-pages/chat.html')`
 
 ## Цветовые схемы приложения
 
