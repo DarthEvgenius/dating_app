@@ -14,11 +14,12 @@
     </p>
   </div>
 
-  <div class="chat__chatbox offset-container">
-    <div class="chat__content" data-simplebar>
+  <div class="chat__chatbox">
+
+    <div class="chat__content offset-container" data-simplebar>
 
       <div class="chat__date-separator">
-        <span>Yesterday</span>
+        <span class="chat__date-timestamp">Yesterday</span>
       </div>
 
       <div class="chat__message chat__message--incoming">
@@ -40,6 +41,17 @@
         </p>
       </div>
 
+      <div class="chat__message chat__message--outgoing">
+        <p class="chat-message-text">
+          Vel risus commodo viverra maecenas accumsan lacus.
+        </p>
+      </div>
+
+      <div class="chat__message chat__message--outgoing">
+        <p class="chat-message-text">
+          Interdum varius sit amet mattis vulputate enim.
+        </p>
+      </div>
     </div>
 
     <form action="#" class="chat-form offset-container">
@@ -51,15 +63,15 @@
         placeholder="Write your message here..."></textarea>
 
       <button class="chat-form__smiles">
-        <picture>
-          <source srcset="img/smile.webp" type="image/webp">
-          <img loading="lazy" src="img/smile.png" class="image" width="24" height="24" alt="Choose smile">
-        </picture>
+        <svg class="chat-form__svg">
+          <use xlink:href="img/sprite.svg#smile-emoji"></use>
+        </svg>
       </button>
 
       <button type="submit" class="chat-form__submit plan-btn btn">Send</button>
     </form>
-
   </div>
+
+
 
 </div>
