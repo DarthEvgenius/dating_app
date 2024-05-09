@@ -2,7 +2,7 @@
 
   <div class="chat__header offset-container">
 
-    <div class="message__img">
+    <div class="message-avatar chat__avatar">
       <picture>
         <source srcset="./img/avatar2.webp" type="image/webp">
         <img loading="lazy" src="./img/avatar2.jpg" class="image" width="55" height="55" alt="companion's photo">
@@ -18,40 +18,92 @@
 
     <div class="chat__content offset-container" data-simplebar>
 
-      <div class="chat__date-separator">
-        <span class="chat__date-timestamp">Yesterday</span>
-      </div>
+      <div class="chat__day">
+        <h5 class="chat__day-title">
+          <span class="chat__day-timestamp">Yesterday</span>
+        </h5>
 
-      <div class="chat__message chat__message--incoming">
-        <div class="message__img">
-          <picture>
-            <source srcset="./img/avatar2.webp" type="image/webp">
-            <img loading="lazy" src="./img/avatar2.jpg" class="image" width="55" height="55" alt="companion's photo">
-          </picture>
+        <div class="chat__message chat__message--incoming">
+          <div class="message-avatar chat__avatar">
+            <picture>
+              <source srcset="./img/avatar2.webp" type="image/webp">
+              <img loading="lazy" src="./img/avatar2.jpg" class="image" width="55" height="55" alt="companion's photo">
+            </picture>
+          </div>
+
+          <p class="chat__message-text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.
+          </p>
         </div>
 
-        <p class="chat__message-text">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.
-        </p>
+        <div class="chat__message chat__message--outgoing">
+          <p class="chat__message-text">
+            Amet justo donec enim diam.
+          </p>
+
+          <p class="chat__message-text">
+            Vel risus commodo viverra maecenas accumsan lacus.
+          </p>
+
+          <p class="chat__message-text">
+            Interdum varius sit amet mattis vulputate enim.
+          </p>
+        </div>
+
+        <div class="chat__message chat__message--incoming">
+          <div class="message-avatar chat__avatar">
+            <picture>
+              <source srcset="./img/avatar2.webp" type="image/webp">
+              <img loading="lazy" src="./img/avatar2.jpg" class="image" width="55" height="55" alt="companion's photo">
+            </picture>
+          </div>
+
+          <p class="chat__message-text">
+            Orci a scelerisque purus semper eget duis at tellus at.
+          </p>
+
+          <p class="chat__message-text">
+            Mauris rhoncus aenean vel elit scelerisque mauris.
+          </p>
+        </div>
+
       </div>
 
-      <div class="chat__message chat__message--outgoing">
-        <p class="chat-message-text">
-          Amet justo donec enim diam.
-        </p>
+      <div class="chat__day">
+        <h5 class="chat__day-title">
+          <span class="chat__day-timestamp">Today</span>
+        </h5>
+
+        <div class="chat__message chat__message--outgoing">
+
+          <p class="chat__message-text">
+            Vel risus commodo viverra maecenas accumsan lacus.
+          </p>
+
+          <p class="chat__message-text">
+            Interdum varius sit amet mattis vulputate enim.
+          </p>
+        </div>
+
+        <div class="chat__message chat__message--incoming">
+          <div class="message-avatar chat__avatar">
+            <picture>
+              <source srcset="./img/avatar2.webp" type="image/webp">
+              <img loading="lazy" src="./img/avatar2.jpg" class="image" width="55" height="55" alt="companion's photo">
+            </picture>
+          </div>
+
+          <p class="chat__message-text">
+            Orci a scelerisque purus semper eget duis at tellus at.
+          </p>
+
+          <p class="chat__message-text">
+            Mauris rhoncus aenean vel elit scelerisque mauris.
+          </p>
+        </div>
+
       </div>
 
-      <div class="chat__message chat__message--outgoing">
-        <p class="chat-message-text">
-          Vel risus commodo viverra maecenas accumsan lacus.
-        </p>
-      </div>
-
-      <div class="chat__message chat__message--outgoing">
-        <p class="chat-message-text">
-          Interdum varius sit amet mattis vulputate enim.
-        </p>
-      </div>
     </div>
 
     <form action="#" class="chat-form offset-container">
