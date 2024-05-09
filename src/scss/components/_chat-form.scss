@@ -1,8 +1,7 @@
-
 .chat-form {
   position: fixed;
   bottom: 0;
-  padding-block: 20px;
+  padding-block: 28px;
   width: 100%;
   max-width: 632px;
   height: 80px;
@@ -13,8 +12,15 @@
   z-index: 50;
 
   &__input {
+    // padding-block: 5px;
     height: 100%;
     flex-grow: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    font-weight: 400;
+    font-size: var(--fs-app-text);
+    line-height: 1.6;
   }
 
   &__smiles {
