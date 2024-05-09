@@ -1,0 +1,15 @@
+.chat-header {
+  position: absolute;
+  width: 100%;
+  padding-block: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--light-color);
+  border-bottom: 1px solid var(--bd-profile-separator);
+
+
+  &__info {
+    font-size: var(--fs-profile-subtitle);
+  }
+}
