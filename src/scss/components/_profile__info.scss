@@ -22,7 +22,8 @@
     justify-content: center;
   }
 
-  & #profile-about {
+  & #profile-about,
+  & #guest-about {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 14px;
@@ -58,13 +59,7 @@
     color: var(--accent-color);
   }
 
-  .edit-svg {
-    width: 20px;
-    height: 20px;
-    fill: var(--accent-color);
-  }
-
-  &-logout {
+  &-btn {
     width: 100%;
     padding-block: 1em;
     font-size: var(--fs-2);
@@ -83,4 +78,10 @@
       border: 1px solid var(--bd-avatar-edit);
     }
   }
+}
+
+.edit-svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--accent-color);
 }
