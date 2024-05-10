@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" class="page">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#111111">
+  <title>TETE-A-TETE</title>
+
+  <link rel="preload" href="fonts/sf-ui-display-light.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/sf-ui-display-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/sf-ui-display-medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/sf-ui-display-semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/sf-ui-display-bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/NebulousContentRegular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/InterRegular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/SailecRegular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/OrbitronSemiBold.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="css/vendor.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script defer src="js/main.js"></script>
+</head>
+
+<body class="page__body">
+  <div class="site-container">
+
+    <div class="bg-wrapper">
+
+      <header class="header">
+  <div class="container header__container">
+
+    <div class="logo header__logo">
+  <div class="logo__image">
+    <img loading="lazy" src="./img/eye.svg" class="logo__img" width="44" height="44" alt="Opened eye logo">
+  </div>
+  <a href="./app.html" class="logo__text">TÊTE-À-TÊTE</a>
+</div>
+
+    <nav class="nav header__nav" title="menu" aria-label="Main navigation">
+      <ul class="nav__list">
+
+        <li class="nav__item">
+          <a href="#" class="nav__link">
+            About Us
+          </a>
+        </li>
+
+        <li class="nav__item">
+          <a href="#" class="nav__link">
+            Security Tips
+          </a>
+        </li>
+
+        <li class="nav__item">
+          <a href="#" class="nav__link">
+            Feedbacks
+          </a>
+        </li>
+
+        <li class="nav__item">
+          <a href="#" class="nav__link">
+            Support
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <div class="lang-menu" aria-label="Select language" role="menu">
+
+      <button class="lang-menu__btn">
+        <img src="./img/flag-uk.png" alt="English" class="lang-menu__img" width="28" height="19">
+      </button>
+
+      <ul class="lang-menu__list">
+
+        <li class="lang-menu__option" data-lang="uk">
+          <img src="./img/flag-uk.png" alt="English" class="lang-menu__img" width="28" height="19">
+        </li>
+
+        <li class="lang-menu__option" data-lang="it">
+          <img src="./img/flag-it.png" alt="Italian" class="lang-menu__img" width="28" height="19">
+        </li>
+
+      </ul>
+    </div>
+
+    <button class="btn header__sign-in"  data-graph-path="sign-in">Sign In</button>
+
+  </div>
+</header>
+
+      <section class="hero">
+  <div class="container hero__container">
+
+    <h1 class="hero__title">Relive every new moment</h1>
+
+    <p class="hero__text">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+      ut labore et dolore magna aliqua. Quisque non tellus orci ac auctor augue. Volutpat
+      odio facilisis mauris sit amet massa vitae tortor.
+    </p>
+
+    <div class="hero__btns">
+      <a href="#" class="btn hero__btns-about">About Us</a>
+
+      <button class="btn hero__btns-signin hidden" data-graph-path="sign-in">Sign In</button>
+
+      <a href="./app.html" class="btn hero__btns-try">
+        <span>Try Dating App</span>
+      </a>
+
+    </div>
+
+  </div>
+</section>
+
+    </div>
+
+    <div class="graph-modal sign-in-modal">
+  <div class="graph-modal__container" role="dialog" aria-modal="true" data-graph-target="sign-in">
+
+    <button class="btn-reset js-modal-close graph-modal__close" aria-label="Close modal window"></button>
+
+    <div class="graph-modal__content">
+
+      <div class="tabs" data-tabs="sign-in-tabs">
+        <ul class="tabs__nav">
+          <li class="tabs__nav-item">
+            <button class="tabs__nav-btn" type="button">
+              Log In
+            </button>
+          </li>
+
+          <li class="tabs__nav-item">
+            <button class="tabs__nav-btn" type="button">
+              Register
+            </button>
+          </li>
+        </ul>
+        <div class="tabs__content">
+          <div class="tabs__panel">
+
+            <form action="#" class="form sign-in-form sign-in-form--log-in">
+
+  <div class="sign-in-form__field">
+    <label class="sign-in-form__label" for="log-in-name">
+      Email or Phone
+    </label>
+    <input type="text" name="name" class="input-reset sign-in-form__input" id="log-in-name" placeholder="Enter your email or phone">
+  </div>
+
+  <div class="sign-in-form__field">
+    <label class="sign-in-form__label" for="sign-in-password">
+      Password
+    </label>
+    <input type="password" name="password" class="input-reset sign-in-form__input" id="sign-in-password" placeholder="Enter your password">
+  </div>
+
+  <button class="btn sign-in-form__btn" type="submit">Log In</button>
+
+  <hr class="sign-in-form__hr">
+
+  <button class="btn sign-in-form__btn sign-in-form__btn--google">
+    <picture>
+      <source srcset="./img/google.webp" type="image/webp">
+      <img loading="lazy" src="./img/google.png" class="image" width="28" height="28" alt="Google icon">
+    </picture>
+    Log In with Google
+  </button>
+
+  <button class="btn sign-in-form__btn sign-in-form__btn--fb">
+    <picture>
+      <source srcset="./img/fb.webp" type="image/webp">
+      <img loading="lazy" src="./img/fb.png" class="image" width="28" height="28" alt="Facebook icon">
+    </picture>
+    Log In with Facebook
+  </button>
+</form>
+
+          </div>
+          <div class="tabs__panel">
+
+            <form action="#" class="form sign-in-form sign-in-form--register">
+
+  <div class="sign-in-form__field">
+    <label class="sign-in-form__label" for="register-name">
+      Email or Phone
+    </label>
+    <input type="text" name="name" class="input-reset sign-in-form__input" id="register-name" placeholder="Enter your email or phone">
+  </div>
+
+  <div class="sign-in-form__field">
+    <label class="sign-in-form__label" for="register-password">
+      Password
+    </label>
+    <input type="password" name="password" class="input-reset sign-in-form__input" id="register-password" placeholder="Enter your password">
+  </div>
+
+  <div class="sign-in-form__field">
+    <label class="sign-in-form__label" for="register-confirm-password">
+      Confirm Password
+    </label>
+    <input type="password" name="password" class="input-reset sign-in-form__input" id="register-confirm-password" placeholder="Enter your password">
+  </div>
+
+  <button class="btn sign-in-form__btn" type="submit">Register</button>
+
+</form>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  </div>
+</body>
+
+</html>
