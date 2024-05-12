@@ -1803,6 +1803,7 @@ a {
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
   flex-grow: 1;
+  overflow-y: scroll;
 }
 .chatbox__day {
   margin-bottom: 33px;

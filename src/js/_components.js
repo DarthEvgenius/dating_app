@@ -6,3 +6,5 @@ import './components/tabs.js';
 import './components/simplebar.js';
 import './components/textarea-resize.js';
 
+import './components/chat.js';
+import './components/chatboxHeight.js';

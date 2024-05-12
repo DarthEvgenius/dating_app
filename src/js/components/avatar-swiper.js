@@ -3,7 +3,6 @@ import { Navigation, Pagination } from 'swiper/modules';
 Swiper.use([Navigation, Pagination]);
 
 
-
 const swiperProfileMain = new Swiper('.avatar__swiper--main', {
   slidesPerView: 'auto',
   spaceBetween: 40,

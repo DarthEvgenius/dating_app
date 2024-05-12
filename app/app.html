@@ -548,7 +548,7 @@
 
   <div class="chatbox">
 
-  <div class="chatbox__content offset-container" data-simplebar>
+  <div class="chatbox__content offset-container">
 
     <div class="chatbox__day">
       <h5 class="chatbox__day-title">
@@ -601,9 +601,9 @@
 
     </div>
 
-    <div class="chatbox__day">
+    <div class="chatbox__day chatbox__day--yesterday">
       <h5 class="chatbox__day-title">
-        <span class="chatbox__day-timestamp">Yesterday</span>
+        <span class="chatbox__day-timestamp ">Yesterday</span>
       </h5>
 
       <div class="chatbox__message chatbox__message--incoming">
@@ -652,7 +652,7 @@
 
     </div>
 
-    <div class="chatbox__day">
+    <div class="chatbox__day chatbox__day--today">
       <h5 class="chatbox__day-title">
         <span class="chatbox__day-timestamp">Today</span>
       </h5>
@@ -705,7 +705,7 @@
     </svg>
   </button>
 
-  <button type="submit" class="chat-form__submit plan-btn btn">Send</button>
+  <button type="submit" class="chat-form__submit plan-btn btn" id="chat-submit">Send</button>
 </form>
 
 </div>
