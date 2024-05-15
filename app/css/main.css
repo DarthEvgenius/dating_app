@@ -342,6 +342,7 @@ a {
 .btn {
   color: var(--light-color);
   border-radius: 5px;
+  background-color: var(--btn-olive-color);
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
@@ -357,7 +358,6 @@ a {
   font-weight: 400;
   font-size: var(--fs-0-5);
   color: var(--light-color);
-  background-color: var(--dark-color);
 }
 
 .offset-container {
@@ -409,6 +409,36 @@ a {
   background-color: var(--fill-color);
 }
 
+@supports selector(::-webkit-scrollbar) {
+  body::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  body::-webkit-scrollbar-track {
+    margin-block: 0.5rem;
+    background-color: var(--bd-sign-in);
+    border-radius: 10px;
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border: 2px solid var(--bd-sign-in);
+    border-radius: 10px;
+  }
+  .chatbox__content::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+  .chatbox__content::-webkit-scrollbar-track {
+    margin-block: 0.5rem;
+    background-color: var(--bd-sign-in);
+    border-radius: 10px;
+  }
+  .chatbox__content::-webkit-scrollbar-thumb {
+    background-color: var(--plan-color, var(--accent-color));
+    border: 1px solid var(--bd-sign-in);
+    border-radius: 10px;
+  }
+}
 .tabs__panel {
   display: none;
 }
@@ -475,7 +505,8 @@ a {
   font-weight: 600;
   font-size: var(--fs-logo);
   line-height: 1.75;
-  color: currentColor;
+  color: var(--light-color);
+  text-wrap: nowrap;
 }
 
 .nav {
@@ -644,23 +675,6 @@ a {
 }
 .hero__btns-try {
   position: relative;
-  background-image: -webkit-gradient(linear, left top, right top, from(hsl(338, 78%, 51%)), to(hsl(205, 94%, 53%)));
-  background-image: linear-gradient(to right, hsl(338, 78%, 51%), hsl(205, 94%, 53%));
-}
-.hero__btns-try span {
-  position: relative;
-  z-index: 5;
-}
-.hero__btns-try::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0);
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
-}
-.hero__btns-try:hover::after {
-  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .sign-in-modal {
@@ -875,14 +889,17 @@ a {
   overflow: hidden;
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
+  cursor: pointer;
 }
-.avatar__form:has(input:hover) {
-  background-color: var(--bd-sign-in);
+@media (any-hover: hover) {
+  .avatar__form:hover {
+    background-color: var(--bd-sign-in);
+  }
 }
 .avatar__form input[type=file] {
   position: absolute;
-  inset: 0;
   opacity: 0;
+  z-index: 50;
   cursor: pointer;
 }
 .avatar__form-svg {
@@ -932,6 +949,9 @@ a {
   align-items: end;
   border: 2px dashed var(--bd-avatar-edit);
   border-radius: 10px;
+}
+.avatar__form--large input {
+  inset: 0;
 }
 .avatar__form--large .avatar__form-container {
   display: -ms-grid;
@@ -1325,10 +1345,11 @@ a {
 }
 .messages-tab .checked-group .checked-svg {
   position: absolute;
-  width: 9px;
+  width: 15px;
   height: 7px;
   left: 0;
   fill: var(--group-color);
+  stroke: var(--group-color);
 }
 .messages-tab .checked-group .checked-svg:first-of-type {
   left: -4px;
@@ -1547,9 +1568,6 @@ a {
 }
 .selected-plan--work {
   --plan-color: var(--work-color);
-}
-.selected-plan--work .selected-plan__title {
-  text-transform: none;
 }
 .selected-plan--work h4 {
   margin: 0;

@@ -419,38 +419,99 @@ const swiperProfileGuest = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _chat_addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chat/addMessage.js */ "./src/js/components/chat/addMessage.js");
-/* harmony import */ var _chat_handleChatInput_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chat/handleChatInput.js */ "./src/js/components/chat/handleChatInput.js");
-/* harmony import */ var _chat_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chat/chatAutoScroll.js */ "./src/js/components/chat/chatAutoScroll.js");
+/* harmony import */ var _chat_chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chat/chatViewScripts/addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
+/* harmony import */ var _chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chat/chatViewScripts/handleChatInput.js */ "./src/js/components/chat/chatViewScripts/handleChatInput.js");
+/* harmony import */ var _chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chat/chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
 /* harmony import */ var _chatboxHeight_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chatboxHeight.js */ "./src/js/components/chatboxHeight.js");
-/* harmony import */ var _chat_chatSocket_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chat/chatSocket.js */ "./src/js/components/chat/chatSocket.js");
+/* harmony import */ var _chat_chatLogic_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chat/chatLogic.js */ "./src/js/components/chat/chatLogic.js");
+/* harmony import */ var _chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./chat/formatMessage.js */ "./src/js/components/chat/formatMessage.js");
+
 
 
 
 
 
 (0,_chatboxHeight_js__WEBPACK_IMPORTED_MODULE_3__.setChatHeight)();
-(0,_chat_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
+(0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
 window.addEventListener('resize', _chatboxHeight_js__WEBPACK_IMPORTED_MODULE_3__.setChatHeight);
 const sendChatBtn = document.querySelector('#chat-submit');
-let socket = (0,_chat_chatSocket_js__WEBPACK_IMPORTED_MODULE_4__.socketConnect)('wss://javascript.info/article/websocket/demo/hello');
+const closeChatBtn = document.querySelector('#chat-close');
+let socket = (0,_chat_chatLogic_js__WEBPACK_IMPORTED_MODULE_4__.socketConnect)('ws://javascript.info/article/websocket/demo/hello');
+
+// let socket = new WebSocket('ws://vm592483.eurodir.ru/chat/1/3')
 
 // on user input
 sendChatBtn.addEventListener('click', function (event) {
-  const message = (0,_chat_handleChatInput_js__WEBPACK_IMPORTED_MODULE_1__.handleChatInput)(event);
-  socket.send(message);
-  (0,_chat_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
+  const message = (0,_chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_1__.handleChatInput)(event);
+  socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__.formatMessage)(message));
+  (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
 });
-(0,_chat_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('outgoing', 'outgoing message');
-(0,_chat_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('outgoing', 'outgoing message');
-(0,_chat_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
+
+// close chat
+closeChatBtn.addEventListener('click', function (event) {
+  socket.close(1000, `userID left chat`);
+});
+
+// examples. Delete next 3 lines
+(0,_chat_chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('outgoing', 'outgoing message');
+(0,_chat_chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('incoming', 'incoming message');
+(0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
 
 /***/ }),
 
-/***/ "./src/js/components/chat/addMessage.js":
-/*!**********************************************!*\
-  !*** ./src/js/components/chat/addMessage.js ***!
-  \**********************************************/
+/***/ "./src/js/components/chat/chatLogic.js":
+/*!*********************************************!*\
+  !*** ./src/js/components/chat/chatLogic.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   socketConnect: () => (/* binding */ socketConnect)
+/* harmony export */ });
+/* harmony import */ var _chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chatViewScripts/addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
+/* harmony import */ var _chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
+
+
+function socketConnect(url) {
+  let socket = new WebSocket(url);
+  socket.onopen = function (e) {
+    console.log("[open] Соединение установлено");
+  };
+  socket.onmessage = function (event) {
+    let data = event.data;
+    console.log(`[message] Данные получены с сервера: ${data}`);
+
+    // convert from JSON
+    data = JSON.parse(data);
+
+    // compare userID and senderID
+    // add message only if sender is not user itself
+    if (parseInt(data.senderId) != parseInt(userID)) {
+      (0,_chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('incoming', data.text);
+    }
+    (0,_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_1__.chatAutoScroll)();
+  };
+  socket.onclose = function (event) {
+    if (event.wasClean) {
+      console.log(`[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`);
+    } else {
+      console.log('[close] Соединение прервано');
+    }
+  };
+  socket.onerror = function (error) {
+    console.log(`${error}`);
+  };
+  return socket;
+}
+
+/***/ }),
+
+/***/ "./src/js/components/chat/chatViewScripts/addMessage.js":
+/*!**************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/addMessage.js ***!
+  \**************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -458,8 +519,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addMessage: () => (/* binding */ addMessage)
 /* harmony export */ });
-/* harmony import */ var _createAvatar_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createAvatar.js */ "./src/js/components/chat/createAvatar.js");
-/* harmony import */ var _createText_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createText.js */ "./src/js/components/chat/createText.js");
+/* harmony import */ var _createAvatar_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createAvatar.js */ "./src/js/components/chat/chatViewScripts/createAvatar.js");
+/* harmony import */ var _createTextElem_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createTextElem.js */ "./src/js/components/chat/chatViewScripts/createTextElem.js");
 
 
 function addMessage(className, message) {
@@ -470,7 +531,7 @@ function addMessage(className, message) {
     const messages = chatbox__content.querySelectorAll('.chatbox__message');
     const lastMessage = messages[messages.length - 1];
     const fullClassName = `chatbox__message--${className}`;
-    const textEl = (0,_createText_js__WEBPACK_IMPORTED_MODULE_1__.createTextEl)(message);
+    const textEl = (0,_createTextElem_js__WEBPACK_IMPORTED_MODULE_1__.createTextEl)(message);
     if (!lastMessage.classList.contains(fullClassName)) {
       // if the last message is not from the same author
       // create new chatMessage group
@@ -495,10 +556,10 @@ function addMessage(className, message) {
 
 /***/ }),
 
-/***/ "./src/js/components/chat/chatAutoScroll.js":
-/*!**************************************************!*\
-  !*** ./src/js/components/chat/chatAutoScroll.js ***!
-  \**************************************************/
+/***/ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js":
+/*!******************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/chatAutoScroll.js ***!
+  \******************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -517,50 +578,10 @@ function chatAutoScroll() {
 
 /***/ }),
 
-/***/ "./src/js/components/chat/chatSocket.js":
-/*!**********************************************!*\
-  !*** ./src/js/components/chat/chatSocket.js ***!
-  \**********************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   socketConnect: () => (/* binding */ socketConnect)
-/* harmony export */ });
-/* harmony import */ var _addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./addMessage.js */ "./src/js/components/chat/addMessage.js");
-/* harmony import */ var _chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chatAutoScroll.js */ "./src/js/components/chat/chatAutoScroll.js");
-
-
-function socketConnect(url) {
-  let socket = new WebSocket(url);
-  socket.onopen = function (e) {
-    console.log("[open] Соединение установлено");
-  };
-  socket.onmessage = function (event) {
-    console.log(`[message] Данные получены с сервера: ${event.data}`);
-    (0,_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('incoming', event.data);
-    (0,_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_1__.chatAutoScroll)();
-  };
-  socket.onclose = function (event) {
-    if (event.wasClean) {
-      console.log(`[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`);
-    } else {
-      console.log('[close] Соединение прервано');
-    }
-  };
-  socket.onerror = function (error) {
-    console.log(`${error}`);
-  };
-  return socket;
-}
-
-/***/ }),
-
-/***/ "./src/js/components/chat/createAvatar.js":
-/*!************************************************!*\
-  !*** ./src/js/components/chat/createAvatar.js ***!
-  \************************************************/
+/***/ "./src/js/components/chat/chatViewScripts/createAvatar.js":
+/*!****************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/createAvatar.js ***!
+  \****************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -584,10 +605,10 @@ function createAvatarEl() {
 
 /***/ }),
 
-/***/ "./src/js/components/chat/createText.js":
-/*!**********************************************!*\
-  !*** ./src/js/components/chat/createText.js ***!
-  \**********************************************/
+/***/ "./src/js/components/chat/chatViewScripts/createTextElem.js":
+/*!******************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/createTextElem.js ***!
+  \******************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -604,10 +625,10 @@ function createTextEl(text) {
 
 /***/ }),
 
-/***/ "./src/js/components/chat/handleChatInput.js":
-/*!***************************************************!*\
-  !*** ./src/js/components/chat/handleChatInput.js ***!
-  \***************************************************/
+/***/ "./src/js/components/chat/chatViewScripts/handleChatInput.js":
+/*!*******************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/handleChatInput.js ***!
+  \*******************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -615,45 +636,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   handleChatInput: () => (/* binding */ handleChatInput)
 /* harmony export */ });
-/* harmony import */ var _addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./addMessage.js */ "./src/js/components/chat/addMessage.js");
-/* harmony import */ var _sendMessageToServer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sendMessageToServer.js */ "./src/js/components/chat/sendMessageToServer.js");
+/* harmony import */ var _addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
 
-
-async function handleChatInput(event) {
+function handleChatInput(event) {
   event.preventDefault();
   const inputField = document.querySelector('#chat-form__input');
   const userMessage = inputField.value.trim();
   if (!userMessage) return;
   (0,_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('outgoing', userMessage);
   inputField.value = '';
-  await (0,_sendMessageToServer_js__WEBPACK_IMPORTED_MODULE_1__.sendMessageToServer)('url', userMessage, new Date());
   return userMessage;
 }
 
 /***/ }),
 
-/***/ "./src/js/components/chat/sendMessageToServer.js":
-/*!*******************************************************!*\
-  !*** ./src/js/components/chat/sendMessageToServer.js ***!
-  \*******************************************************/
+/***/ "./src/js/components/chat/formatMessage.js":
+/*!*************************************************!*\
+  !*** ./src/js/components/chat/formatMessage.js ***!
+  \*************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   sendMessageToServer: () => (/* binding */ sendMessageToServer)
+/* harmony export */   formatMessage: () => (/* binding */ formatMessage)
 /* harmony export */ });
-async function sendMessageToServer(url, textMessage, date) {
-  fetch("https://jsonplaceholder.typicode.com/todos", {
-    method: "POST",
-    body: JSON.stringify({
-      text: textMessage,
-      date: date
-    }),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8"
+// takes string returns JSON
+function formatMessage(str) {
+  let json = JSON.stringify({
+    "msg": {
+      // get user ID from cookies
+      "senderId": "3",
+      // get user ID from ??
+      "recipientId": "4",
+      "text": str
     }
-  }).then(console.log('message was sent to server:', textMessage));
+  });
+  return json;
 }
 
 /***/ }),

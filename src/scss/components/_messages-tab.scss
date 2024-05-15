@@ -79,10 +79,11 @@
 
     .checked-svg {
       position: absolute;
-      width: 9px;
+      width: 15px;
       height: 7px;
       left: 0;
       fill: var(--group-color);
+      stroke: var(--group-color);
     }
 
     .checked-svg:first-of-type {

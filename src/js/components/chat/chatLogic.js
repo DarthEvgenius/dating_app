@@ -1,5 +1,5 @@
-import { addMessage } from './addMessage.js'
-import { chatAutoScroll } from './chatAutoScroll.js'
+import { addMessage } from './chatViewScripts/addMessage.js'
+import { chatAutoScroll } from './chatViewScripts/chatAutoScroll.js'
 
 export function socketConnect(url) {
   let socket = new WebSocket(url);
@@ -9,9 +9,18 @@ export function socketConnect(url) {
   }
 
   socket.onmessage = function(event) {
-    console.log(`[message] Данные получены с сервера: ${event.data}`)
+    let data = event.data
+    console.log(`[message] Данные получены с сервера: ${data}`)
 
-    addMessage('incoming', event.data)
+    // convert from JSON
+    data = JSON.parse(data)
+
+    // compare userID and senderID
+    // add message only if sender is not user itself
+    if (parseInt(data.senderId) != parseInt(userID)) {
+      addMessage('incoming', data.text)
+    }
+
     chatAutoScroll()
   }
 

@@ -56,27 +56,30 @@
 
     &-try {
       position: relative;
-      background-image:
-        linear-gradient(to right,
-          hsl(338, 78%, 51%),
-            hsl(205, 94%, 53%));
 
-      & span {
-        position: relative;
-        z-index: 5;
-      }
+      // styles for gradient button
 
-      &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-color: rgba(0, 0, 0, 0);
-        transition: background-color 0.3s;
-      }
+      // background-image:
+      //   linear-gradient(to right,
+      //     hsl(338, 78%, 51%),
+      //       hsl(205, 94%, 53%));
 
-      &:hover::after{
-          background-color: rgba(0, 0, 0, 0.2);
-      }
+      // & span {
+      //   position: relative;
+      //   z-index: 5;
+      // }
+
+      // &::after {
+      //   content: '';
+      //   position: absolute;
+      //   inset: 0;
+      //   background-color: rgba(0, 0, 0, 0);
+      //   transition: background-color 0.3s;
+      // }
+
+      // &:hover::after{
+      //     background-color: rgba(0, 0, 0, 0.2);
+      // }
     }
   }
 }

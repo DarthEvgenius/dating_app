@@ -13,6 +13,7 @@
     font-weight: 600;
     font-size: var(--fs-logo);
     line-height: 1.75;
-    color: currentColor;
+    color: var(--light-color);
+    text-wrap: nowrap;
   }
 }

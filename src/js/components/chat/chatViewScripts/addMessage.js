@@ -1,5 +1,5 @@
 import { createAvatarEl } from './createAvatar.js'
-import { createTextEl } from './createText.js'
+import { createTextEl } from './createTextElem.js'
 
 
 export function addMessage(className, message) {
