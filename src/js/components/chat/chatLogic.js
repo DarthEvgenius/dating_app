@@ -3,6 +3,7 @@ import { chatAutoScroll } from './chatViewScripts/chatAutoScroll.js'
 
 export function socketConnect(url) {
   let socket = new WebSocket(url);
+  const userID = getCookie("userID")
 
   socket.onopen = function(e) {
     console.log("[open] Соединение установлено");

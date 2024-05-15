@@ -438,9 +438,10 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('resize', _chatboxHeight_js__WEBPACK_IMPORTED_MODULE_3__.setChatHeight);
 const sendChatBtn = document.querySelector('#chat-submit');
 const closeChatBtn = document.querySelector('#chat-close');
-let socket = (0,_chat_chatLogic_js__WEBPACK_IMPORTED_MODULE_4__.socketConnect)('ws://javascript.info/article/websocket/demo/hello');
 
-// let socket = new WebSocket('ws://vm592483.eurodir.ru/chat/1/3')
+// let socket = socketConnect('ws://javascript.info/article/websocket/demo/hello')
+
+let socket = new WebSocket('ws://vm592483.eurodir.ru/chat/1/3');
 
 // on user input
 sendChatBtn.addEventListener('click', function (event) {
@@ -478,6 +479,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function socketConnect(url) {
   let socket = new WebSocket(url);
+  const userID = getCookie("userID");
   socket.onopen = function (e) {
     console.log("[open] Соединение установлено");
   };

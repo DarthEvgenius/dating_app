@@ -12,9 +12,10 @@ window.addEventListener('resize', setChatHeight)
 const sendChatBtn = document.querySelector('#chat-submit')
 const closeChatBtn = document.querySelector('#chat-close')
 
-let socket = socketConnect('ws://javascript.info/article/websocket/demo/hello')
 
-// let socket = new WebSocket('ws://vm592483.eurodir.ru/chat/1/3')
+// let socket = socketConnect('ws://javascript.info/article/websocket/demo/hello')
+
+let socket = new WebSocket('ws://vm592483.eurodir.ru/chat/1/3')
 
 // on user input
 sendChatBtn.addEventListener('click', function(event) {
