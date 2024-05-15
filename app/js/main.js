@@ -363,6 +363,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
 /* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
 /* harmony import */ var _components_chatboxHeight_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/chatboxHeight.js */ "./src/js/components/chatboxHeight.js");
+/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
+
 
 
 
@@ -663,10 +665,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 // takes string returns JSON
 function formatMessage(str) {
+  const userID = getCookie("userID");
   let json = JSON.stringify({
     "msg": {
       // get user ID from cookies
-      "senderId": "3",
+      "senderId": userID,
       // get user ID from ??
       "recipientId": "4",
       "text": str
@@ -727,6 +730,21 @@ const swiperFind = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.find__sw
   // prevent swiping
   allowTouchMove: false
 });
+
+/***/ }),
+
+/***/ "./src/js/components/getCookie.js":
+/*!****************************************!*\
+  !*** ./src/js/components/getCookie.js ***!
+  \****************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function getCookie(name) {
+  let matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + "=([^;]*)"));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
 
 /***/ }),
 

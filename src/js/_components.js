@@ -8,3 +8,4 @@ import './components/textarea-resize.js';
 
 import './components/chat.js';
 import './components/chatboxHeight.js';
+import './components/getCookie.js';
