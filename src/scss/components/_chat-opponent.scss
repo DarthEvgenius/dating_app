@@ -1,4 +1,7 @@
 .chat-opponent {
   padding-top: 32px;
+  max-height: 100dvh;
+  overflow-y: scroll;
+  overflow-x: hidden;
   border-left: 1px solid var(--bd-profile-separator);
 }
