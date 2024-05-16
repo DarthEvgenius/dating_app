@@ -94,493 +94,145 @@
 </header>
 
 <!-- plan section ############################# -->
-  <section class="profile__plan offset-container">
-  <div class="profile__plan-container">
-    <div class="profile__plan-row">
-      <h3 class="profile__plan-subtitle">
-        Your subscription is:
-      </h3>
-
-      <button class="profile__plan-close">
-        <svg class="close-svg">
-          <use xlink:href="img/sprite.svg#close"></use>
-        </svg>
-      </button>
-    </div>
-
-    <div class="profile__plan-row">
-
-      <h2 class="profile__plan-title">
-  <svg class="plan-svg">
-    <use xlink:href="img/sprite.svg#work"></use>
-  </svg>
-  Work
-</h2>
-
-<button class="plan-btn  btn">
-  Details
-</button>
-
-    </div>
-
-    <p class="profile__plan-text">
-      *Lorem ipsum dolor sit amet, consecteturis adip.
-    </p>
-  </div>
-</section>
 
   <!-- add "data-simplebar" attr and max-height to enable scroll -->
   <div class="profile__body">
 
 <!-- avatar states ############################# -->
+    <div class="avatar profile__avatar offset-container">
+  <div class="avatar__container avatar__container--main">
+
+    <div class="avatar__swiper">
+
+  <div class="swiper avatar__swiper--main">
+    <div class="swiper-wrapper">
+
+      <div class="swiper-slide">
+        <picture>
+          <source srcset="./img/avatar1.webp" type="image/webp">
+          <img loading="lazy" src="./img/avatar1.jpg" class="image" width="360" height="360" alt="Avatar photo">
+        </picture>
+      </div>
+
+      <div class="swiper-slide">
+        <picture>
+          <source srcset="./img/avatar2.webp" type="image/webp">
+          <img loading="lazy" src="./img/avatar2.jpg" class="image" width="360" height="360" alt="Avatar photo">
+        </picture>
+      </div>
+
+      <div class="swiper-slide">
+        <picture>
+          <source srcset="./img/avatar3.webp" type="image/webp">
+          <img loading="lazy" src="./img/avatar3.jpg" class="image" width="360" height="360" alt="Avatar photo">
+        </picture>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="swiper-pagination--main"></div>
+
+</div>
+
+    <!-- "avatar__form--small" suppose profile has an avatar photo -->
+<!-- "avatar__form--small" require "avatar__swiper" on page -->
+<form action="#" class="avatar__form avatar__form--small">
+
+  <div class="avatar__form-container">
+    <svg class="avatar__form-svg" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="19" width="6" height="44" rx="1" fill="#4285F4"/>
+      <rect width="6" height="44" rx="1" transform="matrix(0 -1 -1 0 44 25)" fill="#4285F4"/>
+    </svg>
+
+    <input type="file" name="avatar-upload" id="avatar-upload">
+
+    <p class="avatar__form-text">
+      Press here to add you avatar and additional photos
+    </p>
+  </div>
+
+</form>
+
+  </div>
+</div>
 
 <!-- profile info states ############################# -->
+    <div class="offset-container">
+  <div class="profile__info">
 
+  <!-- on click toggle content/input via data-field attr -->
+
+    <div class="profile__info-field" id="profile-title">
+      <p class="profile__info-title" data-field="title">
+        <span id="profile-name">Alex Brandt</span>,
+        <span id="profile-age">31</span>
+      </p>
+      <button class="profile__info-edit">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M17.2923 18.2831H11.2482C10.9032 18.2831 10.6232 18.0031 10.6232 17.6581C10.6232 17.3131 10.9032 17.0331 11.2482 17.0331H17.2923C17.6373 17.0331 17.9173 17.3131 17.9173 17.6581C17.9173 18.0031 17.6373 18.2831 17.2923 18.2831Z" fill="#4285F4"/>
+          <mask id="mask0_242_274" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="1" y="2" width="15" height="17">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M1.66699 2.50014H15.9841V18.2831H1.66699V2.50014Z" fill="white"/>
+          </mask>
+          <g mask="url(#mask0_242_274)">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M10.9256 4.18067L3.07972 13.9932C2.93722 14.1715 2.88472 14.4015 2.93722 14.6223L3.50472 17.0265L6.03722 16.9948C6.27805 16.9923 6.50055 16.8848 6.64805 16.7015C9.32889 13.3473 14.4397 6.95234 14.5847 6.76484C14.7214 6.54317 14.7747 6.22984 14.7031 5.92817C14.6297 5.61901 14.4372 5.35651 14.1597 5.18901C14.1006 5.14817 12.6964 4.05817 12.6531 4.02401C12.1247 3.60067 11.3539 3.67401 10.9256 4.18067ZM3.01139 18.2832C2.72222 18.2832 2.47055 18.0848 2.40305 17.8023L1.72055 14.9098C1.57972 14.3107 1.71972 13.6923 2.10389 13.2123L9.95389 3.39401C9.95722 3.39067 9.95972 3.38651 9.96305 3.38317C10.8239 2.35401 12.3806 2.20234 13.4306 3.04484C13.4722 3.07734 14.8664 4.16067 14.8664 4.16067C15.3731 4.46234 15.7689 5.00151 15.9189 5.63984C16.0681 6.27151 15.9597 6.92317 15.6122 7.47401C15.5864 7.51484 15.5639 7.54984 7.62389 17.4832C7.24139 17.9598 6.66805 18.2373 6.05222 18.2448L3.01972 18.2832H3.01139Z" fill="#4285F4"/>
+          </g>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5196 9.73733C13.3863 9.73733 13.2529 9.69483 13.1388 9.60817L8.59543 6.11817C8.3221 5.90817 8.27043 5.5165 8.48043 5.2415C8.69126 4.96817 9.08293 4.91733 9.3571 5.12733L13.9013 8.6165C14.1746 8.8265 14.2263 9.219 14.0154 9.49317C13.8929 9.65317 13.7071 9.73733 13.5196 9.73733Z" fill="#4285F4"/>
+        </svg>
+
+      </button>
+    </div>
+
+    <div class="profile__info-field" id="profile-about">
+      <h4 class="profile__info-subtitle">About me:</h4>
+      <button class="profile__info-edit">Edit</button>
+      <p class="profile__info-content" data-field="about">
+        Lorem ipsum dolor sit amet, consecteturis adipiscing elit se
+        do eiusmod temporata incididunt ut labore et dolore magna
+        aliqu. Ullamcorper malesuada consequat proin.
+      </p>
+    </div>
+
+    <div class="profile__info-field" id="profile-gender">
+      <h4 class="profile__info-subtitle">Gender:</h4>
+      <p class="profile__info-content" data-field="gender">
+        Male
+      </p>
+      <button class="profile__info-edit">Edit</button>
+    </div>
+
+    <div class="profile__info-field" id="profile-motherland">
+      <h4 class="profile__info-subtitle">Place of birth:</h4>
+      <p class="profile__info-content" data-field="motherland">
+        London, UK
+      </p>
+      <button class="profile__info-edit">Edit</button>
+    </div>
+
+    <div class="profile__info-field" id="profile-location">
+      <h4 class="profile__info-subtitle">Location:</h4>
+      <p class="profile__info-content" data-field="location">
+        Frankfurt, Germany
+      </p>
+      <button class="profile__info-edit">Edit</button>
+    </div>
+
+    <div class="profile__info-field" id="profile-languages">
+      <h4 class="profile__info-subtitle">Languages:</h4>
+      <p class="profile__info-content" data-field="languages">
+        English, German, French
+      </p>
+      <button class="profile__info-edit">Edit</button>
+    </div>
+
+    <button class="btn profile__info-btn" id="profile-logout">Log Out</button>
+
+  </div>
+</div>
+
+  </div>
 <!-- matches tabs ############################# -->
-    <section class="profile-tabs offset-container" >
 
-  <div class="tabs" data-tabs="chat-tabs">
-    <ul class="list-reset tabs__nav">
-      <li class="tabs__nav-item">
-        <button class="btn-reset tabs__nav-btn" type="button">
-          Matches
-        </button>
-      </li>
-
-      <li class="tabs__nav-item">
-        <button class="btn-reset tabs__nav-btn" type="button">
-          Messages
-        </button>
-      </li>
-    </ul>
-
-    <div class="tabs__content">
-      <div class="tabs__panel">
-        <div class="matches-tab profile-tabs__container" >
-
-  <ul class="matches-tab__list">
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-    <li class="matches-tab__item">
-      <div class="matches-tab__image">
-        <picture>
-          <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
-        </picture>
-      </div>
-      <h4 class="matches-tab__name">Martin</h4>
-    </li>
-
-  </ul>
-
-</div>
-
-      </div>
-
-      <div class="tabs__panel">
-        <div class="messages-tab profile-tabs__container">
-
-  <div class="messages-tab__message message message--checked">
-    <div class="message-avatar messages-tab__avatar">
-      <picture>
-        <source srcset="./img/avatar2.webp" type="image/webp">
-        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
-      </picture>
-    </div>
-
-    <div class="message__body">
-
-      <div class="message__row">
-        <h5 class="message__companion">Jordan Anderson</h5>
-        <div class="message__time">06:41 AM</div>
-      </div>
-
-      <div class="message__row">
-        <p class="message__text">
-          <span class="message__author">You:</span>
-          <span class="message__content">Lorem ipsum dolor sit amet…</span>
-        </p>
-
-        <div class="message__checked checked-group">
-
-           <svg class="checked-svg" width="9" height="7" viewBox="0 0 9 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path style="transform: translateX(-2px);" opacity="0.5" d="M3.1863 4.02586L6.91927 0.292893C7.30979 -0.0976311 7.94296 -0.0976311 8.33348 0.292893C8.69397 0.653377 8.7217 1.22061 8.41667 1.6129L8.33348 1.70711L3.89341 6.14718C3.53292 6.50767 2.96569 6.5354 2.5734 6.23037L2.47919 6.14718L0.292893 3.96088C-0.0976311 3.57036 -0.0976311 2.93719 0.292893 2.54667C0.653377 2.18618 1.22061 2.15845 1.6129 2.46348L1.70711 2.54667L3.1863 4.02586L6.91927 0.292893L3.1863 4.02586Z" fill="#979797"/>
-            <path style="transform: translateX(2px);" opacity="0.5" d="M3.1863 4.02586L6.91927 0.292893C7.30979 -0.0976311 7.94296 -0.0976311 8.33348 0.292893C8.69397 0.653377 8.7217 1.22061 8.41667 1.6129L8.33348 1.70711L3.89341 6.14718C3.53292 6.50767 2.96569 6.5354 2.5734 6.23037L2.47919 6.14718L0.292893 3.96088C-0.0976311 3.57036 -0.0976311 2.93719 0.292893 2.54667C0.653377 2.18618 1.22061 2.15845 1.6129 2.46348L1.70711 2.54667L3.1863 4.02586L6.91927 0.292893L3.1863 4.02586Z" fill="#979797"/>
-            </svg>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="messages-tab__message message message--checked">
-    <div class="message-avatar messages-tab__avatar">
-      <picture>
-        <source srcset="./img/avatar2.webp" type="image/webp">
-        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
-      </picture>
-    </div>
-
-    <div class="message__body">
-
-      <div class="message__row">
-        <h5 class="message__companion">Jordan Anderson</h5>
-        <div class="message__time">06:41 AM</div>
-      </div>
-
-      <div class="message__row">
-        <p class="message__text">
-          <span class="message__author">You:</span>
-          <span class="message__content">Lorem ipsum dolor sit amet…</span>
-        </p>
-
-        <div class="message__checked checked-group">
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="messages-tab__message message">
-    <div class="message-avatar messages-tab__avatar">
-      <picture>
-        <source srcset="./img/avatar2.webp" type="image/webp">
-        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
-      </picture>
-    </div>
-
-    <div class="message__body">
-
-      <div class="message__row">
-        <h5 class="message__companion">Jordan Anderson</h5>
-        <div class="message__time">06:41 AM</div>
-      </div>
-
-      <div class="message__row">
-        <p class="message__text">
-          <span class="message__author">You:</span>
-          <span class="message__content">Lorem ipsum dolor sit amet…</span>
-        </p>
-
-        <div class="message__checked checked-group">
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="messages-tab__message message">
-    <div class="message-avatar messages-tab__avatar">
-      <picture>
-        <source srcset="./img/avatar2.webp" type="image/webp">
-        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
-      </picture>
-    </div>
-
-    <div class="message__body">
-
-      <div class="message__row">
-        <h5 class="message__companion">Jordan Anderson</h5>
-        <div class="message__time">06:41 AM</div>
-      </div>
-
-      <div class="message__row">
-        <p class="message__text">
-          <span class="message__author">You:</span>
-          <span class="message__content">Lorem ipsum dolor sit amet…</span>
-        </p>
-
-        <div class="message__checked checked-group">
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="messages-tab__message message message--checked">
-    <div class="message-avatar messages-tab__avatar">
-      <picture>
-        <source srcset="./img/avatar2.webp" type="image/webp">
-        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
-      </picture>
-    </div>
-
-    <div class="message__body">
-
-      <div class="message__row">
-        <h5 class="message__companion">Jordan Anderson</h5>
-        <div class="message__time">06:41 AM</div>
-      </div>
-
-      <div class="message__row">
-        <p class="message__text">
-          <span class="message__author">You:</span>
-          <span class="message__content">Lorem ipsum dolor sit amet…</span>
-        </p>
-
-        <div class="message__checked checked-group">
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="messages-tab__message message message--checked">
-    <div class="message-avatar messages-tab__avatar">
-      <picture>
-        <source srcset="./img/avatar2.webp" type="image/webp">
-        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
-      </picture>
-    </div>
-
-    <div class="message__body">
-
-      <div class="message__row">
-        <h5 class="message__companion">Jordan Anderson</h5>
-        <div class="message__time">06:41 AM</div>
-      </div>
-
-      <div class="message__row">
-        <p class="message__text">
-          <span class="message__author">You:</span>
-          <span class="message__content">Lorem ipsum dolor sit amet…</span>
-        </p>
-
-        <div class="message__checked checked-group">
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="messages-tab__message message message--checked">
-    <div class="message-avatar messages-tab__avatar">
-      <picture>
-        <source srcset="./img/avatar2.webp" type="image/webp">
-        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
-      </picture>
-    </div>
-
-    <div class="message__body">
-
-      <div class="message__row">
-        <h5 class="message__companion">Jordan Anderson</h5>
-        <div class="message__time">06:41 AM</div>
-      </div>
-
-      <div class="message__row">
-        <p class="message__text">
-          <span class="message__author">You:</span>
-          <span class="message__content">Lorem ipsum dolor sit amet…</span>
-        </p>
-
-        <div class="message__checked checked-group">
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="messages-tab__message message">
-    <div class="message-avatar messages-tab__avatar">
-      <picture>
-        <source srcset="./img/avatar2.webp" type="image/webp">
-        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
-      </picture>
-    </div>
-
-    <div class="message__body">
-
-      <div class="message__row">
-        <h5 class="message__companion">Jordan Anderson</h5>
-        <div class="message__time">06:41 AM</div>
-      </div>
-
-      <div class="message__row">
-        <p class="message__text">
-          <span class="message__author">You:</span>
-          <span class="message__content">Lorem ipsum dolor sit amet…</span>
-        </p>
-
-        <div class="message__checked checked-group">
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-</div>
-
-      </div>
-    </div>
-
-  </div>
-
-</section>
-
-  </div>
 </section>
 
       </section>

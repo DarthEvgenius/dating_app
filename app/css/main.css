@@ -410,6 +410,9 @@ a {
 }
 
 @supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar-thumb {
+    cursor: pointer;
+  }
   body::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -420,21 +423,27 @@ a {
     border-radius: 10px;
   }
   body::-webkit-scrollbar-thumb {
-    background-color: var(--accent-color);
+    background-color: var(--olive-dark-color);
     border: 2px solid var(--bd-sign-in);
     border-radius: 10px;
   }
-  .chatbox__content::-webkit-scrollbar {
+  .chatbox__content::-webkit-scrollbar,
+  .profile__body::-webkit-scrollbar,
+  .profile-tabs__container::-webkit-scrollbar {
     width: 7px;
     height: 7px;
   }
-  .chatbox__content::-webkit-scrollbar-track {
+  .chatbox__content::-webkit-scrollbar-track,
+  .profile__body::-webkit-scrollbar-track,
+  .profile-tabs__container::-webkit-scrollbar-track {
     margin-block: 0.5rem;
     background-color: var(--bd-sign-in);
     border-radius: 10px;
   }
-  .chatbox__content::-webkit-scrollbar-thumb {
-    background-color: var(--plan-color, var(--accent-color));
+  .chatbox__content::-webkit-scrollbar-thumb,
+  .profile__body::-webkit-scrollbar-thumb,
+  .profile-tabs__container::-webkit-scrollbar-thumb {
+    background-color: var(--plan-color, var(--olive-dark-color));
     border: 1px solid var(--bd-sign-in);
     border-radius: 10px;
   }
@@ -968,7 +977,8 @@ a {
   max-width: 440px;
 }
 .profile__body {
-  max-height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .profile__info {
@@ -1163,6 +1173,12 @@ a {
 
 .profile-tabs__container {
   padding-top: 33px;
+  padding-bottom: var(--container-offset);
+  padding-right: 10px;
+  margin-right: -10px;
+  max-height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .simplebar-scrollbar::before {

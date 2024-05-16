@@ -5,6 +5,9 @@ import './components/find-swiper.js';
 import './components/tabs.js';
 import './components/simplebar.js';
 import './components/textarea-resize.js';
+import './components/profile-section/profile-section.js';
+import './components/profile-section/plan-banner.js';
+import './components/profile-section/profile-sections-height.js';
 
 import './components/chat.js';
 import './components/chatboxHeight.js';

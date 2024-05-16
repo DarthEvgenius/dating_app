@@ -1,9 +1,13 @@
 .profile-tabs {
-  // max-height: 800px;
-  // overflow-y: auto;
 
   &__container {
     padding-top:  33px;
+    padding-bottom: var(--container-offset);
+    padding-right: 10px;
+    margin-right: -10px;
+    max-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 }
 

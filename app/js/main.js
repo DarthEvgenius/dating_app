@@ -361,9 +361,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_tabs_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/tabs.js */ "./src/js/components/tabs.js");
 /* harmony import */ var _components_simplebar_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/simplebar.js */ "./src/js/components/simplebar.js");
 /* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
-/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
-/* harmony import */ var _components_chatboxHeight_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/chatboxHeight.js */ "./src/js/components/chatboxHeight.js");
-/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _components_profile_section_profile_section_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/profile-section/profile-section.js */ "./src/js/components/profile-section/profile-section.js");
+/* harmony import */ var _components_profile_section_plan_banner_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/profile-section/plan-banner.js */ "./src/js/components/profile-section/plan-banner.js");
+/* harmony import */ var _components_profile_section_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/profile-section/profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
+/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
+/* harmony import */ var _components_chatboxHeight_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/chatboxHeight.js */ "./src/js/components/chatboxHeight.js");
+/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
+
+
+
 
 
 
@@ -769,6 +775,110 @@ options.forEach(e => {
 // change selected language flag
 function changeLanguage(e) {
   btnImg.src = `./img/flag-${this.dataset.lang}.png`;
+}
+
+/***/ }),
+
+/***/ "./src/js/components/profile-section/plan-banner.js":
+/*!**********************************************************!*\
+  !*** ./src/js/components/profile-section/plan-banner.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _profile_sections_height_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
+
+const closePlanBanner = document.querySelector('#plan-banner-close');
+if (closePlanBanner) {
+  closePlanBanner.addEventListener('click', e => {
+    e.target.closest('.profile__plan').setAttribute('hidden', '');
+    (0,_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_0__.setProfileTabsHeight)();
+  });
+}
+
+/***/ }),
+
+/***/ "./src/js/components/profile-section/profile-height.js":
+/*!*************************************************************!*\
+  !*** ./src/js/components/profile-section/profile-height.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   setProfileHeight: () => (/* binding */ setProfileHeight)
+/* harmony export */ });
+function setProfileHeight() {
+  const profileHeader = arguments[0]?.profileHeader || document.querySelector('.profile__header');
+  const windowHeight = window.innerHeight;
+  const profileBody = document.querySelector('.profile__body');
+  console.log(profileBody);
+  const headerHeight = parseInt(getComputedStyle(profileHeader).getPropertyValue('margin-bottom')) + profileHeader.offsetHeight;
+  let height = windowHeight - headerHeight;
+  profileBody.style.maxHeight = `${height}px`;
+}
+
+/***/ }),
+
+/***/ "./src/js/components/profile-section/profile-section.js":
+/*!**************************************************************!*\
+  !*** ./src/js/components/profile-section/profile-section.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _profile_height_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./profile-height.js */ "./src/js/components/profile-section/profile-height.js");
+/* harmony import */ var _profile_sections_height_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
+
+
+const profileHeader = document.querySelector('.profile__header');
+const profileTabsContainers = document.querySelectorAll('.profile-tabs__container');
+const profilePlanBanner = document.querySelector('.profile__plan');
+(0,_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_1__.setProfileTabsHeight)({
+  profileHeader,
+  profileTabsContainers,
+  profilePlanBanner
+});
+(0,_profile_height_js__WEBPACK_IMPORTED_MODULE_0__.setProfileHeight)({
+  profileHeader
+});
+window.addEventListener('resize', () => {
+  (0,_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_1__.setProfileTabsHeight)();
+  (0,_profile_height_js__WEBPACK_IMPORTED_MODULE_0__.setProfileHeight)();
+});
+
+/***/ }),
+
+/***/ "./src/js/components/profile-section/profile-sections-height.js":
+/*!**********************************************************************!*\
+  !*** ./src/js/components/profile-section/profile-sections-height.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   setProfileTabsHeight: () => (/* binding */ setProfileTabsHeight)
+/* harmony export */ });
+function setProfileTabsHeight() {
+  const profileHeader = arguments[0]?.profileHeader || document.querySelector('.profile__header');
+  const profileTabsContainers = arguments[0]?.profileTabsContainers || document.querySelectorAll('.profile-tabs__container');
+  const profilePlanBanner = arguments[0]?.profilePlanBanner || document.querySelector('.profile__plan');
+  const windowHeight = window.innerHeight;
+  const headerHeight = parseInt(getComputedStyle(profileHeader).getPropertyValue('margin-bottom')) + profileHeader.offsetHeight;
+  let height = 0;
+  if (profilePlanBanner) {
+    const bannerHeight = parseInt(getComputedStyle(profilePlanBanner).getPropertyValue('margin-bottom')) + profilePlanBanner.offsetHeight;
+    height = windowHeight - headerHeight - bannerHeight;
+  } else {
+    height = windowHeight - headerHeight;
+  }
+  profileTabsContainers.forEach(elem => {
+    elem.style.maxHeight = `${height}px`;
+  });
 }
 
 /***/ }),
