@@ -411,7 +411,7 @@ const swiperProfileGuest = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.
   spaceBetween: 40,
   a11y: true,
   pagination: {
-    el: '.swiper-pagination--main',
+    el: '.swiper-pagination--guest',
     type: 'bullets',
     clickable: true
   }

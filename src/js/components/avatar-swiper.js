@@ -20,7 +20,7 @@ const swiperProfileGuest = new Swiper('.avatar__swiper--guest', {
   spaceBetween: 40,
   a11y: true,
   pagination: {
-    el: '.swiper-pagination--main',
+    el: '.swiper-pagination--guest',
     type: 'bullets',
     clickable: true,
   },

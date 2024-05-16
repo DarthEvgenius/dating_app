@@ -126,6 +126,7 @@ legend {
   --checked-color: #34a853;
   --header-bg-color: rgba(0, 0, 0, 80%);
   --btn-olive-color: #2aaa90;
+  --olive-light: #2aaa9050;
   --olive-dark-color: #0c826a;
   --light-bg-color: #f9f9f9;
   --bd-sign-in: #e4e7eb;
@@ -446,7 +447,7 @@ a {
   .profile__body::-webkit-scrollbar-thumb,
   .profile-tabs__container::-webkit-scrollbar-thumb,
   .chat-opponent::-webkit-scrollbar-thumb {
-    background-color: var(--plan-color, var(--olive-dark-color));
+    background-color: var(--olive-light);
     border: 1px solid var(--bd-sign-in);
     border-radius: 10px;
   }
@@ -883,16 +884,17 @@ a {
   --swiper-pagination-bullet-horizontal-gap: 7px;
   --swiper-pagination-bottom: 10;
 }
-.avatar__swiper--main .swiper-wrapper {
-  padding-bottom: 17px;
-}
 .avatar__swiper--main .swiper-slide {
   max-height: 360px;
   height: auto;
   border-radius: 10px;
   overflow: hidden;
 }
-.avatar__swiper .swiper-pagination--main {
+.avatar__swiper--guest, .avatar__swiper--main {
+  margin-bottom: 17px;
+}
+.avatar__swiper .swiper-pagination--main,
+.avatar__swiper .swiper-pagination--guest {
   text-align: center;
 }
 

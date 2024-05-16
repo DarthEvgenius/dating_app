@@ -43,7 +43,7 @@
   .profile__body::-webkit-scrollbar-thumb,
   .profile-tabs__container::-webkit-scrollbar-thumb,
   .chat-opponent::-webkit-scrollbar-thumb {
-    background-color: var(--plan-color, var(--olive-dark-color));
+    background-color: var(--olive-light);
     border: 1px solid var(--bd-sign-in);
     border-radius: 10px;
   }
