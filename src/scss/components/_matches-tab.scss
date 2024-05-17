@@ -1,5 +1,4 @@
 .matches-tab {
-  // max-height: 700px;
 
   &__list {
     display: grid;
@@ -13,7 +12,11 @@
     height: 140px;
     border-radius: 10px;
     overflow: hidden;
-    cursor: pointer;
+  }
+
+  &__btn {
+    position: relative;
+    opacity: 1;
 
     &::after {
       content: '';

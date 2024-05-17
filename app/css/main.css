@@ -1270,9 +1270,12 @@ a {
   height: 140px;
   border-radius: 10px;
   overflow: hidden;
-  cursor: pointer;
 }
-.matches-tab__item::after {
+.matches-tab__btn {
+  position: relative;
+  opacity: 1;
+}
+.matches-tab__btn::after {
   content: "";
   display: block;
   position: absolute;
@@ -1315,6 +1318,7 @@ a {
   gap: 20px;
 }
 .messages-tab .message {
+  width: 100%;
   padding-bottom: 20px;
   display: -ms-grid;
   display: grid;

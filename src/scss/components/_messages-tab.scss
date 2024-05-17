@@ -12,6 +12,8 @@
   }
 
   .message {
+    width: 100%;
+
     &.message--checked {
       --message-checked: var(--checked-color);
     }

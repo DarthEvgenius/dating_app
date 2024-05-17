@@ -366,6 +366,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_profile_section_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/profile-section/profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
 /* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
 /* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _components_sectionsHandling_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/sectionsHandling.js */ "./src/js/components/sectionsHandling.js");
 
 
 
@@ -377,8 +378,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// import './components/chat/chatFormSize.js';
-// import './components/chatboxHeight.js';
+
 
 
 /***/ }),
@@ -447,7 +447,7 @@ const closeChatBtn = document.querySelector('#chat-close');
 
 // let socket = socketConnect('ws://javascript.info/article/websocket/demo/hello')
 
-let socket = new WebSocket('ws://vm592483.eurodir.ru/chat/1/3');
+let socket = (0,_chat_chatLogic_js__WEBPACK_IMPORTED_MODULE_4__.socketConnect)('ws://vm592483.eurodir.ru/chat/1/3');
 
 // on user input
 sendChatBtn.addEventListener('click', function (event) {
@@ -481,11 +481,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chatViewScripts/addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
 /* harmony import */ var _chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
+/* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../getCookie.js */ "./src/js/components/getCookie.js");
+
 
 
 function socketConnect(url) {
   let socket = new WebSocket(url);
-  const userID = getCookie("userID");
+  const userID = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_2__.getCookie)("userID");
   socket.onopen = function (e) {
     console.log("[open] Соединение установлено");
   };
@@ -790,6 +792,9 @@ const swiperFind = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.find__sw
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getCookie: () => (/* binding */ getCookie)
+/* harmony export */ });
 function getCookie(name) {
   let matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + "=([^;]*)"));
   return matches ? decodeURIComponent(matches[1]) : undefined;
@@ -923,6 +928,18 @@ function setProfileTabsHeight() {
     elem.style.maxHeight = `${height}px`;
   });
 }
+
+/***/ }),
+
+/***/ "./src/js/components/sectionsHandling.js":
+/*!***********************************************!*\
+  !*** ./src/js/components/sectionsHandling.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+document.addEventListener('click', e => console.log(e.target.closest('.chat-enter').dataset.chatId));
 
 /***/ }),
 

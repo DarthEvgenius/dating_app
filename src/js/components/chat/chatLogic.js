@@ -1,5 +1,6 @@
 import { addMessage } from './chatViewScripts/addMessage.js'
 import { chatAutoScroll } from './chatViewScripts/chatAutoScroll.js'
+import { getCookie } from '../getCookie.js'
 
 export function socketConnect(url) {
   let socket = new WebSocket(url);
