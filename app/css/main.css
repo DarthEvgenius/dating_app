@@ -464,27 +464,26 @@ a {
   display: flex;
 }
 .tabs__nav-item {
-  padding-bottom: 7px;
   -ms-flex-preferred-size: 50%;
   flex-basis: 50%;
   text-align: center;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.75;
-  border-bottom: 1px solid var(--bd-sign-in);
   -webkit-transition: border 0.1s, font-weight 0.2s;
   transition: border 0.1s, font-weight 0.2s;
 }
-.tabs__nav-item:has(.tabs__nav-btn--active) {
-  border-bottom: 3px solid #000;
-}
 .tabs__nav-btn {
+  width: 100%;
+  padding-bottom: 7px;
   background-color: transparent;
-  -webkit-transition: text-shadow 0.2s;
-  transition: text-shadow 0.2s;
+  border-bottom: 1px solid var(--bd-sign-in);
+  -webkit-transition: text-shadow 0.2s, border 0.1s;
+  transition: text-shadow 0.2s, border 0.1s;
 }
 .tabs__nav-btn--active {
   text-shadow: 0.5px 0 0 currentColor;
+  border-bottom: 2px solid #000;
 }
 
 .bg-wrapper {
