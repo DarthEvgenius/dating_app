@@ -23,13 +23,18 @@
         font-weight 0.2s;
 
       &:has(.tabs__nav-btn--active) {
-        font-weight: 700;
         border-bottom: 3px solid #000;
       }
     }
 
     &-btn {
       background-color: transparent;
+      transition:
+        text-shadow 0.2s;
+
+      &--active {
+        text-shadow: 0.5px 0 0 currentColor;
+      }
     }
   }
 }

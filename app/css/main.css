@@ -476,11 +476,15 @@ a {
   transition: border 0.1s, font-weight 0.2s;
 }
 .tabs__nav-item:has(.tabs__nav-btn--active) {
-  font-weight: 700;
   border-bottom: 3px solid #000;
 }
 .tabs__nav-btn {
   background-color: transparent;
+  -webkit-transition: text-shadow 0.2s;
+  transition: text-shadow 0.2s;
+}
+.tabs__nav-btn--active {
+  text-shadow: 0.5px 0 0 currentColor;
 }
 
 .bg-wrapper {
@@ -599,7 +603,7 @@ a {
 }
 
 .header {
-  height: 8.75rem;
+  min-height: 8.75rem;
   color: var(--light-color);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(40%, var(--header-bg-color)), to(transparent));
   background-image: linear-gradient(to bottom, var(--header-bg-color) 40%, transparent);
@@ -626,6 +630,7 @@ a {
 }
 
 .hero {
+  padding-bottom: 15px;
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
   flex-grow: 1;
@@ -1293,6 +1298,9 @@ a {
   z-index: 10;
 }
 
+.messages-tab {
+  cursor: pointer;
+}
 .messages-tab__avatar {
   width: 45px;
   height: 45px;
@@ -1339,8 +1347,12 @@ a {
   color: var(--dark-color);
 }
 .messages-tab .message__text {
+  max-width: 24ch;
+  overflow: hidden;
   font-weight: 400;
   line-height: 1.6;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .messages-tab .message__author {
   color: var(--dark-color);

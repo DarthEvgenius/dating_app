@@ -99,163 +99,251 @@
   <div class="profile__body main-profile">
 
 <!-- avatar states ############################# -->
-    <div class="avatar profile__avatar offset-container">
-  <div class="avatar__container avatar__container--main">
-
-    <div class="avatar__swiper">
-
-  <div class="swiper avatar__swiper--main">
-    <div class="swiper-wrapper">
-
-      <div class="swiper-slide">
-        <picture>
-          <source srcset="./img/avatar1.webp" type="image/webp">
-          <img loading="lazy" src="./img/avatar1.jpg" class="image" width="360" height="360" alt="Avatar photo">
-        </picture>
-      </div>
-
-      <div class="swiper-slide">
-        <picture>
-          <source srcset="./img/avatar2.webp" type="image/webp">
-          <img loading="lazy" src="./img/avatar2.jpg" class="image" width="360" height="360" alt="Avatar photo">
-        </picture>
-      </div>
-
-      <div class="swiper-slide">
-        <picture>
-          <source srcset="./img/avatar3.webp" type="image/webp">
-          <img loading="lazy" src="./img/avatar3.jpg" class="image" width="360" height="360" alt="Avatar photo">
-        </picture>
-      </div>
-
-    </div>
-
-  </div>
-  <div class="swiper-pagination--main"></div>
-
-</div>
-
-    <!-- "avatar__form--small" suppose profile has an avatar photo -->
-<!-- "avatar__form--small" require "avatar__swiper" on page -->
-<form action="#" class="avatar__form avatar__form--small">
-
-  <div class="avatar__form-container">
-    <svg class="avatar__form-svg" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="19" width="6" height="44" rx="1" fill="#4285F4"/>
-      <rect width="6" height="44" rx="1" transform="matrix(0 -1 -1 0 44 25)" fill="#4285F4"/>
-    </svg>
-
-    <input type="file" name="avatar-upload" id="avatar-upload">
-
-    <p class="avatar__form-text">
-      Press here to add you avatar and additional photos
-    </p>
-  </div>
-
-</form>
-
-  </div>
-</div>
 
 <!-- profile info states ############################# -->
 
-    <div class="offset-container">
-  <div class="profile__info">
-
-    <!-- on click toggle content/input via data-field attr -->
-
-    <div class="profile__info-field edit-field" id="profile-title">
-      <p class="profile__info-title" data-field="title">
-        <input
-          type="text"
-          name="profile-name-edit"
-          id="profile-name-edit"
-          class="edit-field__input"
-          placeholder="Enter your full name here">
-
-        <input
-          type="number"
-          min="16"
-          max="150"
-          name="profile-age-edit"
-          id="profile-age-edit"
-          class="edit-field__input"
-          placeholder="Your age">
-      </p>
-    </div>
-
-    <div class="profile__info-field edit-field" id="profile-about">
-      <h4 class="profile__info-subtitle">About me:</h4>
-      <textarea
-        name="profile-about-edit"
-        id="profile-about-edit"
-        cols="100"
-        rows="10"
-        class="edit-field__input"
-        placeholder="Write info about you here"></textarea>
-    </div>
-
-    <div class="profile__info-field edit-field" id="profile-gender">
-      <h4 class="profile__info-subtitle">Gender:</h4>
-
-      <!-- the order matters: input + label for previous input -->
-      <input
-        type="radio"
-        name="profile-gender-edit"
-        id="profile-gender-male"
-        value="male"
-      >
-      <label for="profile-gender-male" class="edit-field__input">male</label>
-
-      <input type="radio"
-        name="profile-gender-edit"
-        id="profile-gender-female"
-        value="female"
-      >
-      <label for="profile-gender-female" class="edit-field__input">female</label>
-
-    </div>
-
-    <div class="profile__info-field edit-field" id="profile-motherland">
-      <h4 class="profile__info-subtitle">Place of birth:</h4>
-
-      <input
-        type="text"
-        name="profile-motherland-edit"
-        id="profile-motherland-edit"
-        class="edit-field__input"
-        placeholder="Enter your place of birth">
-    </div>
-
-    <div class="profile__info-field edit-field" id="profile-location">
-      <h4 class="profile__info-subtitle">Location:</h4>
-
-      <input
-        type="text"
-        name="profile-location-edit"
-        id="profile-location-edit"
-        class="edit-field__input"
-        placeholder="Enter your location">
-    </div>
-
-    <div class="profile__info-field edit-field" id="profile-languages">
-      <h4 class="profile__info-subtitle">Languages:</h4>
-
-      <input
-        type="text"
-        name="profile-languages-edit"
-        id="profile-languages-edit"
-        class="edit-field__input"
-        placeholder="Enter languages you know">
-    </div>
-
-    <button class="btn profile__info-btn" id="profile-edit-confirm">Save Changes</button>
-
-  </div>
-</div>
-
   </div>
 <!-- matches tabs ############################# -->
+    <section class="profile-tabs offset-container" >
+
+  <div class="tabs" data-tabs="chat-tabs">
+    <ul class="list-reset tabs__nav">
+      <li class="tabs__nav-item">
+        <button class="btn-reset tabs__nav-btn" type="button">
+          Matches
+        </button>
+      </li>
+
+      <li class="tabs__nav-item">
+        <button class="btn-reset tabs__nav-btn" type="button">
+          Messages
+        </button>
+      </li>
+    </ul>
+
+    <div class="tabs__content">
+      <div class="tabs__panel">
+        <div class="matches-tab profile-tabs__container" >
+
+  <ul class="matches-tab__list">
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+    <li class="matches-tab__item">
+      <div class="matches-tab__image">
+        <picture>
+          <source srcset="./img/match-1.webp" type="image/webp">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+        </picture>
+      </div>
+      <h4 class="matches-tab__name">Martin</h4>
+    </li>
+
+  </ul>
+
+</div>
+
+      </div>
+
+      <div class="tabs__panel">
+        <div class="messages-tab profile-tabs__container">
+
+  <a class="messages-tab__message message message--checked">
+    <div class="message-avatar messages-tab__avatar">
+      <picture>
+        <source srcset="./img/avatar2.webp" type="image/webp">
+        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
+      </picture>
+    </div>
+
+    <div class="message__body">
+
+      <div class="message__row">
+        <h5 class="message__companion">Jordan Anderson</h5>
+        <time class="message__time" datetime="06:41">06:41 AM</time>
+      </div>
+
+      <div class="message__row">
+        <p class="message__text">
+          <span class="message__author">You:</span>
+          <span class="message__content">Lorem ipsum dolo ipsum dos sit amet</span>
+        </p>
+
+        <div class="message__checked checked-group">
+
+          <svg class="checked-svg">
+            <use xlink:href="img/sprite.svg#checked"></use>
+          </svg>
+          <svg class="checked-svg">
+            <use xlink:href="img/sprite.svg#checked"></use>
+          </svg>
+
+        </div>
+      </div>
+
+    </div>
+  </a>
+
+  <a class="messages-tab__message message">
+    <div class="message-avatar messages-tab__avatar">
+      <picture>
+        <source srcset="./img/avatar2.webp" type="image/webp">
+        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
+      </picture>
+    </div>
+
+    <div class="message__body">
+
+      <div class="message__row">
+        <h5 class="message__companion">Jordan Anderson</h5>
+        <time class="message__time" datetime="06:42">06:42 AM</time>
+      </div>
+
+      <div class="message__row">
+        <p class="message__text">
+          <span class="message__author">You:</span>
+          <span class="message__content">Lorem ipsum dolor sit Lorem ipsum dolor sit </span>
+        </p>
+
+        <div class="message__checked checked-group">
+          <svg class="checked-svg">
+            <use xlink:href="img/sprite.svg#checked"></use>
+          </svg>
+          <svg class="checked-svg">
+            <use xlink:href="img/sprite.svg#checked"></use>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </a>
+
+</div>
+
+      </div>
+    </div>
+
+  </div>
+
+</section>
 
 </section>
 
