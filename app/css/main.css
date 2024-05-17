@@ -1032,6 +1032,7 @@ a {
   text-wrap: nowrap;
 }
 .profile__info-title {
+  width: 100%;
   font-family: var(--font-nebulous);
   font-size: var(--fs--profile-name);
   font-weight: 400;
@@ -1797,6 +1798,9 @@ a {
 }
 .chat-header__info {
   font-size: var(--fs-profile-subtitle);
+}
+.chat-header__match-date {
+  font-weight: 700;
 }
 
 .chat-form {
