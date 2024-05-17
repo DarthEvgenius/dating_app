@@ -9,6 +9,8 @@ import './components/profile-section/profile-section.js';
 import './components/profile-section/plan-banner.js';
 import './components/profile-section/profile-sections-height.js';
 
+import './components/ChatClass.js';
 import './components/chat.js';
 import './components/getCookie.js';
 import './components/sectionsHandling.js';
+import './components/findSection.js';

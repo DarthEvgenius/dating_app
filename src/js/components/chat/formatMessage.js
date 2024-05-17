@@ -1,3 +1,5 @@
+import { getCookie } from '../getCookie.js'
+
 // takes string returns JSON
 export function formatMessage (str) {
   const userID = getCookie("userID")

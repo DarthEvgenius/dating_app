@@ -1,4 +1,6 @@
-import { addMessage} from './chat/chatViewScripts/addMessage.js'
+import { closeChat, openChat } from './chat/openCloseChat.js'
+import { showSwiper, hideSwiper } from './findSection.js'
+import { addMessage } from './chat/chatViewScripts/addMessage.js'
 import { handleChatInput } from './chat/chatViewScripts/handleChatInput.js'
 import { chatAutoScroll } from './chat/chatViewScripts/chatAutoScroll.js'
 
@@ -10,26 +12,36 @@ setChatElementSizes()
 chatAutoScroll()
 window.addEventListener('resize', setChatElementSizes)
 
-const sendChatBtn = document.querySelector('#chat-submit')
-const closeChatBtn = document.querySelector('#chat-close')
+let chatId = null
+
+// listener for clicks on "chat-enter" buttons and open chats
+document.addEventListener('click', (e) => {
+  const chatEnter = e.target.closest('.chat-enter')
+
+  if (chatEnter) {
+    chatId = chatEnter.dataset.chatId
+    openChat(chatId)
+    hideSwiper()
+
+    const closeChatBtn = document.querySelector(`#chat-${chatId}-close`)
+
+    closeChatBtn.addEventListener('click', () => {
+      socket.close(1000, `{userId} left chat`)
+      closeChat(chatId)
+      showSwiper()
+    })
+  }
+})
+
 
 // init new chat
 // pass valid url for socket connection
 let socket = socketConnect('ws://vm592483.eurodir.ru/chat/1/3')
 
 // on user input
+const sendChatBtn = document.querySelector('#chat-submit')
 sendChatBtn.addEventListener('click', function(event) {
   const message = handleChatInput(event)
   socket.send(formatMessage(message))
   chatAutoScroll()
 })
-
-// close chat
-closeChatBtn.addEventListener('click', function(event) {
-  socket.close(1000, `userID left chat`)
-})
-
-// examples. Delete next 3 lines
-addMessage('outgoing', 'outgoing message')
-addMessage('incoming', 'incoming message')
-chatAutoScroll()

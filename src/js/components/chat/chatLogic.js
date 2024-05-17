@@ -4,6 +4,8 @@ import { getCookie } from '../getCookie.js'
 
 export function socketConnect(url) {
   let socket = new WebSocket(url);
+
+  // get the ID of logged in user
   const userID = getCookie("userID")
 
   socket.onopen = function(e) {
@@ -17,8 +19,7 @@ export function socketConnect(url) {
     // convert from JSON
     data = JSON.parse(data)
 
-    // compare userID and senderID
-    // add message only if sender is not user itself
+    // add message only if sender is not the user itself
     if (parseInt(data.senderId) != parseInt(userID)) {
       addMessage('incoming', data.text)
     }
@@ -28,7 +29,7 @@ export function socketConnect(url) {
 
   socket.onclose = function(event) {
     if (event.wasClean) {
-      console.log(`[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`);
+      console.log(`[close] Соединение закрыто чисто, код=${event.code}`);
     } else {
       console.log('[close] Соединение прервано');
     }

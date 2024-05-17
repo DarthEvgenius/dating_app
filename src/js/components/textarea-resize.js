@@ -1,13 +1,14 @@
 // make all textareas auto-resizable
+export function setTextareaSize() {
+  const textareas = document.getElementsByTagName("textarea");
 
-const textareas = document.getElementsByTagName("textarea");
+  for (let i = 0; i < textareas.length; i++) {
+    textareas[i].setAttribute("style", "height:" + (textareas[i].scrollHeight) + "px;overflow-y:hidden;");
+    textareas[i].addEventListener("input", OnInput, false);
+  }
 
-for (let i = 0; i < textareas.length; i++) {
-  textareas[i].setAttribute("style", "height:" + (textareas[i].scrollHeight) + "px;overflow-y:hidden;");
-  textareas[i].addEventListener("input", OnInput, false);
-}
-
-function OnInput() {
-  this.style.height = 'auto';
-  this.style.height = (this.scrollHeight) + "px";
+  function OnInput() {
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight) + "px";
+  }
 }
