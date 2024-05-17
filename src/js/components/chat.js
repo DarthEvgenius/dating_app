@@ -13,9 +13,8 @@ window.addEventListener('resize', setChatElementSizes)
 const sendChatBtn = document.querySelector('#chat-submit')
 const closeChatBtn = document.querySelector('#chat-close')
 
-
-// let socket = socketConnect('ws://javascript.info/article/websocket/demo/hello')
-
+// init new chat
+// pass valid url for socket connection
 let socket = socketConnect('ws://vm592483.eurodir.ru/chat/1/3')
 
 // on user input

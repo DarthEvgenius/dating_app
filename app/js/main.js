@@ -445,8 +445,8 @@ window.addEventListener('resize', _chat_chatViewScripts_chatSizes_js__WEBPACK_IM
 const sendChatBtn = document.querySelector('#chat-submit');
 const closeChatBtn = document.querySelector('#chat-close');
 
-// let socket = socketConnect('ws://javascript.info/article/websocket/demo/hello')
-
+// init new chat
+// pass valid url for socket connection
 let socket = (0,_chat_chatLogic_js__WEBPACK_IMPORTED_MODULE_4__.socketConnect)('ws://vm592483.eurodir.ru/chat/1/3');
 
 // on user input
