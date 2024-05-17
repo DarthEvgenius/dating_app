@@ -8,7 +8,7 @@
   --swiper-pagination-bottom: 10;
 
 
-  &--main {
+  &-main {
 
     .swiper-slide {
       max-height: 360px;
@@ -18,13 +18,13 @@
     }
   }
 
-  &--guest,
-  &--main {
+  &-guest,
+  &-main {
     margin-bottom: 17px;
   }
 
-  .swiper-pagination--main,
-  .swiper-pagination--guest {
+  .swiper-pagination-main,
+  .swiper-pagination-guest {
     text-align: center;
   }
 }

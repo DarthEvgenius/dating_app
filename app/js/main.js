@@ -396,22 +396,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 swiper__WEBPACK_IMPORTED_MODULE_0__["default"].use([swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Navigation, swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Pagination]);
-const swiperProfileMain = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.avatar__swiper--main', {
+const swiperProfileMain = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.avatar__swiper-main', {
   slidesPerView: 'auto',
   spaceBetween: 40,
   a11y: true,
   pagination: {
-    el: '.swiper-pagination--main',
+    el: '.swiper-pagination-main',
     type: 'bullets',
     clickable: true
   }
 });
-const swiperProfileGuest = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.avatar__swiper--guest', {
+const swiperProfileGuest = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.avatar__swiper-guest', {
   slidesPerView: 'auto',
   spaceBetween: 40,
   a11y: true,
   pagination: {
-    el: '.swiper-pagination--guest',
+    el: '.swiper-pagination-guest',
     type: 'bullets',
     clickable: true
   }

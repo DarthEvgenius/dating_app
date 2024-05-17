@@ -888,17 +888,17 @@ a {
   --swiper-pagination-bullet-horizontal-gap: 7px;
   --swiper-pagination-bottom: 10;
 }
-.avatar__swiper--main .swiper-slide {
+.avatar__swiper-main .swiper-slide {
   max-height: 360px;
   height: auto;
   border-radius: 10px;
   overflow: hidden;
 }
-.avatar__swiper--guest, .avatar__swiper--main {
+.avatar__swiper-guest, .avatar__swiper-main {
   margin-bottom: 17px;
 }
-.avatar__swiper .swiper-pagination--main,
-.avatar__swiper .swiper-pagination--guest {
+.avatar__swiper .swiper-pagination-main,
+.avatar__swiper .swiper-pagination-guest {
   text-align: center;
 }
 
