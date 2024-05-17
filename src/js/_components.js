@@ -10,5 +10,6 @@ import './components/profile-section/plan-banner.js';
 import './components/profile-section/profile-sections-height.js';
 
 import './components/chat.js';
-import './components/chatboxHeight.js';
+// import './components/chat/chatFormSize.js';
+// import './components/chatboxHeight.js';
 import './components/getCookie.js';

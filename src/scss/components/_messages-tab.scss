@@ -6,13 +6,12 @@
     height: 45px;
   }
 
+  &__list {
+    display: grid;
+    gap: 20px;
+  }
+
   .message {
-    margin-bottom: 20px;
-
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-
     &.message--checked {
       --message-checked: var(--checked-color);
     }

@@ -105,6 +105,7 @@
   </div>
 <!-- matches tabs ############################# -->
     <section class="profile-tabs offset-container" >
+  <h2 class="profile-tabs__title visually-hidden">Your Matches and Messages</h2>
 
   <div class="tabs" data-tabs="chat-tabs">
     <ul class="list-reset tabs__nav">
@@ -134,27 +135,27 @@
           <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
         </picture>
       </div>
-      <h2 class="matches-tab__name">Martin</h2>
+      <h3 class="matches-tab__name">Martin</h3>
     </li>
 
     <li class="matches-tab__item">
       <div class="matches-tab__image">
         <picture>
           <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="Martin photo">
         </picture>
       </div>
-      <h2 class="matches-tab__name">Martin</h2>
+      <h3 class="matches-tab__name">Martin</h3>
     </li>
 
     <li class="matches-tab__item">
       <div class="matches-tab__image">
         <picture>
           <source srcset="./img/match-1.webp" type="image/webp">
-          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="match photo">
+          <img loading="lazy" src="./img/match-1.jpg" class="image" width="110" height="140" alt="Martin photo">
         </picture>
       </div>
-      <h2 class="matches-tab__name">Martin</h2>
+      <h3 class="matches-tab__name">Martin</h3>
     </li>
 
   </ul>
@@ -166,75 +167,83 @@
       <div class="tabs__panel">
         <div class="messages-tab profile-tabs__container">
 
-  <a class="messages-tab__message message message--checked">
-    <div class="message-avatar messages-tab__avatar">
-      <picture>
-        <source srcset="./img/avatar2.webp" type="image/webp">
-        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
-      </picture>
-    </div>
+  <ul class="messages-tab__list">
+    <li class="messages-tab__item">
+      <a class="message message--checked">
+        <div class="message-avatar messages-tab__avatar">
+          <picture>
+            <source srcset="./img/avatar2.webp" type="image/webp">
+            <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="Jordan Anderson photo">
+          </picture>
+        </div>
 
-    <div class="message__body">
+        <div class="message__body">
 
-      <div class="message__row">
-        <h2 class="message__companion">Jordan Anderson</h2>
-        <time class="message__time" datetime="06:41">06:41 AM</time>
-      </div>
+          <div class="message__row">
+            <h3 class="message__companion">Jordan Anderson</h3>
+            <time class="message__time" datetime="06:41">06:41 AM</time>
+          </div>
 
-      <div class="message__row">
-        <p class="message__text">
-          <span class="message__author">You:</span>
-          <span class="message__content">Lorem ipsum dolo ipsum dos sit amet</span>
-        </p>
+          <div class="message__row">
+            <p class="message__text">
+              <span class="message__author">You:</span>
+              <span class="message__content">Lorem ipsum dolo ipsum dos sit amet</span>
+            </p>
 
-        <div class="message__checked checked-group">
+            <div class="message__checked checked-group">
 
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
+              <svg class="checked-svg">
+                <use xlink:href="img/sprite.svg#checked"></use>
+              </svg>
+              <svg class="checked-svg">
+                <use xlink:href="img/sprite.svg#checked"></use>
+              </svg>
+
+            </div>
+          </div>
 
         </div>
-      </div>
+      </a>
+    </li>
 
-    </div>
-  </a>
-
-  <a class="messages-tab__message message">
-    <div class="message-avatar messages-tab__avatar">
-      <picture>
-        <source srcset="./img/avatar2.webp" type="image/webp">
-        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="companion's photo">
-      </picture>
-    </div>
-
-    <div class="message__body">
-
-      <div class="message__row">
-        <h2 class="message__companion">Jordan Anderson</h2>
-        <time class="message__time" datetime="06:42">06:42 AM</time>
-      </div>
-
-      <div class="message__row">
-        <p class="message__text">
-          <span class="message__author">You:</span>
-          <span class="message__content">Lorem ipsum dolor sit Lorem ipsum dolor sit </span>
-        </p>
-
-        <div class="message__checked checked-group">
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
-          <svg class="checked-svg">
-            <use xlink:href="img/sprite.svg#checked"></use>
-          </svg>
+    <li class="messages-tab__item">
+      <a class="message message">
+        <div class="message-avatar messages-tab__avatar">
+          <picture>
+            <source srcset="./img/avatar2.webp" type="image/webp">
+            <img loading="lazy" src="./img/avatar2.jpg" class="image" width="45" height="45" alt="Jordan Anderson photo">
+          </picture>
         </div>
-      </div>
 
-    </div>
-  </a>
+        <div class="message__body">
+
+          <div class="message__row">
+            <h3 class="message__companion">Jordan Anderson</h3>
+            <time class="message__time" datetime="06:41">06:41 AM</time>
+          </div>
+
+          <div class="message__row">
+            <p class="message__text">
+              <span class="message__author">You:</span>
+              <span class="message__content">Lorem ipsum dolo ipsum dos sit amet</span>
+            </p>
+
+            <div class="message__checked checked-group">
+
+              <svg class="checked-svg">
+                <use xlink:href="img/sprite.svg#checked"></use>
+              </svg>
+              <svg class="checked-svg">
+                <use xlink:href="img/sprite.svg#checked"></use>
+              </svg>
+
+            </div>
+          </div>
+
+        </div>
+      </a>
+    </li>
+  </ul>
 
 </div>
 
@@ -438,6 +447,7 @@
 </div>
 
   <section class="chat-opponent profile">
+  <h2 class="visually-hidden">Your chat with:</h2>
 
   <div class="avatar profile__avatar offset-container">
   <div class="avatar__container avatar__container--main">
@@ -477,14 +487,14 @@
   <!-- All possible fields for guest profile -->
 
     <div class="profile__info-field" id="guest-title">
-      <h2 class="profile__info-title" data-field="title">
+      <h3 class="profile__info-title" data-field="title">
         <span id="profile-name">Alex Brandt</span>,
         <span id="profile-age">31</span>
-      </h2>
+      </h3>
     </div>
 
     <div class="profile__info-field" id="guest-about">
-      <h3 class="profile__info-subtitle">About me:</h3>
+      <h4 class="profile__info-subtitle">About me:</h4>
       <p class="profile__info-content" data-field="about">
         Lorem ipsum dolor sit amet, consecteturis adipiscing elit se
         do eiusmod temporata incididunt ut labore et dolore magna
@@ -493,49 +503,49 @@
     </div>
 
     <div class="profile__info-field" id="guest-gender">
-      <h3 class="profile__info-subtitle">Gender:</h3>
+      <h4 class="profile__info-subtitle">Gender:</h4>
       <p class="profile__info-content" data-field="gender">
         Male
       </p>
     </div>
 
     <div class="profile__info-field" id="guest-preferable">
-      <h3 class="profile__info-subtitle">Preferable gender:</h3>
+      <h4 class="profile__info-subtitle">Preferable gender:</h4>
       <p class="profile__info-content" data-field="gender">
         Female
       </p>
     </div>
 
     <div class="profile__info-field" id="guest-motherland">
-      <h3 class="profile__info-subtitle">Place of birth:</h3>
+      <h4 class="profile__info-subtitle">Place of birth:</h4>
       <p class="profile__info-content" data-field="motherland">
         London, UK
       </p>
     </div>
 
     <div class="profile__info-field" id="guest-occupation">
-      <h3 class="profile__info-subtitle">Occupation:</h3>
+      <h4 class="profile__info-subtitle">Occupation:</h4>
       <p class="profile__info-content" data-field="motherland">
         Kitchen furniture
       </p>
     </div>
 
     <div class="profile__info-field" id="guest-income">
-      <h3 class="profile__info-subtitle">Income:</h3>
+      <h4 class="profile__info-subtitle">Income:</h4>
       <p class="profile__info-content" data-field="motherland">
         $19,800
       </p>
     </div>
 
     <div class="profile__info-field" id="profile-location">
-      <h3 class="profile__info-subtitle">Location:</h3>
+      <h4 class="profile__info-subtitle">Location:</h4>
       <p class="profile__info-content" data-field="location">
         Frankfurt, Germany
       </p>
     </div>
 
     <div class="profile__info-field" id="profile-languages">
-      <h3 class="profile__info-subtitle">Languages:</h3>
+      <h4 class="profile__info-subtitle">Languages:</h4>
       <p class="profile__info-content" data-field="languages">
         English, German, French
       </p>

@@ -365,8 +365,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_profile_section_plan_banner_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/profile-section/plan-banner.js */ "./src/js/components/profile-section/plan-banner.js");
 /* harmony import */ var _components_profile_section_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/profile-section/profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
 /* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
-/* harmony import */ var _components_chatboxHeight_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/chatboxHeight.js */ "./src/js/components/chatboxHeight.js");
-/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
 
 
 
@@ -378,7 +377,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
+// import './components/chat/chatFormSize.js';
+// import './components/chatboxHeight.js';
 
 
 /***/ }),
@@ -430,7 +430,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chat_chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chat/chatViewScripts/addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
 /* harmony import */ var _chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chat/chatViewScripts/handleChatInput.js */ "./src/js/components/chat/chatViewScripts/handleChatInput.js");
 /* harmony import */ var _chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chat/chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
-/* harmony import */ var _chatboxHeight_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chatboxHeight.js */ "./src/js/components/chatboxHeight.js");
+/* harmony import */ var _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chat/chatViewScripts/chatSizes.js */ "./src/js/components/chat/chatViewScripts/chatSizes.js");
 /* harmony import */ var _chat_chatLogic_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chat/chatLogic.js */ "./src/js/components/chat/chatLogic.js");
 /* harmony import */ var _chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./chat/formatMessage.js */ "./src/js/components/chat/formatMessage.js");
 
@@ -439,9 +439,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-(0,_chatboxHeight_js__WEBPACK_IMPORTED_MODULE_3__.setChatHeight)();
+(0,_chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_3__.setChatElementSizes)();
 (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
-window.addEventListener('resize', _chatboxHeight_js__WEBPACK_IMPORTED_MODULE_3__.setChatHeight);
+window.addEventListener('resize', _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_3__.setChatElementSizes);
 const sendChatBtn = document.querySelector('#chat-submit');
 const closeChatBtn = document.querySelector('#chat-close');
 
@@ -588,6 +588,69 @@ function chatAutoScroll() {
 
 /***/ }),
 
+/***/ "./src/js/components/chat/chatViewScripts/chatFormSize.js":
+/*!****************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/chatFormSize.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   setChatFormSize: () => (/* binding */ setChatFormSize)
+/* harmony export */ });
+function setChatFormSize() {
+  const chatForm = document.querySelector('.chat-form');
+  const chatboxWidth = document.querySelector('.chatbox').offsetWidth;
+  chatForm.style.width = `${chatboxWidth}px`;
+}
+
+/***/ }),
+
+/***/ "./src/js/components/chat/chatViewScripts/chatSizes.js":
+/*!*************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/chatSizes.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   setChatElementSizes: () => (/* binding */ setChatElementSizes)
+/* harmony export */ });
+/* harmony import */ var _chatboxHeight_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chatboxHeight.js */ "./src/js/components/chat/chatViewScripts/chatboxHeight.js");
+/* harmony import */ var _chatFormSize_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chatFormSize.js */ "./src/js/components/chat/chatViewScripts/chatFormSize.js");
+
+
+function setChatElementSizes() {
+  (0,_chatboxHeight_js__WEBPACK_IMPORTED_MODULE_0__.setChatHeight)();
+  (0,_chatFormSize_js__WEBPACK_IMPORTED_MODULE_1__.setChatFormSize)();
+}
+
+/***/ }),
+
+/***/ "./src/js/components/chat/chatViewScripts/chatboxHeight.js":
+/*!*****************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/chatboxHeight.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   setChatHeight: () => (/* binding */ setChatHeight)
+/* harmony export */ });
+function setChatHeight() {
+  const chatHeader = document.querySelector('.chat-header');
+  const chatForm = document.querySelector('.chat-form');
+  const windowHeight = window.innerHeight;
+  const chatbox__content = document.querySelector('.chatbox__content');
+  const height = windowHeight - chatHeader.offsetHeight - chatForm.offsetHeight;
+  chatbox__content.style.maxHeight = `${height}px`;
+}
+
+/***/ }),
+
 /***/ "./src/js/components/chat/chatViewScripts/createAvatar.js":
 /*!****************************************************************!*\
   !*** ./src/js/components/chat/chatViewScripts/createAvatar.js ***!
@@ -684,28 +747,6 @@ function formatMessage(str) {
     }
   });
   return json;
-}
-
-/***/ }),
-
-/***/ "./src/js/components/chatboxHeight.js":
-/*!********************************************!*\
-  !*** ./src/js/components/chatboxHeight.js ***!
-  \********************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   setChatHeight: () => (/* binding */ setChatHeight)
-/* harmony export */ });
-function setChatHeight() {
-  const chatHeader = document.querySelector('.chat-header');
-  const chatForm = document.querySelector('.chat-form');
-  const windowHeight = window.innerHeight;
-  const chatbox__content = document.querySelector('.chatbox__content');
-  const height = windowHeight - chatHeader.offsetHeight - chatForm.offsetHeight;
-  chatbox__content.style.maxHeight = `${height}px`;
 }
 
 /***/ }),

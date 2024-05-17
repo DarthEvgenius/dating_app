@@ -1,13 +1,14 @@
 import { addMessage} from './chat/chatViewScripts/addMessage.js'
 import { handleChatInput } from './chat/chatViewScripts/handleChatInput.js'
 import { chatAutoScroll } from './chat/chatViewScripts/chatAutoScroll.js'
-import { setChatHeight } from './chatboxHeight.js'
+
+import { setChatElementSizes } from './chat/chatViewScripts/chatSizes.js'
 import { socketConnect } from './chat/chatLogic.js'
 import { formatMessage } from './chat/formatMessage.js'
 
-setChatHeight()
+setChatElementSizes()
 chatAutoScroll()
-window.addEventListener('resize', setChatHeight)
+window.addEventListener('resize', setChatElementSizes)
 
 const sendChatBtn = document.querySelector('#chat-submit')
 const closeChatBtn = document.querySelector('#chat-close')
