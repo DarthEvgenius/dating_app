@@ -13,4 +13,37 @@
     line-height: 1.55;
     color: currentColor;
   }
+
+  &-btn {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--bd-profile-nav-btn);
+    border-radius: 8px;
+    background-color: var(--light-color);
+
+
+
+    .notify-label {
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(50%, -50%);
+      width: 14px;
+      height: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      border-radius: 50%;
+      background-color: var(--love-color-light);
+    }
+  }
+
+  &-svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--dark-color);
+  }
 }

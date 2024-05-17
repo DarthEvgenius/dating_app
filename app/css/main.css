@@ -541,6 +541,38 @@ a {
   line-height: 1.55;
   color: currentColor;
 }
+.nav-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--bd-profile-nav-btn);
+  border-radius: 8px;
+  background-color: var(--light-color);
+}
+.nav-btn .notify-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  -webkit-transform: translate(50%, -50%);
+  -ms-transform: translate(50%, -50%);
+  transform: translate(50%, -50%);
+  width: 14px;
+  height: 14px;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  border-radius: 50%;
+  background-color: var(--love-color-light);
+}
+.nav-svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--dark-color);
+}
 
 .lang-menu {
   position: relative;
@@ -829,38 +861,6 @@ a {
   display: -ms-flexbox;
   display: flex;
   gap: 18px;
-}
-.profile__nav-btn {
-  position: relative;
-  width: 36px;
-  height: 36px;
-  display: -ms-grid;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--bd-profile-nav-btn);
-  border-radius: 8px;
-  background-color: var(--light-color);
-}
-.profile__nav-btn .notify-label {
-  position: absolute;
-  top: 0;
-  right: 0;
-  -webkit-transform: translate(50%, -50%);
-  -ms-transform: translate(50%, -50%);
-  transform: translate(50%, -50%);
-  width: 14px;
-  height: 14px;
-  display: -ms-grid;
-  display: grid;
-  place-items: center;
-  font-size: 10px;
-  border-radius: 50%;
-  background-color: var(--love-color-light);
-}
-.profile__nav-svg {
-  width: 20px;
-  height: 20px;
-  fill: var(--dark-color);
 }
 
 .avatar {
@@ -1794,18 +1794,28 @@ a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   gap: 16px;
   background-color: var(--light-color);
   border-bottom: 1px solid var(--bd-profile-separator);
+  z-index: 5;
 }
 .chat-header__info {
   font-size: var(--fs-profile-subtitle);
 }
 .chat-header__match-date {
   font-weight: 700;
+}
+.chat-header__close {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+  border: 1px solid var(--grey-color);
 }
 
 .chat-form {

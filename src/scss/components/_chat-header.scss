@@ -3,11 +3,12 @@
   width: 100%;
   padding-block: 22px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 16px;
   background-color: var(--light-color);
   border-bottom: 1px solid var(--bd-profile-separator);
-
+  z-index: 5;
 
   &__info {
     font-size: var(--fs-profile-subtitle);
@@ -15,5 +16,10 @@
 
   &__match-date {
     font-weight: 700;
+  }
+
+  &__close {
+    transform: rotate(180deg);
+    border: 1px solid var(--grey-color);
   }
 }
