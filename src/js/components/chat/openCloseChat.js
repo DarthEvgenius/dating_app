@@ -3,6 +3,7 @@ import { setTextareaSize } from '../textarea-resize.js'
 import { chatAutoScroll } from './chatViewScripts/chatAutoScroll.js'
 import { socketConnect } from './chatLogic.js'
 import { fetchChatInfo } from './fetchChatInfo.js'
+import { addMessage } from './chatViewScripts/addMessage.js'
 
 
 export async function openChat(chatId, userId) {
@@ -19,27 +20,25 @@ export async function openChat(chatId, userId) {
 
   let fetchURL = `http://vm592483.eurodir.ru/api/v1/chat/${chatId}/`
 
-  try {
+  // try {
     // fetch chat-info from the server
     const chatInfo = await fetchChatInfo(fetchURL)
     console.log(chatInfo);
-    const senderId = userId
 
-    chatInfo.users.forEach(user => {
-      if (user.id != senderId) {
-        const recipientId = user.id
-      }
-    })
+    const senderId = userId
+    const recipientId = getRecipientId(chatInfo, senderId)
+
+    viewMessages(chatInfo, senderId, recipientId)
 
     // init new chat socket
     // pass valid url for socket connection
-    let socket = socketConnect(`ws://vm592483.eurodir.ru/chat/${senderId}/${recipientId}`)
+    let socket = socketConnect(`ws://vm592483.eurodir.ru/chat/${chatId}/${senderId}/`)
     console.log('open chat id:', chatId)
     return socket
 
-  } catch(e) {
-    console.log(e.message);
-  }
+  // } catch(e) {
+  //   throw e;
+  // }
 
 }
 
@@ -47,4 +46,21 @@ export function closeChat(id) {
   const chatElem = document.querySelector(`#chat-${id}`)
   chatElem.classList.add('hidden')
   console.log('close chat id:', id);
+}
+
+function getRecipientId(chatObj, senderId) {
+  for (let user of chatObj.users) {
+    if (user.id != senderId) {
+      return user.id
+    }
+  }
+}
+
+function viewMessages(chatInfo, senderId) {
+  chatInfo.messages.forEach(message => {
+    message.from_user.id == senderId ?
+      addMessage('outgoing', message.text) :
+      addMessage('incoming', message.text)
+  })
+  chatAutoScroll()
 }
