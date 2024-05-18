@@ -36,7 +36,7 @@ export function socketConnect(url) {
   }
 
   socket.onerror = function(error) {
-    console.log(`${error}`)
+    console.log(`socket error`)
   }
 
   return socket

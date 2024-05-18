@@ -445,12 +445,11 @@ const swiperProfileGuest = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chat/openCloseChat.js */ "./src/js/components/chat/openCloseChat.js");
 /* harmony import */ var _findSection_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./findSection.js */ "./src/js/components/findSection.js");
-/* harmony import */ var _chat_chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chat/chatViewScripts/addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
-/* harmony import */ var _chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chat/chatViewScripts/handleChatInput.js */ "./src/js/components/chat/chatViewScripts/handleChatInput.js");
-/* harmony import */ var _chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chat/chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
-/* harmony import */ var _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./chat/chatViewScripts/chatSizes.js */ "./src/js/components/chat/chatViewScripts/chatSizes.js");
-/* harmony import */ var _chat_chatLogic_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./chat/chatLogic.js */ "./src/js/components/chat/chatLogic.js");
-/* harmony import */ var _chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./chat/formatMessage.js */ "./src/js/components/chat/formatMessage.js");
+/* harmony import */ var _chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chat/chatViewScripts/handleChatInput.js */ "./src/js/components/chat/chatViewScripts/handleChatInput.js");
+/* harmony import */ var _chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chat/chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
+/* harmony import */ var _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chat/chatViewScripts/chatSizes.js */ "./src/js/components/chat/chatViewScripts/chatSizes.js");
+/* harmony import */ var _chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./chat/formatMessage.js */ "./src/js/components/chat/formatMessage.js");
+/* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./getCookie.js */ "./src/js/components/getCookie.js");
 
 
 
@@ -458,10 +457,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-(0,_chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_5__.setChatElementSizes)();
-(0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_4__.chatAutoScroll)();
-window.addEventListener('resize', _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_5__.setChatElementSizes);
+window.addEventListener('resize', _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_4__.setChatElementSizes);
+const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_6__.getCookie)("userID");
 let chatId = null;
 
 // listener for clicks on "chat-enter" buttons and open chats
@@ -469,27 +466,28 @@ document.addEventListener('click', e => {
   const chatEnter = e.target.closest('.chat-enter');
   if (chatEnter) {
     chatId = chatEnter.dataset.chatId;
-    (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.openChat)(chatId);
+
+    // enter chat
+    const socket = (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.openChat)(chatId, userId);
     (0,_findSection_js__WEBPACK_IMPORTED_MODULE_1__.hideSwiper)();
+
+    // on user input
+    const sendChatBtn = document.querySelector('#chat-submit');
+    sendChatBtn.addEventListener('click', function (event) {
+      const message = (0,_chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_2__.handleChatInput)(event);
+      socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__.formatMessage)(message));
+      (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__.chatAutoScroll)();
+    });
+
+    // close chat
     const closeChatBtn = document.querySelector(`#chat-${chatId}-close`);
-    closeChatBtn.addEventListener('click', () => {
-      socket.close(1000, `{userId} left chat`);
+    closeChatBtn.addEventListener('click', function () {
+      console.log(socket);
+      socket.close(1000, `${userId} left chat`);
       (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.closeChat)(chatId);
       (0,_findSection_js__WEBPACK_IMPORTED_MODULE_1__.showSwiper)();
     });
   }
-});
-
-// init new chat
-// pass valid url for socket connection
-let socket = (0,_chat_chatLogic_js__WEBPACK_IMPORTED_MODULE_6__.socketConnect)('ws://vm592483.eurodir.ru/chat/1/3');
-
-// on user input
-const sendChatBtn = document.querySelector('#chat-submit');
-sendChatBtn.addEventListener('click', function (event) {
-  const message = (0,_chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_3__.handleChatInput)(event);
-  socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_7__.formatMessage)(message));
-  (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_4__.chatAutoScroll)();
 });
 
 /***/ }),
@@ -540,7 +538,7 @@ function socketConnect(url) {
     }
   };
   socket.onerror = function (error) {
-    console.log(`${error}`);
+    console.log(`socket error`);
   };
   return socket;
 }
@@ -752,6 +750,35 @@ function handleChatInput(event) {
 
 /***/ }),
 
+/***/ "./src/js/components/chat/fetchChatInfo.js":
+/*!*************************************************!*\
+  !*** ./src/js/components/chat/fetchChatInfo.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   fetchChatInfo: () => (/* binding */ fetchChatInfo)
+/* harmony export */ });
+async function fetchChatInfo(url) {
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  console.log(response);
+  if (!response.ok) {
+    const message = `An error has occured: ${response.status}`;
+    throw new Error(message);
+  }
+  const chatInfo = await response.json();
+  return chatInfo.parse();
+}
+
+/***/ }),
+
 /***/ "./src/js/components/chat/formatMessage.js":
 /*!*************************************************!*\
   !*** ./src/js/components/chat/formatMessage.js ***!
@@ -798,25 +825,47 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chatViewScripts/chatSizes.js */ "./src/js/components/chat/chatViewScripts/chatSizes.js");
 /* harmony import */ var _textarea_resize_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../textarea-resize.js */ "./src/js/components/textarea-resize.js");
 /* harmony import */ var _chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
+/* harmony import */ var _chatLogic_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chatLogic.js */ "./src/js/components/chat/chatLogic.js");
+/* harmony import */ var _fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./fetchChatInfo.js */ "./src/js/components/chat/fetchChatInfo.js");
 
 
 
-const chatElem = document.querySelector('.chat');
-function closeChat(id) {
-  const chatElem = document.querySelector(`#chat-${id}`);
-  chatElem.classList.add('hidden');
-  console.log('close chat id:', id);
-}
-function openChat(id) {
+
+
+async function openChat(chatId, userId) {
   const chatElem = document.querySelector(`.chat`);
-  chatElem.setAttribute('id', `chat-${id}`);
+  chatElem.setAttribute('id', `chat-${chatId}`);
   const closeChatBtn = chatElem.querySelector('.chat-header__close');
-  closeChatBtn.setAttribute('id', `chat-${id}-close`);
+  closeChatBtn.setAttribute('id', `chat-${chatId}-close`);
   chatElem.classList.remove('hidden');
   (0,_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_0__.setChatElementSizes)();
   (0,_textarea_resize_js__WEBPACK_IMPORTED_MODULE_1__.setTextareaSize)();
   (0,_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
-  console.log('open chat id:', id);
+  let fetchURL = `http://vm592483.eurodir.ru/api/v1/chat/${chatId}/`;
+  try {
+    // fetch chat-info from the server
+    const chatInfo = await (0,_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_4__.fetchChatInfo)(fetchURL);
+    console.log(chatInfo);
+    const senderId = userId;
+    chatInfo.users.forEach(user => {
+      if (user.id != senderId) {
+        const recipientId = user.id;
+      }
+    });
+
+    // init new chat socket
+    // pass valid url for socket connection
+    let socket = (0,_chatLogic_js__WEBPACK_IMPORTED_MODULE_3__.socketConnect)(`ws://vm592483.eurodir.ru/chat/${senderId}/${recipientId}`);
+    console.log('open chat id:', chatId);
+    return socket;
+  } catch (e) {
+    console.log(e.message);
+  }
+}
+function closeChat(id) {
+  const chatElem = document.querySelector(`#chat-${id}`);
+  chatElem.classList.add('hidden');
+  console.log('close chat id:', id);
 }
 
 /***/ }),

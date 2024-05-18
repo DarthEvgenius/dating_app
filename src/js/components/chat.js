@@ -1,17 +1,15 @@
 import { closeChat, openChat } from './chat/openCloseChat.js'
 import { showSwiper, hideSwiper } from './findSection.js'
-import { addMessage } from './chat/chatViewScripts/addMessage.js'
 import { handleChatInput } from './chat/chatViewScripts/handleChatInput.js'
 import { chatAutoScroll } from './chat/chatViewScripts/chatAutoScroll.js'
 
 import { setChatElementSizes } from './chat/chatViewScripts/chatSizes.js'
-import { socketConnect } from './chat/chatLogic.js'
 import { formatMessage } from './chat/formatMessage.js'
+import { getCookie } from './getCookie.js'
 
-setChatElementSizes()
-chatAutoScroll()
 window.addEventListener('resize', setChatElementSizes)
 
+const userId = getCookie("userID")
 let chatId = null
 
 // listener for clicks on "chat-enter" buttons and open chats
@@ -20,28 +18,26 @@ document.addEventListener('click', (e) => {
 
   if (chatEnter) {
     chatId = chatEnter.dataset.chatId
-    openChat(chatId)
+
+    // enter chat
+    const socket = openChat(chatId, userId)
     hideSwiper()
 
-    const closeChatBtn = document.querySelector(`#chat-${chatId}-close`)
+    // on user input
+    const sendChatBtn = document.querySelector('#chat-submit')
+    sendChatBtn.addEventListener('click', function(event) {
+      const message = handleChatInput(event)
+      socket.send(formatMessage(message))
+      chatAutoScroll()
+    })
 
-    closeChatBtn.addEventListener('click', () => {
-      socket.close(1000, `{userId} left chat`)
+    // close chat
+    const closeChatBtn = document.querySelector(`#chat-${chatId}-close`)
+    closeChatBtn.addEventListener('click', function() {
+      console.log(socket);
+      socket.close(1000, `${userId} left chat`)
       closeChat(chatId)
       showSwiper()
     })
   }
-})
-
-
-// init new chat
-// pass valid url for socket connection
-let socket = socketConnect('ws://vm592483.eurodir.ru/chat/1/3')
-
-// on user input
-const sendChatBtn = document.querySelector('#chat-submit')
-sendChatBtn.addEventListener('click', function(event) {
-  const message = handleChatInput(event)
-  socket.send(formatMessage(message))
-  chatAutoScroll()
 })
