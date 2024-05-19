@@ -1,3 +1,5 @@
+import { addMessage } from "./addMessage.js"
+
 export function handleSocketMessage(event, userId) {
   // const userId =
   let data = event.data

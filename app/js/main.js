@@ -780,6 +780,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   handleSocketMessage: () => (/* binding */ handleSocketMessage)
 /* harmony export */ });
+/* harmony import */ var _addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
+
 function handleSocketMessage(event, userId) {
   // const userId =
   let data = event.data;
@@ -789,7 +791,7 @@ function handleSocketMessage(event, userId) {
 
   // add message only if sender is not the user itself
   if (parseInt(data.senderId) != parseInt(userId)) {
-    addMessage('incoming', data.text);
+    (0,_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('incoming', data.text);
   }
 }
 
