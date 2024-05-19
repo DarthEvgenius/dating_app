@@ -1,8 +1,9 @@
 import { closeChat, openChat } from './chat/openCloseChat.js'
+import { deleteChat } from './chat/chatViewScripts/deleteChat.js'
 import { showSwiper, hideSwiper } from './findSection.js'
 import { handleChatInput } from './chat/chatViewScripts/handleChatInput.js'
 import { chatAutoScroll } from './chat/chatViewScripts/chatAutoScroll.js'
-
+import { renderNewChat } from './chat/chatViewScripts/renderNewChat.js'
 import { setChatElementSizes } from './chat/chatViewScripts/chatSizes.js'
 import { formatMessage } from './chat/formatMessage.js'
 import { getCookie } from './getCookie.js'
@@ -25,7 +26,14 @@ document.addEventListener('click', async function (e)  {
   if (chatEnter) {
     chatId = chatEnter.dataset.chatId
 
+    // hide find-match-swiper
     hideSwiper()
+    // remove old chat
+    deleteChat()
+    // create new chat
+    renderNewChat()
+
+
 
     // get chat info
     // expected object:
@@ -65,11 +73,15 @@ document.addEventListener('click', async function (e)  {
 
     // close chat
     const closeChatBtn = document.querySelector(`#chat-${chatId}-close`)
-    closeChatBtn.addEventListener('click', function() {
-      console.log(socket);
-      socket.close(1000, `${userId} left chat`)
-      closeChat(chatId)
-      showSwiper()
-    })
+
+    if (closeChatBtn) {
+      closeChatBtn.addEventListener('click', function() {
+        console.log(socket);
+        socket.close(1000, `${userId} left chat`)
+        closeChat(chatId)
+        showSwiper()
+      })
+    }
+
   }
 })

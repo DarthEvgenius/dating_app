@@ -444,15 +444,17 @@ const swiperProfileGuest = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chat/openCloseChat.js */ "./src/js/components/chat/openCloseChat.js");
-/* harmony import */ var _findSection_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./findSection.js */ "./src/js/components/findSection.js");
-/* harmony import */ var _chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chat/chatViewScripts/handleChatInput.js */ "./src/js/components/chat/chatViewScripts/handleChatInput.js");
-/* harmony import */ var _chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chat/chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
-/* harmony import */ var _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chat/chatViewScripts/chatSizes.js */ "./src/js/components/chat/chatViewScripts/chatSizes.js");
-/* harmony import */ var _chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./chat/formatMessage.js */ "./src/js/components/chat/formatMessage.js");
-/* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./getCookie.js */ "./src/js/components/getCookie.js");
-/* harmony import */ var _chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./chat/fetchChatInfo.js */ "./src/js/components/chat/fetchChatInfo.js");
-/* harmony import */ var _chat_socketConnect_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./chat/socketConnect.js */ "./src/js/components/chat/socketConnect.js");
-/* harmony import */ var _chat_chatViewScripts_handleSocketMessage_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./chat/chatViewScripts/handleSocketMessage.js */ "./src/js/components/chat/chatViewScripts/handleSocketMessage.js");
+/* harmony import */ var _chat_chatViewScripts_deleteChat_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chat/chatViewScripts/deleteChat.js */ "./src/js/components/chat/chatViewScripts/deleteChat.js");
+/* harmony import */ var _findSection_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./findSection.js */ "./src/js/components/findSection.js");
+/* harmony import */ var _chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chat/chatViewScripts/handleChatInput.js */ "./src/js/components/chat/chatViewScripts/handleChatInput.js");
+/* harmony import */ var _chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chat/chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
+/* harmony import */ var _chat_chatViewScripts_renderNewChat_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./chat/chatViewScripts/renderNewChat.js */ "./src/js/components/chat/chatViewScripts/renderNewChat.js");
+/* harmony import */ var _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./chat/chatViewScripts/chatSizes.js */ "./src/js/components/chat/chatViewScripts/chatSizes.js");
+/* harmony import */ var _chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./chat/formatMessage.js */ "./src/js/components/chat/formatMessage.js");
+/* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./chat/fetchChatInfo.js */ "./src/js/components/chat/fetchChatInfo.js");
+/* harmony import */ var _chat_socketConnect_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./chat/socketConnect.js */ "./src/js/components/chat/socketConnect.js");
+/* harmony import */ var _chat_chatViewScripts_handleSocketMessage_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./chat/chatViewScripts/handleSocketMessage.js */ "./src/js/components/chat/chatViewScripts/handleSocketMessage.js");
 
 
 
@@ -463,12 +465,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-window.addEventListener('resize', _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_4__.setChatElementSizes);
+
+
+window.addEventListener('resize', _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_6__.setChatElementSizes);
 
 // Delete this!
 // document.cookie = "userID=4"
 
-const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_6__.getCookie)("userID");
+const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_8__.getCookie)("userID");
 let chatId = null;
 
 // listener for clicks on "chat-enter" buttons and open chats
@@ -476,7 +480,13 @@ document.addEventListener('click', async function (e) {
   const chatEnter = e.target.closest('.chat-enter');
   if (chatEnter) {
     chatId = chatEnter.dataset.chatId;
-    (0,_findSection_js__WEBPACK_IMPORTED_MODULE_1__.hideSwiper)();
+
+    // hide find-match-swiper
+    (0,_findSection_js__WEBPACK_IMPORTED_MODULE_2__.hideSwiper)();
+    // remove old chat
+    (0,_chat_chatViewScripts_deleteChat_js__WEBPACK_IMPORTED_MODULE_1__.deleteChat)();
+    // create new chat
+    (0,_chat_chatViewScripts_renderNewChat_js__WEBPACK_IMPORTED_MODULE_5__.renderNewChat)();
 
     // get chat info
     // expected object:
@@ -487,19 +497,19 @@ document.addEventListener('click', async function (e) {
     //  ...]
     // created_at
     // updated_at
-    let chatInfo = await (0,_chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_7__.fetchChatInfo)(chatId);
+    let chatInfo = await (0,_chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_9__.fetchChatInfo)(chatId);
 
     // render chat and add recipient to <chatInfo>
     chatInfo = (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.openChat)(chatInfo, userId);
-    (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__.chatAutoScroll)();
+    (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_4__.chatAutoScroll)();
 
     // open socket connection
-    const socket = (0,_chat_socketConnect_js__WEBPACK_IMPORTED_MODULE_8__.socketConnect)(chatId, userId);
+    const socket = (0,_chat_socketConnect_js__WEBPACK_IMPORTED_MODULE_10__.socketConnect)(chatId, userId);
 
     // handle incoming messages
     socket.addEventListener('message', function (event, userId) {
-      (0,_chat_chatViewScripts_handleSocketMessage_js__WEBPACK_IMPORTED_MODULE_9__.handleSocketMessage)(event, userId);
-      (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__.chatAutoScroll)();
+      (0,_chat_chatViewScripts_handleSocketMessage_js__WEBPACK_IMPORTED_MODULE_11__.handleSocketMessage)(event, userId);
+      (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_4__.chatAutoScroll)();
     });
 
     // on user input
@@ -507,20 +517,22 @@ document.addEventListener('click', async function (e) {
     if (sendChatBtn) {
       sendChatBtn.addEventListener('click', function (event) {
         event.preventDefault();
-        const message = (0,_chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_2__.handleChatInput)(event);
-        (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__.chatAutoScroll)();
-        socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__.formatMessage)(message));
+        const message = (0,_chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_3__.handleChatInput)(event);
+        (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_4__.chatAutoScroll)();
+        socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_7__.formatMessage)(message));
       });
     }
 
     // close chat
     const closeChatBtn = document.querySelector(`#chat-${chatId}-close`);
-    closeChatBtn.addEventListener('click', function () {
-      console.log(socket);
-      socket.close(1000, `${userId} left chat`);
-      (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.closeChat)(chatId);
-      (0,_findSection_js__WEBPACK_IMPORTED_MODULE_1__.showSwiper)();
-    });
+    if (closeChatBtn) {
+      closeChatBtn.addEventListener('click', function () {
+        console.log(socket);
+        socket.close(1000, `${userId} left chat`);
+        (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.closeChat)(chatId);
+        (0,_findSection_js__WEBPACK_IMPORTED_MODULE_2__.showSwiper)();
+      });
+    }
   }
 });
 
@@ -544,14 +556,17 @@ __webpack_require__.r(__webpack_exports__);
 function addMessage(className, message) {
   // check valid className for message
   if (className === 'incoming' || className === 'outgoing') {
-    // let lastMessage = null
-    const chatbox__content = document.querySelector('.chatbox__content');
-    const messages = chatbox__content.querySelectorAll('.chatbox__message');
-    const lastMessage = messages[messages.length - 1];
+    // create class name
     const fullClassName = `chatbox__message--${className}`;
     const textEl = (0,_createTextElem_js__WEBPACK_IMPORTED_MODULE_1__.createTextEl)(message);
-    if (!lastMessage.classList.contains(fullClassName)) {
-      // if the last message is not from the same author
+    const chatbox__content = document.querySelector('.chatbox__content');
+
+    // find if there are any messages in the chat
+    const messages = chatbox__content.querySelectorAll('.chatbox__message');
+    const lastMessage = messages[messages.length - 1];
+
+    // if there are no messages yet or the last message not from the same author
+    if (!lastMessage || !lastMessage.classList.contains(fullClassName)) {
       // create new chatMessage group
       const chatMessage = document.createElement('div');
       chatMessage.classList.add('chatbox__message', fullClassName);
@@ -611,8 +626,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function setChatFormSize() {
   const chatForm = document.querySelector('.chat-form');
-  const chatboxWidth = document.querySelector('.chatbox').offsetWidth;
-  chatForm.style.width = `${chatboxWidth}px`;
+  const chatboxWidth = document.querySelector('.chatbox')?.offsetWidth;
+  if (chatForm && chatboxWidth) {
+    chatForm.style.width = `${chatboxWidth}px`;
+  }
 }
 
 /***/ }),
@@ -710,6 +727,24 @@ function createTextEl(text) {
 
 /***/ }),
 
+/***/ "./src/js/components/chat/chatViewScripts/deleteChat.js":
+/*!**************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/deleteChat.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   deleteChat: () => (/* binding */ deleteChat)
+/* harmony export */ });
+function deleteChat() {
+  const chat = document.querySelector('.chat');
+  if (chat) chat.remove();
+}
+
+/***/ }),
+
 /***/ "./src/js/components/chat/chatViewScripts/handleChatInput.js":
 /*!*******************************************************************!*\
   !*** ./src/js/components/chat/chatViewScripts/handleChatInput.js ***!
@@ -760,6 +795,95 @@ function handleSocketMessage(event, userId) {
 
 /***/ }),
 
+/***/ "./src/js/components/chat/chatViewScripts/renderNewChat.js":
+/*!*****************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/renderNewChat.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   renderNewChat: () => (/* binding */ renderNewChat)
+/* harmony export */ });
+// build and render chat container and DOM structure
+function renderNewChat() {
+  // const chat = createChatContainers()
+  const chat = document.createElement('div');
+  chat.classList.add('chat');
+  const chat__container = document.createElement('div');
+  chat__container.classList.add('chat__container');
+  chat__container.appendChild(createChatHeader());
+  chat__container.appendChild(createChatbox());
+  chat__container.appendChild(createChatForm());
+  chat.appendChild(chat__container);
+  const contentSection = document.querySelector('.content');
+  contentSection.appendChild(chat);
+}
+function createChatContainers() {
+  const chat = document.createElement('div');
+  chat.classList.add('chat');
+  const chat__container = document.createElement('div');
+  chat__container.classList.add('chat__container');
+  chat.appendChild(chat__container);
+  return chat__container;
+}
+function createChatHeader() {
+  const chatHeader = document.createElement('div');
+  chatHeader.classList.add('chat-header', 'offset-container');
+  chatHeader.innerHTML = `
+    <button class="nav-btn chat-header__close" id="chat-0-close" aria-label="Close chat">
+    <svg class="nav-svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M6.64137 16.2753C6.41948 16.0534 6.39931 15.7062 6.58086 15.4615L6.64137 15.3914L12.0325 9.99999L6.64137 4.6086C6.41948 4.38671 6.39931 4.03949 6.58086 3.79482L6.64137 3.72472C6.86326 3.50283 7.21048 3.48266 7.45516 3.6642L7.52525 3.72472L13.3586 9.55805C13.5805 9.77994 13.6006 10.1272 13.4191 10.3718L13.3586 10.4419L7.52525 16.2753C7.28118 16.5193 6.88545 16.5193 6.64137 16.2753Z" />
+    </svg>
+    </button>
+
+    <p class="chat-header__info">
+      You became a friend with <b class="chat__name">Jordan</b> on <time class="chat-header__match-date">26.04.2024</time>
+    </p>
+
+    <div class="message-avatar chat__avatar">
+      <picture>
+        <source srcset="./img/avatar2.webp" type="image/webp">
+        <img loading="lazy" src="./img/avatar2.jpg" class="image" width="55" height="55" alt="companion's photo">
+      </picture>
+    </div>
+  `;
+  return chatHeader;
+}
+function createChatbox() {
+  const chatbox = document.createElement('div');
+  chatbox.classList.add('chatbox');
+  const chatbox__content = document.createElement('div');
+  chatbox__content.classList.add('chatbox__content', 'offset-container');
+  chatbox.append(chatbox__content);
+  return chatbox;
+}
+function createChatForm() {
+  const chatForm = document.createElement('form');
+  chatForm.classList.add('chat-form', 'offset-container');
+  chatForm.innerHTML = `
+    <textarea
+    name="chat-form__input"
+    id="chat-form__input"
+    class="chat-form__input"
+    rows="1"
+    placeholder="Write your message here..."></textarea>
+
+    <button class="chat-form__smiles">
+      <svg class="chat-form__svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M8.44 14.3a.9.9 0 0 1 1.26.13c.01.02.2.22.53.43.38.24.97.49 1.77.49a3.3 3.3 0 0 0 1.77-.49c.2-.12.39-.26.53-.43a.9.9 0 0 1 1.4 1.13 4.04 4.04 0 0 1-.97.83 5.1 5.1 0 0 1-2.73.76 5.1 5.1 0 0 1-2.73-.76 3.99 3.99 0 0 1-.97-.83.9.9 0 0 1 .14-1.26Zm1.81-4.05a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0ZM15 11.5A1.25 1.25 0 1 0 15 9a1.25 1.25 0 0 0 0 2.5Zm-3-9.4a9.9 9.9 0 1 0 0 19.8 9.9 9.9 0 0 0 0-19.8ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd">
+        </path>
+      </svg>
+    </button>
+
+    <button type="submit" class="chat-form__submit plan-btn btn" id="chat-submit">Send</button>
+  `;
+  return chatForm;
+}
+
+/***/ }),
+
 /***/ "./src/js/components/chat/chatViewScripts/viewMessages.js":
 /*!****************************************************************!*\
   !*** ./src/js/components/chat/chatViewScripts/viewMessages.js ***!
@@ -795,8 +919,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../getCookie.js */ "./src/js/components/getCookie.js");
 
 async function fetchChatInfo(chatId) {
-  // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
-  const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
+  const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="';
+  // const token = getCookie("ws_login")
+
   let url = `http://vm592483.eurodir.ru/api/v1/chat/${chatId}/`;
   try {
     const response = await fetch(url, {

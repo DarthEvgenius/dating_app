@@ -1,6 +1,8 @@
 export function setChatFormSize() {
   const chatForm = document.querySelector('.chat-form')
-  const chatboxWidth = document.querySelector('.chatbox').offsetWidth
+  const chatboxWidth = document.querySelector('.chatbox')?.offsetWidth
 
-  chatForm.style.width = `${chatboxWidth}px`
+  if (chatForm && chatboxWidth){
+    chatForm.style.width = `${chatboxWidth}px`
+  }
 }

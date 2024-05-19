@@ -6,18 +6,19 @@ export function addMessage(className, message) {
 
   // check valid className for message
   if (className === 'incoming' || className === 'outgoing') {
-    // let lastMessage = null
+    // create class name
+    const fullClassName = `chatbox__message--${className}`
+    const textEl = createTextEl(message)
+
     const chatbox__content = document.querySelector('.chatbox__content')
+
+    // find if there are any messages in the chat
     const messages = chatbox__content.querySelectorAll('.chatbox__message')
     const lastMessage = messages[messages.length - 1]
 
-    const fullClassName = `chatbox__message--${className}`
+    // if there are no messages yet or the last message not from the same author
+    if (!lastMessage || !lastMessage.classList.contains(fullClassName)) {
 
-    const textEl = createTextEl(message)
-
-    if (!lastMessage.classList.contains(fullClassName)) {
-
-      // if the last message is not from the same author
       // create new chatMessage group
       const chatMessage = document.createElement('div')
       chatMessage.classList.add('chatbox__message', fullClassName)
@@ -33,6 +34,8 @@ export function addMessage(className, message) {
     } else {
       lastMessage.appendChild(textEl)
     }
+
+
 
   } else {
     throw new SyntaxError(`className "${className}" for "createMessage" is not supported. Vaalid names: "incoming", "outgoing"`, {cause: 'invalid className'})
