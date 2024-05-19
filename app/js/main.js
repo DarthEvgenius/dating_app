@@ -1198,7 +1198,7 @@ if (checkTab === 'sign-in-tabs') {
   tabs = new graph_tabs__WEBPACK_IMPORTED_MODULE_0__["default"](checkTab);
 }
 if (checkTab === 'chat-tabs') {
-  const tabs = new graph_tabs__WEBPACK_IMPORTED_MODULE_0__["default"](checkTab);
+  tabs = new graph_tabs__WEBPACK_IMPORTED_MODULE_0__["default"](checkTab);
 }
 
 /***/ }),

@@ -10,5 +10,5 @@ if (checkTab === 'sign-in-tabs') {
 
 }
 if (checkTab === 'chat-tabs') {
-  const tabs = new GraphTabs(checkTab);
+  tabs = new GraphTabs(checkTab);
 }
