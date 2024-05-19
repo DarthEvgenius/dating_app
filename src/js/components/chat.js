@@ -10,7 +10,7 @@ import { getCookie } from './getCookie.js'
 window.addEventListener('resize', setChatElementSizes)
 
 // Delete this!
-// document.cookie = "userID=4"
+document.cookie = "userID=4"
 
 const userId = getCookie("userID")
 let chatId = null
@@ -29,6 +29,7 @@ document.addEventListener('click', async function (e)  {
     // on user input
     const sendChatBtn = document.querySelector('#chat-submit')
     sendChatBtn.addEventListener('click', function(event) {
+      event.preventDefault()
       const message = handleChatInput(event)
       socket.send(formatMessage(message))
       chatAutoScroll()

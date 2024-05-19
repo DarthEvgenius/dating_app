@@ -460,8 +460,7 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('resize', _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_4__.setChatElementSizes);
 
 // Delete this!
-// document.cookie = "userID=4"
-
+document.cookie = "userID=4";
 const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_6__.getCookie)("userID");
 let chatId = null;
 
@@ -478,6 +477,7 @@ document.addEventListener('click', async function (e) {
     // on user input
     const sendChatBtn = document.querySelector('#chat-submit');
     sendChatBtn.addEventListener('click', function (event) {
+      event.preventDefault();
       const message = (0,_chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_2__.handleChatInput)(event);
       socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__.formatMessage)(message));
       (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__.chatAutoScroll)();
@@ -744,7 +744,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
 
 function handleChatInput(event) {
-  event.preventDefault();
   const inputField = document.querySelector('#chat-form__input');
   const userMessage = inputField.value.trim();
   if (!userMessage) return;
@@ -767,8 +766,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   fetchChatInfo: () => (/* binding */ fetchChatInfo)
 /* harmony export */ });
 async function fetchChatInfo(url) {
-  // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
-
+  const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="';
   const response = await fetch(url, {
     method: "GET",
     headers: {

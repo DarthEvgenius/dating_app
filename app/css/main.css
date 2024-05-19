@@ -1633,6 +1633,7 @@ a {
 }
 
 .find {
+  padding: 15px;
   height: 100%;
   max-height: 100dvh;
   display: -ms-grid;
@@ -1645,7 +1646,7 @@ a {
   position: relative;
   width: 100%;
   max-width: 480px;
-  height: 740px;
+  height: 100%;
   max-height: 90dvh;
   border: 1px solid var(--bd-plans-separator);
   border-radius: 10px;
