@@ -5,6 +5,9 @@ import { getCookie } from '../getCookie.js'
 export function socketConnect(url) {
   let socket = new WebSocket(url);
 
+  console.log(socket);
+
+
   // get the ID of logged in user
   const userID = getCookie("userID")
 
@@ -36,7 +39,7 @@ export function socketConnect(url) {
   }
 
   socket.onerror = function(error) {
-    console.log(`socket error`)
+    console.log(error)
   }
 
   return socket

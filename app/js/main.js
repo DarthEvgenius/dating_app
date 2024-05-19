@@ -460,7 +460,8 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('resize', _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_4__.setChatElementSizes);
 
 // Delete this!
-document.cookie = "userID=4";
+// document.cookie = "userID=4"
+
 const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_6__.getCookie)("userID");
 let chatId = null;
 
@@ -514,6 +515,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function socketConnect(url) {
   let socket = new WebSocket(url);
+  console.log(socket);
 
   // get the ID of logged in user
   const userID = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_2__.getCookie)("userID");
@@ -541,7 +543,7 @@ function socketConnect(url) {
     }
   };
   socket.onerror = function (error) {
-    console.log(`socket error`);
+    console.log(error);
   };
   return socket;
 }
@@ -765,7 +767,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   fetchChatInfo: () => (/* binding */ fetchChatInfo)
 /* harmony export */ });
 async function fetchChatInfo(url) {
-  const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="';
+  // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
+
   const response = await fetch(url, {
     method: "GET",
     headers: {
@@ -848,6 +851,7 @@ async function openChat(chatId, userId) {
   (0,_textarea_resize_js__WEBPACK_IMPORTED_MODULE_1__.setTextareaSize)();
   (0,_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
   let fetchURL = `http://vm592483.eurodir.ru/api/v1/chat/${chatId}/`;
+  // let fetchURL = `"wss://javascript.info/article/websocket/demo/hello"`
 
   // try {
   // fetch chat-info from the server

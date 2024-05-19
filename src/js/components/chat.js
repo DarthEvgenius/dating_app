@@ -10,13 +10,13 @@ import { getCookie } from './getCookie.js'
 window.addEventListener('resize', setChatElementSizes)
 
 // Delete this!
-document.cookie = "userID=4"
+// document.cookie = "userID=4"
 
 const userId = getCookie("userID")
 let chatId = null
 
 // listener for clicks on "chat-enter" buttons and open chats
-document.addEventListener('click', async function (e) {
+document.addEventListener('click', async function (e)  {
   const chatEnter = e.target.closest('.chat-enter')
 
   if (chatEnter) {

@@ -19,6 +19,7 @@ export async function openChat(chatId, userId) {
 
 
   let fetchURL = `http://vm592483.eurodir.ru/api/v1/chat/${chatId}/`
+  // let fetchURL = `"wss://javascript.info/article/websocket/demo/hello"`
 
   // try {
     // fetch chat-info from the server
