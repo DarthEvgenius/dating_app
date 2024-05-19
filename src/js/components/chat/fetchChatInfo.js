@@ -29,6 +29,4 @@ export async function fetchChatInfo(chatId) {
   //   const message = `An error has occured: ${response.status}`;
   //   throw new Error(message);
   // }
-
-
 }

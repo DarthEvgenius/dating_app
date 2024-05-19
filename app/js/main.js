@@ -585,11 +585,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function chatAutoScroll() {
   const chatbox__content = document.querySelector('.chatbox__content');
-  chatbox__content.scrollTo({
-    top: chatbox__content.scrollHeight,
-    left: 0,
-    behavior: "smooth"
-  });
+  if (chatbox__content) {
+    chatbox__content.scrollTo({
+      top: chatbox__content.scrollHeight,
+      left: 0,
+      behavior: "smooth"
+    });
+  }
 }
 
 /***/ }),
@@ -869,10 +871,14 @@ __webpack_require__.r(__webpack_exports__);
 
 async function openChat(chatInfo, userId) {
   const chatElem = document.querySelector(`.chat`);
-  chatElem.setAttribute('id', `chat-${chatInfo.id}`);
+  if (chatElem) {
+    chatElem.setAttribute('id', `chat-${chatInfo.id}`);
+    chatElem.classList.remove('hidden');
+  }
   const closeChatBtn = chatElem.querySelector('.chat-header__close');
-  closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`);
-  chatElem.classList.remove('hidden');
+  if (closeChatBtn) {
+    closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`);
+  }
   (0,_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_0__.setChatElementSizes)();
   (0,_textarea_resize_js__WEBPACK_IMPORTED_MODULE_1__.setTextareaSize)();
   (0,_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();

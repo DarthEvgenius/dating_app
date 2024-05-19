@@ -6,10 +6,15 @@ import { viewMessages } from './chatViewScripts/viewMessages.js'
 
 export async function openChat(chatInfo, userId) {
   const chatElem = document.querySelector(`.chat`)
-  chatElem.setAttribute('id', `chat-${chatInfo.id}`)
+  if (chatElem) {
+    chatElem.setAttribute('id', `chat-${chatInfo.id}`)
+    chatElem.classList.remove('hidden')
+  }
   const closeChatBtn = chatElem.querySelector('.chat-header__close')
-  closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`)
-  chatElem.classList.remove('hidden')
+  if (closeChatBtn) {
+    closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`)
+  }
+
 
   setChatElementSizes()
   setTextareaSize()
