@@ -1132,17 +1132,17 @@ function setProfileTabsHeight() {
   const tabsButtonsHeight = document.querySelector('.tabs__nav').offsetHeight;
   if (profileHeader) {
     const headerHeight = parseInt(getComputedStyle(profileHeader).getPropertyValue('margin-bottom')) + profileHeader.offsetHeight;
+    let height = 0;
+    if (profilePlanBanner) {
+      const bannerHeight = parseInt(getComputedStyle(profilePlanBanner).getPropertyValue('margin-bottom')) + profilePlanBanner.offsetHeight;
+      height = windowHeight - headerHeight - bannerHeight - tabsButtonsHeight;
+    } else {
+      height = windowHeight - headerHeight - tabsButtonsHeight;
+    }
+    profileTabsContainers.forEach(elem => {
+      elem.style.maxHeight = `${height}px`;
+    });
   }
-  let height = 0;
-  if (profilePlanBanner) {
-    const bannerHeight = parseInt(getComputedStyle(profilePlanBanner).getPropertyValue('margin-bottom')) + profilePlanBanner.offsetHeight;
-    height = windowHeight - headerHeight - bannerHeight - tabsButtonsHeight;
-  } else {
-    height = windowHeight - headerHeight - tabsButtonsHeight;
-  }
-  profileTabsContainers.forEach(elem => {
-    elem.style.maxHeight = `${height}px`;
-  });
 }
 
 /***/ }),
