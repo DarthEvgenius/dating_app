@@ -1,15 +1,15 @@
-import { getCookie } from '../getCookie.js'
+// import { getCookie } from '../getCookie.js'
 
 // takes string returns JSON
-export function formatMessage (str) {
-  const userID = getCookie("userID")
+export function formatMessage (message, userId, chatInfo) {
+  // const userID = getCookie("userID")
   let json = JSON.stringify({
     "msg": {
       // get user ID from cookies
-      "senderId": userID,
+      "senderId": userId,
       // get user ID from ??
-      "recipientId": "4",
-      "text": str
+      "recipientId": chatInfo.recipient,
+      "text": message
   }})
 
   return json

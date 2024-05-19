@@ -6,9 +6,9 @@ export function socketConnect(chatId, userId) {
     console.log("Socket connected:", socket);
   }
 
-  socket.onmessage = function(event) {
-    console.log(`Socket recieved data: ${event.data}`)
-  }
+  // socket.onmessage = function(event) {
+  //   console.log(`Socket recieved data: ${event.data}`)
+  // }
 
   socket.onclose = function(event) {
     if (event.wasClean) {

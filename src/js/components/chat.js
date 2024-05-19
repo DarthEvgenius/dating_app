@@ -33,8 +33,6 @@ document.addEventListener('click', async function (e)  {
     // create new chat
     renderNewChat()
 
-
-
     // get chat info
     // expected object:
       // id: <int>>
@@ -46,7 +44,7 @@ document.addEventListener('click', async function (e)  {
       // updated_at
     let chatInfo = await fetchChatInfo(chatId)
 
-    // render chat and add recipient to <chatInfo>
+    // open chat and add 'recipient' key to <chatInfo>
     chatInfo = openChat(chatInfo, userId)
     chatAutoScroll()
 
@@ -54,7 +52,8 @@ document.addEventListener('click', async function (e)  {
     const socket = socketConnect(chatId, userId)
 
     // handle incoming messages
-    socket.addEventListener('message', function(event, userId) {
+    socket.addEventListener('message', function(event) {
+      console.log(`Socket recieved data: ${event.data}`)
       handleSocketMessage(event, userId)
       chatAutoScroll()
     })
@@ -67,7 +66,7 @@ document.addEventListener('click', async function (e)  {
         event.preventDefault()
         const message = handleChatInput(event)
         chatAutoScroll()
-        socket.send(formatMessage(message))
+        socket.send(formatMessage(message, userId, chatInfo))
       })
     }
 

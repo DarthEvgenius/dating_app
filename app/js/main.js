@@ -407,6 +407,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   guestSwiperInit: () => (/* binding */ guestSwiperInit)
+/* harmony export */ });
 /* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.mjs");
 /* harmony import */ var swiper_modules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! swiper/modules */ "./node_modules/swiper/modules/index.mjs");
 
@@ -422,16 +425,18 @@ const swiperProfileMain = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.a
     clickable: true
   }
 });
-const swiperProfileGuest = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.avatar__swiper-guest', {
-  slidesPerView: 'auto',
-  spaceBetween: 40,
-  a11y: true,
-  pagination: {
-    el: '.swiper-pagination-guest',
-    type: 'bullets',
-    clickable: true
-  }
-});
+function guestSwiperInit() {
+  const swiperProfileGuest = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.avatar__swiper-guest', {
+    slidesPerView: 'auto',
+    spaceBetween: 40,
+    a11y: true,
+    pagination: {
+      el: '.swiper-pagination-guest',
+      type: 'bullets',
+      clickable: true
+    }
+  });
+}
 
 /***/ }),
 
@@ -499,7 +504,7 @@ document.addEventListener('click', async function (e) {
     // updated_at
     let chatInfo = await (0,_chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_9__.fetchChatInfo)(chatId);
 
-    // render chat and add recipient to <chatInfo>
+    // open chat and add 'recipient' key to <chatInfo>
     chatInfo = (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.openChat)(chatInfo, userId);
     (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_4__.chatAutoScroll)();
 
@@ -507,7 +512,8 @@ document.addEventListener('click', async function (e) {
     const socket = (0,_chat_socketConnect_js__WEBPACK_IMPORTED_MODULE_10__.socketConnect)(chatId, userId);
 
     // handle incoming messages
-    socket.addEventListener('message', function (event, userId) {
+    socket.addEventListener('message', function (event) {
+      console.log(`Socket recieved data: ${event.data}`);
       (0,_chat_chatViewScripts_handleSocketMessage_js__WEBPACK_IMPORTED_MODULE_11__.handleSocketMessage)(event, userId);
       (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_4__.chatAutoScroll)();
     });
@@ -519,7 +525,7 @@ document.addEventListener('click', async function (e) {
         event.preventDefault();
         const message = (0,_chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_3__.handleChatInput)(event);
         (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_4__.chatAutoScroll)();
-        socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_7__.formatMessage)(message));
+        socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_7__.formatMessage)(message, userId, chatInfo));
       });
     }
 
@@ -783,15 +789,156 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
 
 function handleSocketMessage(event, userId) {
-  // const userId =
   let data = event.data;
+  console.log('data json', data);
 
   // convert from JSON
   data = JSON.parse(data);
+  console.log('data obj', data);
+  console.log('user', userId);
+  console.log('sender', data.senderId);
+  console.log(data.text);
 
   // add message only if sender is not the user itself
   if (parseInt(data.senderId) != parseInt(userId)) {
     (0,_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('incoming', data.text);
+  }
+}
+
+/***/ }),
+
+/***/ "./src/js/components/chat/chatViewScripts/renderGuestProfile.js":
+/*!**********************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/renderGuestProfile.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   renderGuestProfile: () => (/* binding */ renderGuestProfile)
+/* harmony export */ });
+/* harmony import */ var _avatar_swiper_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../avatar-swiper.js */ "./src/js/components/avatar-swiper.js");
+
+function renderGuestProfile(profileId) {
+  const chat = document.querySelector('.chat');
+  const isGuestProfile = document.querySelector('.chat-opponent.profile');
+  if (!isGuestProfile) {
+    const guestProfile = document.createElement('section');
+    guestProfile.classList.add('chat-opponent', 'profile');
+    guestProfile.innerHTML = `
+      <h2 class="visually-hidden">Your chat with:</h2>
+
+
+      <div class="avatar profile__avatar offset-container">
+        <div class="avatar__container avatar__container--main">
+          <div class="avatar__swiper">
+
+            <div class="swiper avatar__swiper-guest">
+              <div class="swiper-wrapper">
+
+                <div class="swiper-slide">
+                  <picture>
+                    <source srcset="./img/avatar2.webp" type="image/webp">
+                    <img loading="lazy" src="./img/avatar2.jpg" class="image" width="360" height="360" alt="Avatar photo">
+                  </picture>
+                </div>
+
+                <div class="swiper-slide">
+                  <picture>
+                    <source srcset="./img/avatar3.webp" type="image/webp">
+                    <img loading="lazy" src="./img/avatar3.jpg" class="image" width="360" height="360" alt="Avatar photo">
+                  </picture>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="swiper-pagination-guest"></div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="offset-container">
+        <div class="profile__info profile__info--guest">
+
+          <div class="profile__info-field" id="guest-title">
+            <h3 class="profile__info-title" data-field="title">
+              <span id="profile-name">Alex Brandt</span>,
+              <span id="profile-age">31</span>
+            </h3>
+          </div>
+
+          <div class="profile__info-field" id="guest-about">
+            <h4 class="profile__info-subtitle">About me:</h4>
+            <p class="profile__info-content" data-field="about">
+              Lorem ipsum dolor sit amet, consecteturis adipiscing elit se
+              do eiusmod temporata incididunt ut labore et dolore magna
+              aliqu. Ullamcorper malesuada consequat proin.
+            </p>
+          </div>
+
+          <div class="profile__info-field" id="guest-gender">
+            <h4 class="profile__info-subtitle">Gender:</h4>
+            <p class="profile__info-content" data-field="gender">
+              Male
+            </p>
+          </div>
+
+          <div class="profile__info-field" id="guest-preferable">
+            <h4 class="profile__info-subtitle">Preferable gender:</h4>
+            <p class="profile__info-content" data-field="gender">
+              Female
+            </p>
+          </div>
+
+          <div class="profile__info-field" id="guest-motherland">
+            <h4 class="profile__info-subtitle">Place of birth:</h4>
+            <p class="profile__info-content" data-field="motherland">
+              London, UK
+            </p>
+          </div>
+
+          <div class="profile__info-field" id="guest-occupation">
+            <h4 class="profile__info-subtitle">Occupation:</h4>
+            <p class="profile__info-content" data-field="motherland">
+              Kitchen furniture
+            </p>
+          </div>
+
+          <div class="profile__info-field" id="guest-income">
+            <h4 class="profile__info-subtitle">Income:</h4>
+            <p class="profile__info-content" data-field="motherland">
+              $19,800
+            </p>
+          </div>
+
+          <div class="profile__info-field" id="profile-location">
+            <h4 class="profile__info-subtitle">Location:</h4>
+            <p class="profile__info-content" data-field="location">
+              Frankfurt, Germany
+            </p>
+          </div>
+
+          <div class="profile__info-field" id="profile-languages">
+            <h4 class="profile__info-subtitle">Languages:</h4>
+            <p class="profile__info-content" data-field="languages">
+              English, German, French
+            </p>
+          </div>
+        </div>
+      </div>
+
+    `;
+    chat.appendChild(guestProfile);
+    (0,_avatar_swiper_js__WEBPACK_IMPORTED_MODULE_0__.guestSwiperInit)();
+  } else if (isGuestProfile.classList.contains('hidden')) {
+    isGuestProfile.classList.remove('hidden');
+  } else {
+    isGuestProfile.classList.add('hidden');
   }
 }
 
@@ -844,12 +991,12 @@ function createChatHeader() {
       You became a friend with <b class="chat__name">Jordan</b> on <time class="chat-header__match-date">26.04.2024</time>
     </p>
 
-    <div class="message-avatar chat__avatar">
+    <button class="message-avatar chat__avatar" id="show-profile">
       <picture>
         <source srcset="./img/avatar2.webp" type="image/webp">
         <img loading="lazy" src="./img/avatar2.jpg" class="image" width="55" height="55" alt="companion's photo">
       </picture>
-    </div>
+    </button>
   `;
   return chatHeader;
 }
@@ -958,19 +1105,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   formatMessage: () => (/* binding */ formatMessage)
 /* harmony export */ });
-/* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../getCookie.js */ "./src/js/components/getCookie.js");
-
+// import { getCookie } from '../getCookie.js'
 
 // takes string returns JSON
-function formatMessage(str) {
-  const userID = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("userID");
+function formatMessage(message, userId, chatInfo) {
+  // const userID = getCookie("userID")
   let json = JSON.stringify({
     "msg": {
       // get user ID from cookies
-      "senderId": userID,
+      "senderId": userId,
       // get user ID from ??
-      "recipientId": "4",
-      "text": str
+      "recipientId": chatInfo.recipient,
+      "text": message
     }
   });
   return json;
@@ -994,11 +1140,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _textarea_resize_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../textarea-resize.js */ "./src/js/components/textarea-resize.js");
 /* harmony import */ var _chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
 /* harmony import */ var _chatViewScripts_viewMessages_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chatViewScripts/viewMessages.js */ "./src/js/components/chat/chatViewScripts/viewMessages.js");
+/* harmony import */ var _chatViewScripts_renderGuestProfile_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chatViewScripts/renderGuestProfile.js */ "./src/js/components/chat/chatViewScripts/renderGuestProfile.js");
+
 
 
 
 
 async function openChat(chatInfo, userId) {
+  const senderId = userId;
+  const recipientId = handleRecipient(chatInfo, senderId);
+  chatInfo.recipient = recipientId;
   const chatElem = document.querySelector(`.chat`);
   if (chatElem) {
     chatElem.setAttribute('id', `chat-${chatInfo.id}`);
@@ -1007,29 +1158,30 @@ async function openChat(chatInfo, userId) {
     if (closeChatBtn) {
       closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`);
     }
+    const guestProfileButton = chatElem.querySelector('#show-profile');
+    guestProfileButton.setAttribute('show-profile-id', recipientId);
+    guestProfileButton.addEventListener('click', () => {
+      (0,_chatViewScripts_renderGuestProfile_js__WEBPACK_IMPORTED_MODULE_4__.renderGuestProfile)(recipientId);
+    });
   }
   (0,_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_0__.setChatElementSizes)();
   (0,_textarea_resize_js__WEBPACK_IMPORTED_MODULE_1__.setTextareaSize)();
   (0,_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
-  const senderId = userId;
-  const recipientId = getRecipientId(chatInfo, senderId);
   (0,_chatViewScripts_viewMessages_js__WEBPACK_IMPORTED_MODULE_3__.viewMessages)(chatInfo, senderId, recipientId);
-  chatInfo.recipient = recipientId;
   return chatInfo;
-
-  // init new chat socket
-  // pass valid url for socket connection
-  // let socket = socketConnect(`ws://vm592483.eurodir.ru/chat/${chatId}/${senderId}/`)
-  // console.log('open chat id:', chatId)
 }
 function closeChat(id) {
   const chatElem = document.querySelector(`#chat-${id}`);
   chatElem.classList.add('hidden');
   console.log('close chat id:', id);
 }
-function getRecipientId(chatObj, senderId) {
+function handleRecipient(chatObj, senderId) {
+  console.log(chatObj);
   for (let user of chatObj.users) {
     if (user.id != senderId) {
+      // fullfill chat header info
+      const chat__name = document.querySelector('.chat__name');
+      chat__name.textContent = user.username;
       return user.id;
     }
   }
@@ -1054,9 +1206,11 @@ function socketConnect(chatId, userId) {
   socket.onopen = function () {
     console.log("Socket connected:", socket);
   };
-  socket.onmessage = function (event) {
-    console.log(`Socket recieved data: ${event.data}`);
-  };
+
+  // socket.onmessage = function(event) {
+  //   console.log(`Socket recieved data: ${event.data}`)
+  // }
+
   socket.onclose = function (event) {
     if (event.wasClean) {
       console.log(`Socket closed, code=${event.code}`);

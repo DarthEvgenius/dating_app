@@ -2,9 +2,13 @@ import { setChatElementSizes } from './chatViewScripts/chatSizes.js'
 import { setTextareaSize } from '../textarea-resize.js'
 import { chatAutoScroll } from './chatViewScripts/chatAutoScroll.js'
 import { viewMessages } from './chatViewScripts/viewMessages.js'
-
+import { renderGuestProfile } from './chatViewScripts/renderGuestProfile.js'
 
 export async function openChat(chatInfo, userId) {
+  const senderId = userId
+  const recipientId = handleRecipient(chatInfo, senderId)
+  chatInfo.recipient = recipientId
+
   const chatElem = document.querySelector(`.chat`)
   if (chatElem) {
     chatElem.setAttribute('id', `chat-${chatInfo.id}`)
@@ -14,26 +18,25 @@ export async function openChat(chatInfo, userId) {
     if (closeChatBtn) {
       closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`)
     }
-  }
 
+    const guestProfileButton = chatElem.querySelector('#show-profile')
+    guestProfileButton.setAttribute('show-profile-id', recipientId)
+    guestProfileButton.addEventListener('click', () => {
+      renderGuestProfile(recipientId)
+    })
+
+  }
 
   setChatElementSizes()
   setTextareaSize()
   chatAutoScroll()
 
-  const senderId = userId
-  const recipientId = getRecipientId(chatInfo, senderId)
 
   viewMessages(chatInfo, senderId, recipientId)
 
-  chatInfo.recipient = recipientId
 
   return chatInfo
 
-  // init new chat socket
-  // pass valid url for socket connection
-  // let socket = socketConnect(`ws://vm592483.eurodir.ru/chat/${chatId}/${senderId}/`)
-  // console.log('open chat id:', chatId)
 }
 
 export function closeChat(id) {
@@ -42,10 +45,19 @@ export function closeChat(id) {
   console.log('close chat id:', id);
 }
 
-function getRecipientId(chatObj, senderId) {
+function handleRecipient(chatObj, senderId) {
+  console.log(chatObj);
+
+
   for (let user of chatObj.users) {
     if (user.id != senderId) {
+      // fullfill chat header info
+      const chat__name = document.querySelector('.chat__name')
+      chat__name.textContent = user.username
+
       return user.id
     }
   }
 }
+
+
