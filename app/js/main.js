@@ -450,6 +450,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chat/chatViewScripts/chatSizes.js */ "./src/js/components/chat/chatViewScripts/chatSizes.js");
 /* harmony import */ var _chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./chat/formatMessage.js */ "./src/js/components/chat/formatMessage.js");
 /* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./chat/fetchChatInfo.js */ "./src/js/components/chat/fetchChatInfo.js");
+/* harmony import */ var _chat_socketConnect_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./chat/socketConnect.js */ "./src/js/components/chat/socketConnect.js");
+/* harmony import */ var _chat_chatViewScripts_handleSocketMessage_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./chat/chatViewScripts/handleSocketMessage.js */ "./src/js/components/chat/chatViewScripts/handleSocketMessage.js");
+
+
+
 
 
 
@@ -460,7 +466,8 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('resize', _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_4__.setChatElementSizes);
 
 // Delete this!
-document.cookie = "userID=4";
+// document.cookie = "userID=4"
+
 const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_6__.getCookie)("userID");
 let chatId = null;
 
@@ -469,18 +476,38 @@ document.addEventListener('click', async function (e) {
   const chatEnter = e.target.closest('.chat-enter');
   if (chatEnter) {
     chatId = chatEnter.dataset.chatId;
-
-    // enter chat
-    const socket = await (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.openChat)(chatId, userId);
     (0,_findSection_js__WEBPACK_IMPORTED_MODULE_1__.hideSwiper)();
+
+    // get chat info
+    // expected object:
+    // id: <int>>
+    // users: [{userObj}, {userObj}]
+    // messages: [
+    // {id, from_user, to_user, text},
+    //  ...]
+    // created_at
+    // updated_at
+    const chatInfo = await (0,_chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_7__.fetchChatInfo)(chatId);
+
+    // render chat and add recipient to <chatInfo>
+    chatInfo = (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.openChat)(chatInfo, userId);
+
+    // open socket connection
+    const socket = (0,_chat_socketConnect_js__WEBPACK_IMPORTED_MODULE_8__.socketConnect)(chatId, userId);
+
+    // handle incoming messages
+    socket.addEventListener('message', function (event, userId) {
+      (0,_chat_chatViewScripts_handleSocketMessage_js__WEBPACK_IMPORTED_MODULE_9__.handleSocketMessage)(event, userId);
+      (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__.chatAutoScroll)();
+    });
 
     // on user input
     const sendChatBtn = document.querySelector('#chat-submit');
     sendChatBtn.addEventListener('click', function (event) {
       event.preventDefault();
       const message = (0,_chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_2__.handleChatInput)(event);
-      socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__.formatMessage)(message));
       (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__.chatAutoScroll)();
+      socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__.formatMessage)(message));
     });
 
     // close chat
@@ -493,60 +520,6 @@ document.addEventListener('click', async function (e) {
     });
   }
 });
-
-/***/ }),
-
-/***/ "./src/js/components/chat/chatLogic.js":
-/*!*********************************************!*\
-  !*** ./src/js/components/chat/chatLogic.js ***!
-  \*********************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   socketConnect: () => (/* binding */ socketConnect)
-/* harmony export */ });
-/* harmony import */ var _chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chatViewScripts/addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
-/* harmony import */ var _chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
-/* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../getCookie.js */ "./src/js/components/getCookie.js");
-
-
-
-function socketConnect(url) {
-  let socket = new WebSocket(url);
-  console.log(socket);
-
-  // get the ID of logged in user
-  const userID = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_2__.getCookie)("userID");
-  socket.onopen = function (e) {
-    console.log("[open] Соединение установлено");
-  };
-  socket.onmessage = function (event) {
-    let data = event.data;
-    console.log(`[message] Данные получены с сервера: ${data}`);
-
-    // convert from JSON
-    data = JSON.parse(data);
-
-    // add message only if sender is not the user itself
-    if (parseInt(data.senderId) != parseInt(userID)) {
-      (0,_chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('incoming', data.text);
-    }
-    (0,_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_1__.chatAutoScroll)();
-  };
-  socket.onclose = function (event) {
-    if (event.wasClean) {
-      console.log(`[close] Соединение закрыто чисто, код=${event.code}`);
-    } else {
-      console.log('[close] Соединение прервано');
-    }
-  };
-  socket.onerror = function (error) {
-    console.log(error);
-  };
-  return socket;
-}
 
 /***/ }),
 
@@ -754,6 +727,54 @@ function handleChatInput(event) {
 
 /***/ }),
 
+/***/ "./src/js/components/chat/chatViewScripts/handleSocketMessage.js":
+/*!***********************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/handleSocketMessage.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   handleSocketMessage: () => (/* binding */ handleSocketMessage)
+/* harmony export */ });
+function handleSocketMessage(event, userId) {
+  // const userId =
+  let data = event.data;
+
+  // convert from JSON
+  data = JSON.parse(data);
+
+  // add message only if sender is not the user itself
+  if (parseInt(data.senderId) != parseInt(userId)) {
+    addMessage('incoming', data.text);
+  }
+}
+
+/***/ }),
+
+/***/ "./src/js/components/chat/chatViewScripts/viewMessages.js":
+/*!****************************************************************!*\
+  !*** ./src/js/components/chat/chatViewScripts/viewMessages.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   viewMessages: () => (/* binding */ viewMessages)
+/* harmony export */ });
+/* harmony import */ var _addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
+
+function viewMessages(chatInfo, senderId) {
+  chatInfo.messages.forEach(message => {
+    message.from_user.id == senderId ? (0,_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('outgoing', message.text) : (0,_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('incoming', message.text);
+  });
+  chatAutoScroll();
+}
+
+/***/ }),
+
 /***/ "./src/js/components/chat/fetchChatInfo.js":
 /*!*************************************************!*\
   !*** ./src/js/components/chat/fetchChatInfo.js ***!
@@ -765,8 +786,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   fetchChatInfo: () => (/* binding */ fetchChatInfo)
 /* harmony export */ });
-async function fetchChatInfo(url) {
-  const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="';
+/* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../getCookie.js */ "./src/js/components/getCookie.js");
+
+async function fetchChatInfo(chatId) {
+  // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
+  const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
+  let url = `http://vm592483.eurodir.ru/api/v1/chat/${chatId}/`;
   const response = await fetch(url, {
     method: "GET",
     headers: {
@@ -830,16 +855,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chatViewScripts/chatSizes.js */ "./src/js/components/chat/chatViewScripts/chatSizes.js");
 /* harmony import */ var _textarea_resize_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../textarea-resize.js */ "./src/js/components/textarea-resize.js");
 /* harmony import */ var _chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
-/* harmony import */ var _chatLogic_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chatLogic.js */ "./src/js/components/chat/chatLogic.js");
-/* harmony import */ var _fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./fetchChatInfo.js */ "./src/js/components/chat/fetchChatInfo.js");
-/* harmony import */ var _chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./chatViewScripts/addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
+/* harmony import */ var _chatViewScripts_viewMessages_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chatViewScripts/viewMessages.js */ "./src/js/components/chat/chatViewScripts/viewMessages.js");
 
 
 
 
-
-
-async function openChat(chatId, userId) {
+async function openChat(chatInfo, userId) {
   const chatElem = document.querySelector(`.chat`);
   chatElem.setAttribute('id', `chat-${chatId}`);
   const closeChatBtn = chatElem.querySelector('.chat-header__close');
@@ -848,26 +869,16 @@ async function openChat(chatId, userId) {
   (0,_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_0__.setChatElementSizes)();
   (0,_textarea_resize_js__WEBPACK_IMPORTED_MODULE_1__.setTextareaSize)();
   (0,_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
-  let fetchURL = `http://vm592483.eurodir.ru/api/v1/chat/${chatId}/`;
-  // let fetchURL = `"wss://javascript.info/article/websocket/demo/hello"`
-
-  // try {
-  // fetch chat-info from the server
-  const chatInfo = await (0,_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_4__.fetchChatInfo)(fetchURL);
-  console.log(chatInfo);
   const senderId = userId;
   const recipientId = getRecipientId(chatInfo, senderId);
-  viewMessages(chatInfo, senderId, recipientId);
+  (0,_chatViewScripts_viewMessages_js__WEBPACK_IMPORTED_MODULE_3__.viewMessages)(chatInfo, senderId, recipientId);
+  chatInfo.recipient = recipientId;
+  return chatInfo;
 
   // init new chat socket
   // pass valid url for socket connection
-  let socket = (0,_chatLogic_js__WEBPACK_IMPORTED_MODULE_3__.socketConnect)(`ws://vm592483.eurodir.ru/chat/${chatId}/${senderId}/`);
-  console.log('open chat id:', chatId);
-  return socket;
-
-  // } catch(e) {
-  //   throw e;
-  // }
+  // let socket = socketConnect(`ws://vm592483.eurodir.ru/chat/${chatId}/${senderId}/`)
+  // console.log('open chat id:', chatId)
 }
 function closeChat(id) {
   const chatElem = document.querySelector(`#chat-${id}`);
@@ -881,11 +892,44 @@ function getRecipientId(chatObj, senderId) {
     }
   }
 }
-function viewMessages(chatInfo, senderId) {
-  chatInfo.messages.forEach(message => {
-    message.from_user.id == senderId ? (0,_chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_5__.addMessage)('outgoing', message.text) : (0,_chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_5__.addMessage)('incoming', message.text);
-  });
-  (0,_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_2__.chatAutoScroll)();
+
+/***/ }),
+
+/***/ "./src/js/components/chat/socketConnect.js":
+/*!*************************************************!*\
+  !*** ./src/js/components/chat/socketConnect.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   socketConnect: () => (/* binding */ socketConnect)
+/* harmony export */ });
+/* harmony import */ var _chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chatViewScripts/addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
+/* harmony import */ var _chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
+
+
+function socketConnect(chatId, userId) {
+  let url = `ws://vm592483.eurodir.ru/chat/${chatId}/${userId}/`;
+  let socket = new WebSocket(url);
+  socket.onopen = function () {
+    console.log("Socket connected:", socket);
+  };
+  socket.onmessage = function (event) {
+    console.log(`Socket recieved data: ${event.data}`);
+  };
+  socket.onclose = function (event) {
+    if (event.wasClean) {
+      console.log(`Socket closed, code=${event.code}`);
+    } else {
+      console.log('Socket broken');
+    }
+  };
+  socket.onerror = function (error) {
+    console.log(error);
+  };
+  return socket;
 }
 
 /***/ }),

@@ -1,12 +1,10 @@
 import { setChatElementSizes } from './chatViewScripts/chatSizes.js'
 import { setTextareaSize } from '../textarea-resize.js'
 import { chatAutoScroll } from './chatViewScripts/chatAutoScroll.js'
-import { socketConnect } from './chatLogic.js'
-import { fetchChatInfo } from './fetchChatInfo.js'
-import { addMessage } from './chatViewScripts/addMessage.js'
+import { viewMessages } from './chatViewScripts/viewMessages.js'
 
 
-export async function openChat(chatId, userId) {
+export async function openChat(chatInfo, userId) {
   const chatElem = document.querySelector(`.chat`)
   chatElem.setAttribute('id', `chat-${chatId}`)
   const closeChatBtn = chatElem.querySelector('.chat-header__close')
@@ -17,30 +15,19 @@ export async function openChat(chatId, userId) {
   setTextareaSize()
   chatAutoScroll()
 
+  const senderId = userId
+  const recipientId = getRecipientId(chatInfo, senderId)
 
-  let fetchURL = `http://vm592483.eurodir.ru/api/v1/chat/${chatId}/`
-  // let fetchURL = `"wss://javascript.info/article/websocket/demo/hello"`
+  viewMessages(chatInfo, senderId, recipientId)
 
-  // try {
-    // fetch chat-info from the server
-    const chatInfo = await fetchChatInfo(fetchURL)
-    console.log(chatInfo);
+  chatInfo.recipient = recipientId
 
-    const senderId = userId
-    const recipientId = getRecipientId(chatInfo, senderId)
+  return chatInfo
 
-    viewMessages(chatInfo, senderId, recipientId)
-
-    // init new chat socket
-    // pass valid url for socket connection
-    let socket = socketConnect(`ws://vm592483.eurodir.ru/chat/${chatId}/${senderId}/`)
-    console.log('open chat id:', chatId)
-    return socket
-
-  // } catch(e) {
-  //   throw e;
-  // }
-
+  // init new chat socket
+  // pass valid url for socket connection
+  // let socket = socketConnect(`ws://vm592483.eurodir.ru/chat/${chatId}/${senderId}/`)
+  // console.log('open chat id:', chatId)
 }
 
 export function closeChat(id) {
@@ -55,13 +42,4 @@ function getRecipientId(chatObj, senderId) {
       return user.id
     }
   }
-}
-
-function viewMessages(chatInfo, senderId) {
-  chatInfo.messages.forEach(message => {
-    message.from_user.id == senderId ?
-      addMessage('outgoing', message.text) :
-      addMessage('incoming', message.text)
-  })
-  chatAutoScroll()
 }
