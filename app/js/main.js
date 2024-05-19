@@ -487,10 +487,11 @@ document.addEventListener('click', async function (e) {
     //  ...]
     // created_at
     // updated_at
-    const chatInfo = await (0,_chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_7__.fetchChatInfo)(chatId);
+    let chatInfo = await (0,_chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_7__.fetchChatInfo)(chatId);
 
     // render chat and add recipient to <chatInfo>
     chatInfo = (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.openChat)(chatInfo, userId);
+    (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__.chatAutoScroll)();
 
     // open socket connection
     const socket = (0,_chat_socketConnect_js__WEBPACK_IMPORTED_MODULE_8__.socketConnect)(chatId, userId);
@@ -648,10 +649,12 @@ __webpack_require__.r(__webpack_exports__);
 function setChatHeight() {
   const chatHeader = document.querySelector('.chat-header');
   const chatForm = document.querySelector('.chat-form');
-  const windowHeight = window.innerHeight;
-  const chatbox__content = document.querySelector('.chatbox__content');
-  const height = windowHeight - chatHeader.offsetHeight - chatForm.offsetHeight;
-  chatbox__content.style.maxHeight = `${height}px`;
+  if (chatHeader && chatForm) {
+    const windowHeight = window.innerHeight;
+    const chatbox__content = document.querySelector('.chatbox__content');
+    const height = windowHeight - chatHeader.offsetHeight - chatForm.offsetHeight;
+    chatbox__content.style.maxHeight = `${height}px`;
+  }
 }
 
 /***/ }),
@@ -770,7 +773,6 @@ function viewMessages(chatInfo, senderId) {
   chatInfo.messages.forEach(message => {
     message.from_user.id == senderId ? (0,_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('outgoing', message.text) : (0,_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('incoming', message.text);
   });
-  chatAutoScroll();
 }
 
 /***/ }),
@@ -789,8 +791,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../getCookie.js */ "./src/js/components/getCookie.js");
 
 async function fetchChatInfo(chatId) {
-  // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
-  const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
+  const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="';
+  // const token = getCookie("ws_login")
+
   let url = `http://vm592483.eurodir.ru/api/v1/chat/${chatId}/`;
   const response = await fetch(url, {
     method: "GET",
@@ -862,9 +865,9 @@ __webpack_require__.r(__webpack_exports__);
 
 async function openChat(chatInfo, userId) {
   const chatElem = document.querySelector(`.chat`);
-  chatElem.setAttribute('id', `chat-${chatId}`);
+  chatElem.setAttribute('id', `chat-${chatInfo.id}`);
   const closeChatBtn = chatElem.querySelector('.chat-header__close');
-  closeChatBtn.setAttribute('id', `chat-${chatId}-close`);
+  closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`);
   chatElem.classList.remove('hidden');
   (0,_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_0__.setChatElementSizes)();
   (0,_textarea_resize_js__WEBPACK_IMPORTED_MODULE_1__.setTextareaSize)();
@@ -906,10 +909,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   socketConnect: () => (/* binding */ socketConnect)
 /* harmony export */ });
-/* harmony import */ var _chatViewScripts_addMessage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./chatViewScripts/addMessage.js */ "./src/js/components/chat/chatViewScripts/addMessage.js");
-/* harmony import */ var _chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chatViewScripts/chatAutoScroll.js */ "./src/js/components/chat/chatViewScripts/chatAutoScroll.js");
-
-
 function socketConnect(chatId, userId) {
   let url = `ws://vm592483.eurodir.ru/chat/${chatId}/${userId}/`;
   let socket = new WebSocket(url);

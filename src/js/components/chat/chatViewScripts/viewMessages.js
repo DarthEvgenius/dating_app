@@ -6,5 +6,4 @@ export function viewMessages(chatInfo, senderId) {
       addMessage('outgoing', message.text) :
       addMessage('incoming', message.text)
   })
-  chatAutoScroll()
 }

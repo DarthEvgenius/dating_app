@@ -1,6 +1,3 @@
-import { addMessage } from './chatViewScripts/addMessage.js'
-import { chatAutoScroll } from './chatViewScripts/chatAutoScroll.js'
-
 export function socketConnect(chatId, userId) {
   let url = `ws://vm592483.eurodir.ru/chat/${chatId}/${userId}/`
   let socket = new WebSocket(url);

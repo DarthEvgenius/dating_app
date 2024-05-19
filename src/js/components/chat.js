@@ -36,10 +36,11 @@ document.addEventListener('click', async function (e)  {
         //  ...]
       // created_at
       // updated_at
-    const chatInfo = await fetchChatInfo(chatId)
+    let chatInfo = await fetchChatInfo(chatId)
 
     // render chat and add recipient to <chatInfo>
     chatInfo = openChat(chatInfo, userId)
+    chatAutoScroll()
 
     // open socket connection
     const socket = socketConnect(chatId, userId)
