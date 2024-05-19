@@ -9,10 +9,11 @@ export async function openChat(chatInfo, userId) {
   if (chatElem) {
     chatElem.setAttribute('id', `chat-${chatInfo.id}`)
     chatElem.classList.remove('hidden')
-  }
-  const closeChatBtn = chatElem.querySelector('.chat-header__close')
-  if (closeChatBtn) {
-    closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`)
+
+    const closeChatBtn = chatElem.querySelector('.chat-header__close')
+    if (closeChatBtn) {
+      closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`)
+    }
   }
 
 

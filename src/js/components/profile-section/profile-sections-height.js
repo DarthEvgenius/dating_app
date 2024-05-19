@@ -6,7 +6,9 @@ export function setProfileTabsHeight() {
   const windowHeight = window.innerHeight
   const tabsButtonsHeight = document.querySelector('.tabs__nav').offsetHeight
 
-  const headerHeight = parseInt(getComputedStyle(profileHeader).getPropertyValue('margin-bottom')) + profileHeader.offsetHeight
+  if (profileHeader) {
+    const headerHeight = parseInt(getComputedStyle(profileHeader).getPropertyValue('margin-bottom')) + profileHeader.offsetHeight
+  }
 
   let height = 0
 

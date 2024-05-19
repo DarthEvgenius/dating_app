@@ -53,12 +53,15 @@ document.addEventListener('click', async function (e)  {
 
     // on user input
     const sendChatBtn = document.querySelector('#chat-submit')
-    sendChatBtn.addEventListener('click', function(event) {
-      event.preventDefault()
-      const message = handleChatInput(event)
-      chatAutoScroll()
-      socket.send(formatMessage(message))
-    })
+
+    if (sendChatBtn) {
+      sendChatBtn.addEventListener('click', function(event) {
+        event.preventDefault()
+        const message = handleChatInput(event)
+        chatAutoScroll()
+        socket.send(formatMessage(message))
+      })
+    }
 
     // close chat
     const closeChatBtn = document.querySelector(`#chat-${chatId}-close`)

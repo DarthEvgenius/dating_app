@@ -504,12 +504,14 @@ document.addEventListener('click', async function (e) {
 
     // on user input
     const sendChatBtn = document.querySelector('#chat-submit');
-    sendChatBtn.addEventListener('click', function (event) {
-      event.preventDefault();
-      const message = (0,_chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_2__.handleChatInput)(event);
-      (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__.chatAutoScroll)();
-      socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__.formatMessage)(message));
-    });
+    if (sendChatBtn) {
+      sendChatBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        const message = (0,_chat_chatViewScripts_handleChatInput_js__WEBPACK_IMPORTED_MODULE_2__.handleChatInput)(event);
+        (0,_chat_chatViewScripts_chatAutoScroll_js__WEBPACK_IMPORTED_MODULE_3__.chatAutoScroll)();
+        socket.send((0,_chat_formatMessage_js__WEBPACK_IMPORTED_MODULE_5__.formatMessage)(message));
+      });
+    }
 
     // close chat
     const closeChatBtn = document.querySelector(`#chat-${chatId}-close`);
@@ -874,10 +876,10 @@ async function openChat(chatInfo, userId) {
   if (chatElem) {
     chatElem.setAttribute('id', `chat-${chatInfo.id}`);
     chatElem.classList.remove('hidden');
-  }
-  const closeChatBtn = chatElem.querySelector('.chat-header__close');
-  if (closeChatBtn) {
-    closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`);
+    const closeChatBtn = chatElem.querySelector('.chat-header__close');
+    if (closeChatBtn) {
+      closeChatBtn.setAttribute('id', `chat-${chatInfo.id}-close`);
+    }
   }
   (0,_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_0__.setChatElementSizes)();
   (0,_textarea_resize_js__WEBPACK_IMPORTED_MODULE_1__.setTextareaSize)();
@@ -1128,7 +1130,9 @@ function setProfileTabsHeight() {
   const profilePlanBanner = arguments[0]?.profilePlanBanner || document.querySelector('.profile__plan');
   const windowHeight = window.innerHeight;
   const tabsButtonsHeight = document.querySelector('.tabs__nav').offsetHeight;
-  const headerHeight = parseInt(getComputedStyle(profileHeader).getPropertyValue('margin-bottom')) + profileHeader.offsetHeight;
+  if (profileHeader) {
+    const headerHeight = parseInt(getComputedStyle(profileHeader).getPropertyValue('margin-bottom')) + profileHeader.offsetHeight;
+  }
   let height = 0;
   if (profilePlanBanner) {
     const bannerHeight = parseInt(getComputedStyle(profilePlanBanner).getPropertyValue('margin-bottom')) + profilePlanBanner.offsetHeight;
