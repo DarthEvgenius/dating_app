@@ -361,17 +361,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_tabs_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/tabs.js */ "./src/js/components/tabs.js");
 /* harmony import */ var _components_simplebar_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/simplebar.js */ "./src/js/components/simplebar.js");
 /* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
-/* harmony import */ var _components_profile_section_profile_section_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/profile-section/profile-section.js */ "./src/js/components/profile-section/profile-section.js");
-/* harmony import */ var _components_profile_section_plan_banner_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/profile-section/plan-banner.js */ "./src/js/components/profile-section/plan-banner.js");
-/* harmony import */ var _components_profile_section_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/profile-section/profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
-/* harmony import */ var _components_ChatClass_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/ChatClass.js */ "./src/js/components/ChatClass.js");
-/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
-/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
-/* harmony import */ var _components_sectionsHandling_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/sectionsHandling.js */ "./src/js/components/sectionsHandling.js");
-/* harmony import */ var _components_findSection_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/findSection.js */ "./src/js/components/findSection.js");
-
-
-
+/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
+/* harmony import */ var _components_ChatClass_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/ChatClass.js */ "./src/js/components/ChatClass.js");
+/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
+/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _components_findSection_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/findSection.js */ "./src/js/components/findSection.js");
 
 
 
@@ -1316,6 +1310,18 @@ function changeLanguage(e) {
 
 /***/ }),
 
+/***/ "./src/js/components/profile-section/avatarForms.js":
+/*!**********************************************************!*\
+  !*** ./src/js/components/profile-section/avatarForms.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+/***/ }),
+
 /***/ "./src/js/components/profile-section/plan-banner.js":
 /*!**********************************************************!*\
   !*** ./src/js/components/profile-section/plan-banner.js ***!
@@ -1360,36 +1366,6 @@ function setProfileHeight() {
 
 /***/ }),
 
-/***/ "./src/js/components/profile-section/profile-section.js":
-/*!**************************************************************!*\
-  !*** ./src/js/components/profile-section/profile-section.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _profile_height_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./profile-height.js */ "./src/js/components/profile-section/profile-height.js");
-/* harmony import */ var _profile_sections_height_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
-
-
-const profileHeader = document.querySelector('.profile__header');
-const profileTabsContainers = document.querySelectorAll('.profile-tabs__container');
-const profilePlanBanner = document.querySelector('.profile__plan');
-(0,_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_1__.setProfileTabsHeight)({
-  profileHeader,
-  profileTabsContainers,
-  profilePlanBanner
-});
-(0,_profile_height_js__WEBPACK_IMPORTED_MODULE_0__.setProfileHeight)({
-  profileHeader
-});
-window.addEventListener('resize', () => {
-  (0,_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_1__.setProfileTabsHeight)();
-  (0,_profile_height_js__WEBPACK_IMPORTED_MODULE_0__.setProfileHeight)();
-});
-
-/***/ }),
-
 /***/ "./src/js/components/profile-section/profile-sections-height.js":
 /*!**********************************************************************!*\
   !*** ./src/js/components/profile-section/profile-sections-height.js ***!
@@ -1424,14 +1400,51 @@ function setProfileTabsHeight() {
 
 /***/ }),
 
-/***/ "./src/js/components/sectionsHandling.js":
-/*!***********************************************!*\
-  !*** ./src/js/components/sectionsHandling.js ***!
-  \***********************************************/
+/***/ "./src/js/components/profile-section/profileSizes.js":
+/*!***********************************************************!*\
+  !*** ./src/js/components/profile-section/profileSizes.js ***!
+  \***********************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _profile_height_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./profile-height.js */ "./src/js/components/profile-section/profile-height.js");
+/* harmony import */ var _profile_sections_height_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
+
+
+const profileHeader = document.querySelector('.profile__header');
+const profileTabsContainers = document.querySelectorAll('.profile-tabs__container');
+const profilePlanBanner = document.querySelector('.profile__plan');
+(0,_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_1__.setProfileTabsHeight)({
+  profileHeader,
+  profileTabsContainers,
+  profilePlanBanner
+});
+(0,_profile_height_js__WEBPACK_IMPORTED_MODULE_0__.setProfileHeight)({
+  profileHeader
+});
+window.addEventListener('resize', () => {
+  (0,_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_1__.setProfileTabsHeight)();
+  (0,_profile_height_js__WEBPACK_IMPORTED_MODULE_0__.setProfileHeight)();
+});
+
+/***/ }),
+
+/***/ "./src/js/components/profileSection.js":
+/*!*********************************************!*\
+  !*** ./src/js/components/profileSection.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _profile_section_plan_banner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./profile-section/plan-banner.js */ "./src/js/components/profile-section/plan-banner.js");
+/* harmony import */ var _profile_section_profileSizes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profile-section/profileSizes.js */ "./src/js/components/profile-section/profileSizes.js");
+/* harmony import */ var _profile_section_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./profile-section/profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
+/* harmony import */ var _profile_section_avatarForms_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./profile-section/avatarForms.js */ "./src/js/components/profile-section/avatarForms.js");
+
+
+
 
 
 /***/ }),
