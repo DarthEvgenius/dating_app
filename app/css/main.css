@@ -431,14 +431,16 @@ a {
   .chatbox__content::-webkit-scrollbar,
   .profile__body::-webkit-scrollbar,
   .profile-tabs__container::-webkit-scrollbar,
-  .chat-opponent::-webkit-scrollbar {
+  .chat-opponent::-webkit-scrollbar,
+  .content__plans::-webkit-scrollbar {
     width: 7px;
     height: 7px;
   }
   .chatbox__content::-webkit-scrollbar-track,
   .profile__body::-webkit-scrollbar-track,
   .profile-tabs__container::-webkit-scrollbar-track,
-  .chat-opponent::-webkit-scrollbar-track {
+  .chat-opponent::-webkit-scrollbar-track,
+  .content__plans::-webkit-scrollbar-track {
     margin-block: 0.5rem;
     background-color: var(--bd-sign-in);
     border-radius: 10px;
@@ -446,7 +448,8 @@ a {
   .chatbox__content::-webkit-scrollbar-thumb,
   .profile__body::-webkit-scrollbar-thumb,
   .profile-tabs__container::-webkit-scrollbar-thumb,
-  .chat-opponent::-webkit-scrollbar-thumb {
+  .chat-opponent::-webkit-scrollbar-thumb,
+  .content__plans::-webkit-scrollbar-thumb {
     background-color: var(--olive-light);
     border: 1px solid var(--bd-sign-in);
     border-radius: 10px;
@@ -1425,7 +1428,8 @@ a {
 .content__plans {
   padding-top: 123px;
   width: 100%;
-  height: 100%;
+  height: 100dvh;
+  overflow-y: scroll;
 }
 .content__plans-title {
   font-family: var(--font-nebulous);
