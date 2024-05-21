@@ -1,6 +1,6 @@
 import { closeChat, openChat } from './chat/openCloseChat.js'
 import { deleteChat } from './chat/chatViewScripts/deleteChat.js'
-import { showSwiper, hideSwiper } from './findSection.js'
+import { showSwiper, hideSwiper } from './findSwiperHideToggle.js'
 import { handleChatInput } from './chat/chatViewScripts/handleChatInput.js'
 import { chatAutoScroll } from './chat/chatViewScripts/chatAutoScroll.js'
 import { renderNewChat } from './chat/chatViewScripts/renderNewChat.js'

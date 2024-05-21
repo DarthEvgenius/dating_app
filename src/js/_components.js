@@ -5,10 +5,15 @@ import './components/find-swiper.js';
 import './components/tabs.js';
 import './components/simplebar.js';
 import './components/textarea-resize.js';
+import './components/getCookie.js';
+import './components/handleError.js';
 
+// import profile scripts to this file
 import './components/profileSection.js'
 
-import './components/ChatClass.js';
+// main chat script
+// import './components/ChatClass.js';
 import './components/chat.js';
-import './components/getCookie.js';
-import './components/findSection.js';
+
+
+import './components/findSwiperHideToggle.js';
