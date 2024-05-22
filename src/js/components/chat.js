@@ -42,7 +42,37 @@ document.addEventListener('click', async function (e)  {
         //  ...]
       // created_at
       // updated_at
-    let chatInfo = await fetchChatInfo(chatId)
+
+    // let chatInfo = await fetchChatInfo(chatId)
+
+    // mock chatInfo obj
+    let chatInfo = {
+      id: 1,
+      users: [
+        {
+          id: 2,
+          'first_name': 'id-2',
+          'username': 'tester1'
+        },
+        {
+          id: 4,
+          'first_name': 'id-4',
+          'username': 'tester55'
+        }
+      ],
+      messages: [
+        {
+          "id": 1,
+          "from_user": {
+              "id": 2,
+          },
+          "to_user": {
+            "id": 4,
+          },
+          "text": "Hi, 55"
+        }
+      ]
+    }
 
     // open chat and add 'recipient' key to <chatInfo>
     chatInfo = openChat(chatInfo, userId)

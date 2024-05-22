@@ -24,16 +24,13 @@ export async function openChat(chatInfo, userId) {
     guestProfileButton.addEventListener('click', () => {
       renderGuestProfile(recipientId)
     })
-
   }
 
   setChatElementSizes()
   setTextareaSize()
   chatAutoScroll()
 
-
   viewMessages(chatInfo, senderId, recipientId)
-
 
   return chatInfo
 
@@ -47,7 +44,6 @@ export function closeChat(id) {
 
 function handleRecipient(chatObj, senderId) {
   console.log(chatObj);
-
 
   for (let user of chatObj.users) {
     if (user.id != senderId) {

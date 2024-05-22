@@ -12,33 +12,34 @@ export async function avatarForm(userObj) {
   const avatarSwiper = document.querySelector('.avatar__swiper')
   const avatarUpload = document.querySelector('#avatar-upload')
 
-  avatarFormRender(userObj, avatarForm, avatarSwiper)
+  if (avatarForm && avatarUpload) {
+    avatarFormRender(userObj, avatarForm, avatarSwiper)
 
-  avatarForm.addEventListener('submit', (event) => {
-    event.preventDefault()
-    const image = avatarUpload.files[0]
-    const actionURL = `http://vm592483.eurodir.ru/api/v1/profile/${userId}/`
+    avatarForm.addEventListener('submit', (event) => {
+      event.preventDefault()
+      const image = avatarUpload.files[0]
+      const actionURL = `http://vm592483.eurodir.ru/api/v1/profile/${userId}/`
 
-    if (validateFiles(image)) {
-      createSlide(image, avatarForm, avatarSwiper)
+      if (validateFiles(image)) {
+        createSlide(image, avatarForm, avatarSwiper)
 
-      fetch(actionURL, {
-        method: 'PATCH',
-        body: new FormData(avatarForm)
-      }).catch(handleError)
+        fetch(actionURL, {
+          method: 'PATCH',
+          body: new FormData(avatarForm)
+        }).catch(handleError)
 
-      console.log('Image was sent to the server');
+        console.log('Image was sent to the server');
 
-    } else {
-      console.log('Supported image formats: .jpg, .jpeg, .png, .webp')
-    }
+      } else {
+        console.log('Supported image formats: .jpg, .jpeg, .png, .webp')
+      }
 
-  })
+    })
 
-  avatarUpload.addEventListener('change', (e) => {
-    avatarForm.requestSubmit()
-  })
-
+    avatarUpload.addEventListener('change', (e) => {
+      avatarForm.requestSubmit()
+    })
+  }
 }
 
 // check if profile has avatar, render avatar form small/large

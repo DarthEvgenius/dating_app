@@ -491,7 +491,32 @@ document.addEventListener('click', async function (e) {
     //  ...]
     // created_at
     // updated_at
-    let chatInfo = await (0,_chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_9__.fetchChatInfo)(chatId);
+
+    // let chatInfo = await fetchChatInfo(chatId)
+
+    // mock chatInfo obj
+    let chatInfo = {
+      id: 1,
+      users: [{
+        id: 2,
+        'first_name': 'id-2',
+        'username': 'tester1'
+      }, {
+        id: 4,
+        'first_name': 'id-4',
+        'username': 'tester55'
+      }],
+      messages: [{
+        "id": 1,
+        "from_user": {
+          "id": 2
+        },
+        "to_user": {
+          "id": 4
+        },
+        "text": "Hi, 55"
+      }]
+    };
 
     // open chat and add 'recipient' key to <chatInfo>
     chatInfo = (0,_chat_openCloseChat_js__WEBPACK_IMPORTED_MODULE_0__.openChat)(chatInfo, userId);
@@ -1346,25 +1371,27 @@ async function avatarForm(userObj) {
   const avatarForm = document.querySelector('[name="avatar__form"');
   const avatarSwiper = document.querySelector('.avatar__swiper');
   const avatarUpload = document.querySelector('#avatar-upload');
-  avatarFormRender(userObj, avatarForm, avatarSwiper);
-  avatarForm.addEventListener('submit', event => {
-    event.preventDefault();
-    const image = avatarUpload.files[0];
-    const actionURL = `http://vm592483.eurodir.ru/api/v1/profile/${userId}/`;
-    if (validateFiles(image)) {
-      createSlide(image, avatarForm, avatarSwiper);
-      fetch(actionURL, {
-        method: 'PATCH',
-        body: new FormData(avatarForm)
-      }).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_0__.handleError);
-      console.log('Image was sent to the server');
-    } else {
-      console.log('Supported image formats: .jpg, .jpeg, .png, .webp');
-    }
-  });
-  avatarUpload.addEventListener('change', e => {
-    avatarForm.requestSubmit();
-  });
+  if (avatarForm && avatarUpload) {
+    avatarFormRender(userObj, avatarForm, avatarSwiper);
+    avatarForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const image = avatarUpload.files[0];
+      const actionURL = `http://vm592483.eurodir.ru/api/v1/profile/${userId}/`;
+      if (validateFiles(image)) {
+        createSlide(image, avatarForm, avatarSwiper);
+        fetch(actionURL, {
+          method: 'PATCH',
+          body: new FormData(avatarForm)
+        }).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_0__.handleError);
+        console.log('Image was sent to the server');
+      } else {
+        console.log('Supported image formats: .jpg, .jpeg, .png, .webp');
+      }
+    });
+    avatarUpload.addEventListener('change', e => {
+      avatarForm.requestSubmit();
+    });
+  }
 }
 
 // check if profile has avatar, render avatar form small/large
