@@ -8,6 +8,8 @@ import './components/textarea-resize.js';
 import './components/getCookie.js';
 import './components/handleError.js';
 
+import './components/userInfo.js'
+
 // import profile scripts to this file
 import './components/profileSection.js'
 

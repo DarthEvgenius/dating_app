@@ -8,11 +8,6 @@ import { avatarForm } from './profile-section/avatarForm.js'
 // get user profile!
 
 // user's profile
-const userObj = {
-  id: 4,
-  'profile': {
-    'avatar': false
-  }
-}
+const userObj = JSON.parse(localStorage.getItem('userInfo'))
 
 avatarForm(userObj)

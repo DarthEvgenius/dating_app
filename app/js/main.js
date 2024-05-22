@@ -363,9 +363,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
 /* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
 /* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
-/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
-/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
-/* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
+/* harmony import */ var _components_userInfo_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/userInfo.js */ "./src/js/components/userInfo.js");
+/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
+/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
+/* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
+
 
 
 
@@ -1534,12 +1536,7 @@ __webpack_require__.r(__webpack_exports__);
 // get user profile!
 
 // user's profile
-const userObj = {
-  id: 4,
-  'profile': {
-    'avatar': false
-  }
-};
+const userObj = JSON.parse(localStorage.getItem('userInfo'));
 (0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_3__.avatarForm)(userObj);
 
 /***/ }),
@@ -1615,6 +1612,44 @@ function setTextareaSize() {
     this.style.height = this.scrollHeight + "px";
   }
 }
+
+/***/ }),
+
+/***/ "./src/js/components/userInfo.js":
+/*!***************************************!*\
+  !*** ./src/js/components/userInfo.js ***!
+  \***************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// const userInfo = await getUserInfo()
+
+// // need URL with GET method for fetching userInfo
+// async function getUserInfo(userId) {
+//   const response = await fetch(
+//     `http://vm592483.eurodir.ru/api/v1/${userId}`
+//   )
+
+//   const userInfo = await response.json()
+
+//   return userInfo
+// }
+
+// mock user object
+const userObj = {
+  id: 4,
+  'profile': {
+    'avatar': false
+  },
+  'subscription_info': {
+    'subscription': {
+      'title': 'friends'
+    }
+  }
+};
+localStorage.setItem('userInfo', JSON.stringify(userObj));
+console.log(JSON.parse(localStorage.getItem('userInfo')));
 
 /***/ }),
 
