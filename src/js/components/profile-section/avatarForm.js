@@ -33,7 +33,6 @@ export async function avatarForm(userObj) {
       } else {
         console.log('Supported image formats: .jpg, .jpeg, .png, .webp')
       }
-
     })
 
     avatarUpload.addEventListener('change', (e) => {

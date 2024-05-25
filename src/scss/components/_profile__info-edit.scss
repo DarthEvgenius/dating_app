@@ -1,4 +1,6 @@
-.profile__info {
+.profile__info--edit {
+  // display: none;
+
   &-input {
     padding-inline: 21px;
     height: 40px;
@@ -45,7 +47,7 @@
     }
 
     &#profile-about {
-      display: grid;
+      // display: grid;
 
       textarea {
         padding-top: 15px;

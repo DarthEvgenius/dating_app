@@ -1007,6 +1007,64 @@ a {
   align-items: center;
   gap: 11px;
 }
+.profile__info-form {
+  margin-bottom: var(--container-offset);
+}
+.profile__info-formfield {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.profile__info-formfield input {
+  -ms-flex-preferred-size: 50%;
+  flex-basis: 50%;
+}
+.profile__info-formfield textarea {
+  padding-top: 15px;
+  height: 123px;
+  color: var(--fs-profile-placeholder);
+}
+.profile__info-formfield--gender {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  gap: 10px;
+}
+.profile__info-formfield--gender h4 {
+  margin-right: auto;
+}
+.profile__info-formfield--gender label {
+  width: 129px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+.profile__info-formfield--gender input[type=radio] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
+}
+.profile__info-formfield--gender input:checked + label {
+  color: var(--light-color);
+  background-color: var(--plan-color, var(--olive-dark-color));
+}
 .profile__info-field:not(:last-of-type) {
   margin-bottom: 23px;
 }
@@ -1056,6 +1114,9 @@ a {
   line-height: 1em;
   color: var(--accent-color);
 }
+.profile__info-edit.profile__info-edit--save .edit-svg {
+  fill: var(--btn-olive-color);
+}
 .profile__info-btn {
   width: 100%;
   padding-block: 1em;
@@ -1081,108 +1142,10 @@ a {
   fill: var(--accent-color);
 }
 
-.profile__info-input {
-  padding-inline: 21px;
-  height: 40px;
-  font-family: var(--font-sailec);
-  font-weight: 400;
-  font-size: var(--fs-profile-placeholder);
-  background-color: var(--light-color);
-  border: 1px solid var(--bd-profile-edit);
-  border-radius: 4px;
-}
-.profile__info-input:focus-visible {
-  outline: solid var(--accent-color) 1px;
-}
-.profile__info .edit-field:not(:first-of-type) {
-  margin-bottom: 21px;
-}
-.profile__info .edit-field:first-of-type {
-  margin-bottom: 27px;
-}
-.profile__info .edit-field#profile-title {
-  display: block;
-}
-.profile__info .edit-field#profile-title p {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.profile__info .edit-field#profile-title p #profile-name-edit {
-  -webkit-box-flex: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-}
-.profile__info .edit-field#profile-title p #profile-age-edit {
-  padding-right: 0;
-  -ms-flex-negative: 1;
-  flex-shrink: 1;
-  -ms-flex-preferred-size: 125px;
-  flex-basis: 125px;
-  min-width: 80px;
-}
-.profile__info .edit-field#profile-about {
-  display: -ms-grid;
-  display: grid;
-}
-.profile__info .edit-field#profile-about textarea {
-  padding-top: 15px;
-  height: 123px;
-  color: var(--fs-profile-placeholder);
-}
-.profile__info .edit-field#profile-gender {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  gap: 10px;
-}
-.profile__info .edit-field#profile-gender h4 {
-  margin-right: auto;
-}
-.profile__info .edit-field#profile-gender label {
-  width: 129px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-transform: uppercase;
-}
-.profile__info .edit-field#profile-gender input[type=radio] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  position: absolute;
-}
-.profile__info .edit-field#profile-gender input:checked + label {
-  color: var(--light-color);
-  background-color: var(--plan-color, var(--accent-color));
-}
-.profile__info .edit-field#profile-motherland, .profile__info .edit-field#profile-location, .profile__info .edit-field#profile-languages {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
-.profile__info .edit-field#profile-motherland h4, .profile__info .edit-field#profile-location h4, .profile__info .edit-field#profile-languages h4 {
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-.profile__info .edit-field#profile-motherland .profile__info-input, .profile__info .edit-field#profile-location .profile__info-input, .profile__info .edit-field#profile-languages .profile__info-input {
-  -ms-flex-negative: 1;
-  flex-shrink: 1;
+.save-svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--btn-olive-color);
 }
 
 .profile-tabs__container {

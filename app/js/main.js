@@ -354,16 +354,16 @@ class GraphTabs {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_lang_menu_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/lang-menu.js */ "./src/js/components/lang-menu.js");
-/* harmony import */ var _components_sign_in_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/sign-in-modal.js */ "./src/js/components/sign-in-modal.js");
-/* harmony import */ var _components_avatar_swiper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/avatar-swiper.js */ "./src/js/components/avatar-swiper.js");
-/* harmony import */ var _components_find_swiper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/find-swiper.js */ "./src/js/components/find-swiper.js");
-/* harmony import */ var _components_tabs_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/tabs.js */ "./src/js/components/tabs.js");
-/* harmony import */ var _components_simplebar_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/simplebar.js */ "./src/js/components/simplebar.js");
-/* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
-/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
-/* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
-/* harmony import */ var _components_userInfo_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/userInfo.js */ "./src/js/components/userInfo.js");
+/* harmony import */ var _components_userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/userObject.js */ "./src/js/components/userObject.js");
+/* harmony import */ var _components_lang_menu_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/lang-menu.js */ "./src/js/components/lang-menu.js");
+/* harmony import */ var _components_sign_in_modal_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/sign-in-modal.js */ "./src/js/components/sign-in-modal.js");
+/* harmony import */ var _components_avatar_swiper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/avatar-swiper.js */ "./src/js/components/avatar-swiper.js");
+/* harmony import */ var _components_find_swiper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/find-swiper.js */ "./src/js/components/find-swiper.js");
+/* harmony import */ var _components_tabs_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/tabs.js */ "./src/js/components/tabs.js");
+/* harmony import */ var _components_simplebar_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/simplebar.js */ "./src/js/components/simplebar.js");
+/* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
+/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
 /* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
 /* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
 /* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
@@ -1473,9 +1473,9 @@ function setProfileHeight() {
   if (profileHeader) {
     const headerHeight = parseInt(getComputedStyle(profileHeader).getPropertyValue('margin-bottom')) + profileHeader.offsetHeight;
     let height = windowHeight - headerHeight;
-  }
-  if (profileBody) {
-    profileBody.style.maxHeight = `${height}px`;
+    if (profileBody) {
+      profileBody.style.maxHeight = `${height}px`;
+    }
   }
 }
 
@@ -1545,6 +1545,34 @@ window.addEventListener('resize', () => {
 
 /***/ }),
 
+/***/ "./src/js/components/profile-section/userInfoRender.js":
+/*!*************************************************************!*\
+  !*** ./src/js/components/profile-section/userInfoRender.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   userInfoRender: () => (/* binding */ userInfoRender)
+/* harmony export */ });
+async function userInfoRender(user) {
+  console.log(user);
+  const profileDescription = document.querySelector('.profile__info-description');
+  const profileInfoForm = document.querySelector('[name="profile__info-form"');
+  const logoutBtn = document.querySelector('#profile-logout');
+
+  // if not all required profile fields are completed
+  if (!user.profile.first_name || !user.profile.last_name || !user.profile.age || !user.profile.gender) {
+    console.log('not all profile required fields completed');
+    profileInfoForm.classList.remove('hidden');
+    profileDescription.classList.add('hidden');
+    logoutBtn.classList.add('hidden');
+  }
+}
+
+/***/ }),
+
 /***/ "./src/js/components/profileSection.js":
 /*!*********************************************!*\
   !*** ./src/js/components/profileSection.js ***!
@@ -1557,6 +1585,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _profile_section_profileSizes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profile-section/profileSizes.js */ "./src/js/components/profile-section/profileSizes.js");
 /* harmony import */ var _profile_section_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./profile-section/profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
 /* harmony import */ var _profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./profile-section/avatarForm.js */ "./src/js/components/profile-section/avatarForm.js");
+/* harmony import */ var _profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./profile-section/userInfoRender.js */ "./src/js/components/profile-section/userInfoRender.js");
+
 
 
 
@@ -1567,6 +1597,7 @@ __webpack_require__.r(__webpack_exports__);
 // user's profile
 const userObj = JSON.parse(localStorage.getItem('userInfo'));
 (0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_3__.avatarForm)(userObj);
+(0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_4__.userInfoRender)(userObj);
 
 /***/ }),
 
@@ -1644,10 +1675,10 @@ function setTextareaSize() {
 
 /***/ }),
 
-/***/ "./src/js/components/userInfo.js":
-/*!***************************************!*\
-  !*** ./src/js/components/userInfo.js ***!
-  \***************************************/
+/***/ "./src/js/components/userObject.js":
+/*!*****************************************!*\
+  !*** ./src/js/components/userObject.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1668,17 +1699,31 @@ __webpack_require__.r(__webpack_exports__);
 // mock user object
 const userObj = {
   id: 4,
+  'username': 'tester55',
   'profile': {
+    'first_name': undefined,
+    'last_name': undefined,
+    'age': undefined,
+    'about_me': undefined,
+    'gender': undefined,
+    'birth_place': undefined,
+    'location': undefined,
+    'languages': undefined,
     'avatar': false
   },
-  'subscription_info': {
-    'subscription': {
-      'title': 'friends'
+  'subscription': {
+    'title': undefined,
+    // friends, love, work
+    'subscription_info': {
+      'description': undefined,
+      'preferable_gender': undefined,
+      'preferable_age': undefined,
+      'occupation': undefined,
+      'income': undefined
     }
   }
 };
 localStorage.setItem('userInfo', JSON.stringify(userObj));
-console.log(JSON.parse(localStorage.getItem('userInfo')));
 
 /***/ }),
 

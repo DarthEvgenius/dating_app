@@ -8,9 +8,10 @@ export function setProfileHeight() {
     const headerHeight = parseInt(getComputedStyle(profileHeader).getPropertyValue('margin-bottom')) + profileHeader.offsetHeight
 
     let height = windowHeight - headerHeight
-  }
 
-  if (profileBody) {
-    profileBody.style.maxHeight = `${height}px`
+
+    if (profileBody) {
+      profileBody.style.maxHeight = `${height}px`
+    }
   }
 }
