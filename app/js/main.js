@@ -364,9 +364,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
 /* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
 /* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
-/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
-/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
-/* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
+/* harmony import */ var _components_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
+/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
+/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
+/* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
+
 
 
 
@@ -1289,6 +1291,30 @@ function showSwiper() {
 
 /***/ }),
 
+/***/ "./src/js/components/formDataToJSON.js":
+/*!*********************************************!*\
+  !*** ./src/js/components/formDataToJSON.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   formDataToJSON: () => (/* binding */ formDataToJSON)
+/* harmony export */ });
+function formDataToJSON(formData) {
+  if (!(formData instanceof FormData)) {
+    throw TypeError('formData argument is not an instance of FormData');
+  }
+  const data = {};
+  for (const [name, value] of formData) {
+    data[name] = value;
+  }
+  return JSON.stringify(data);
+}
+
+/***/ }),
+
 /***/ "./src/js/components/getCookie.js":
 /*!****************************************!*\
   !*** ./src/js/components/getCookie.js ***!
@@ -1366,13 +1392,14 @@ __webpack_require__.r(__webpack_exports__);
 // upload files validator
 // fetch files to the server
 // add images to avatar slider
-async function avatarForm(userObj) {
-  const userId = userObj.id;
+async function avatarForm() {
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+  const userId = user.id;
   const avatarForm = document.querySelector('[name="avatar__form"');
   const avatarSwiper = document.querySelector('.avatar__swiper');
   const avatarUpload = document.querySelector('#avatar-upload');
   if (avatarForm && avatarUpload) {
-    avatarFormRender(userObj, avatarForm, avatarSwiper);
+    avatarFormRender(user, avatarForm, avatarSwiper);
     avatarForm.addEventListener('submit', event => {
       event.preventDefault();
       const image = avatarUpload.files[0];
@@ -1556,18 +1583,81 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   userInfoRender: () => (/* binding */ userInfoRender)
 /* harmony export */ });
-async function userInfoRender(user) {
-  console.log(user);
-  const profileDescription = document.querySelector('.profile__info-description');
-  const profileInfoForm = document.querySelector('[name="profile__info-form"');
-  const logoutBtn = document.querySelector('#profile-logout');
+/* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
 
-  // if not all required profile fields are completed
-  if (!user.profile.first_name || !user.profile.last_name || !user.profile.age || !user.profile.gender) {
-    console.log('not all profile required fields completed');
-    profileInfoForm.classList.remove('hidden');
-    profileDescription.classList.add('hidden');
-    logoutBtn.classList.add('hidden');
+async function userInfoRender() {
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+  const userInfoComponents = {
+    description: document.querySelector('.profile__info-description'),
+    form: document.querySelector('[name="profile__info-form"'),
+    editBtn: document.querySelector('#info-edit-btn'),
+    saveBtn: document.querySelector('#profile-form-save'),
+    logoutBtn: document.querySelector('#profile-logout')
+  };
+  if (!user.profile.full_name || !user.profile.age) {
+    showInfoForm(userInfoComponents, user);
+  } else {
+    showUserInfo(userInfoComponents, user);
+  }
+  userInfoComponents.editBtn.addEventListener('click', () => {
+    showInfoForm(userInfoComponents, user);
+  });
+  userInfoComponents.form.addEventListener('submit', event => {
+    event.preventDefault();
+    (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(userInfoComponents.form));
+    userInfoRender();
+  });
+}
+function showInfoForm(userInfoComponents, user) {
+  userInfoComponents.form.classList.remove('hidden');
+  userInfoComponents.description.classList.add('hidden');
+  userInfoComponents.logoutBtn.classList.add('hidden');
+  populateForm(userInfoComponents, user);
+}
+
+// populate form inputs with user's info
+function populateForm(userInfoComponents, user) {
+  const form = userInfoComponents.form;
+  if (user.profile.full_name) {
+    form['profile-name-edit'].value = `${user.profile.full_name}`;
+  }
+  if (user.profile.age) {
+    form['profile-age-edit'].value = `${user.profile.age}`;
+  }
+  if (user.profile.about_me) {
+    form['profile-about-edit'].value = `${user.profile.about_me}`;
+  }
+  if (user.profile.gender) {
+    user.profile.gender == 'male' ? form.querySelector('#profile-gender-male').checked = true : form.querySelector('#profile-gender-female').checked = true;
+  }
+  if (user.profile.birth_place) {
+    form['profile-birth_place-edit'].value = `${user.profile.birth_place}`;
+  }
+  if (user.profile.location) {
+    form['profile-location-edit'].value = `${user.profile.location}`;
+  }
+  if (user.profile.languages) {
+    form['profile-languages-edit'].value = `${user.profile.languages}`;
+  }
+}
+function showUserInfo(userInfoComponents, user) {
+  userInfoComponents.form.classList.add('hidden');
+  userInfoComponents.description.classList.remove('hidden');
+  userInfoComponents.logoutBtn.classList.remove('hidden');
+  populateUserInfo(user);
+}
+
+// populate user info fields from user object
+function populateUserInfo(user) {
+  for (const key in user.profile) {
+    const field = document.querySelector(`[data-field=${key}]`);
+    if (field) {
+      if (user.profile[key]) {
+        field.textContent = user.profile[key];
+      } else {
+        field.textContent = 'No information';
+      }
+    }
   }
 }
 
@@ -1595,9 +1685,10 @@ __webpack_require__.r(__webpack_exports__);
 // get user profile!
 
 // user's profile
-const userObj = JSON.parse(localStorage.getItem('userInfo'));
-(0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_3__.avatarForm)(userObj);
-(0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_4__.userInfoRender)(userObj);
+// const userObj = JSON.parse(localStorage.getItem('userInfo'))
+
+(0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_3__.avatarForm)();
+(0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_4__.userInfoRender)();
 
 /***/ }),
 
@@ -1683,17 +1774,27 @@ function setTextareaSize() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-// const userInfo = await getUserInfo()
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   updateUser: () => (/* binding */ updateUser)
+/* harmony export */ });
+/* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _formDataToJSON_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
 
-// // need URL with GET method for fetching userInfo
+
+const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)('userID');
+
+// need URL with GET method for fetching userInfo
+
+// const user = await getUserInfo()
+
 // async function getUserInfo(userId) {
 //   const response = await fetch(
 //     `http://vm592483.eurodir.ru/api/v1/${userId}`
 //   )
 
-//   const userInfo = await response.json()
+//   const user = await response.json()
 
-//   return userInfo
+//   return user
 // }
 
 // mock user object
@@ -1701,14 +1802,13 @@ const userObj = {
   id: 4,
   'username': 'tester55',
   'profile': {
-    'first_name': undefined,
-    'last_name': undefined,
-    'age': undefined,
-    'about_me': undefined,
-    'gender': undefined,
-    'birth_place': undefined,
-    'location': undefined,
-    'languages': undefined,
+    'full_name': 'Alex Brandt',
+    'age': 31,
+    'about_me': null,
+    'gender': null,
+    'birth_place': null,
+    'location': null,
+    'languages': null,
     'avatar': false
   },
   'subscription': {
@@ -1724,6 +1824,40 @@ const userObj = {
   }
 };
 localStorage.setItem('userInfo', JSON.stringify(userObj));
+async function updateUser(formData) {
+  // for server fetching
+  // const user = await sendUserInfo(userId, data)
+
+  // local use
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+  for (let [name, value] of formData) {
+    if (value) {
+      user.profile[name] = value;
+    }
+  }
+
+  // always usable
+  localStorage.setItem('userInfo', JSON.stringify(user));
+}
+
+// need formData format
+async function sendUserInfo(userId, formData) {
+  const data = formData;
+
+  // if server requires json
+  // data = formDataToJSON(formData)
+
+  const response = await fetch(`http://vm592483.eurodir.ru/api/v1/${userId}`, {
+    method: "POST",
+    headers: {
+      // "Content-Type": "application/json",
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: data
+  });
+  const user = await response.json();
+  return user;
+}
 
 /***/ }),
 

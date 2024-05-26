@@ -1,20 +1,98 @@
-export async function userInfoRender(user) {
-  console.log(user);
-  const profileDescription = document.querySelector('.profile__info-description')
-  const profileInfoForm = document.querySelector('[name="profile__info-form"')
-  const logoutBtn = document.querySelector('#profile-logout')
+import { updateUser } from "../userObject.js"
 
-  // if not all required profile fields are completed
+export async function userInfoRender() {
+  const user = JSON.parse(localStorage.getItem('userInfo'))
+
+  const userInfoComponents = {
+    description: document.querySelector('.profile__info-description'),
+    form: document.querySelector('[name="profile__info-form"'),
+    editBtn: document.querySelector('#info-edit-btn'),
+    saveBtn: document.querySelector('#profile-form-save'),
+    logoutBtn: document.querySelector('#profile-logout')
+  }
+
   if (
-    !user.profile.first_name ||
-    !user.profile.last_name ||
-    !user.profile.age ||
-    !user.profile.gender
+    !user.profile.full_name ||
+    !user.profile.age
   ) {
-    console.log('not all profile required fields completed');
+    showInfoForm(userInfoComponents, user)
+  } else {
+    showUserInfo(userInfoComponents, user)
+  }
 
-    profileInfoForm.classList.remove('hidden')
-    profileDescription.classList.add('hidden')
-    logoutBtn.classList.add('hidden')
+  userInfoComponents.editBtn.addEventListener(
+    'click', () => {
+      showInfoForm(userInfoComponents, user)
+  })
+
+  userInfoComponents.form.addEventListener('submit', (event) => {
+    event.preventDefault()
+    updateUser(new FormData(userInfoComponents.form))
+    userInfoRender()
+  })
+}
+
+function showInfoForm(userInfoComponents, user) {
+  userInfoComponents.form.classList.remove('hidden')
+  userInfoComponents.description.classList.add('hidden')
+  userInfoComponents.logoutBtn.classList.add('hidden')
+
+  populateForm(userInfoComponents, user)
+}
+
+// populate form inputs with user's info
+function populateForm(userInfoComponents, user) {
+  const form = userInfoComponents.form
+
+  if (user.profile.full_name) {
+    form['profile-name-edit'].value = `${user.profile.full_name}`
+  }
+  if (user.profile.age) {
+    form['profile-age-edit'].value =
+      `${user.profile.age}`
+  }
+  if (user.profile.about_me) {
+    form['profile-about-edit'].value =
+      `${user.profile.about_me}`
+  }
+  if (user.profile.gender) {
+    user.profile.gender == 'male' ?
+      form.querySelector('#profile-gender-male').checked = true :
+      form.querySelector('#profile-gender-female').checked = true
+  }
+  if (user.profile.birth_place) {
+    form['profile-birth_place-edit'].value =
+      `${user.profile.birth_place}`
+  }
+  if (user.profile.location) {
+    form['profile-location-edit'].value =
+      `${user.profile.location}`
+  }
+  if (user.profile.languages) {
+    form['profile-languages-edit'].value =
+      `${user.profile.languages}`
+  }
+}
+
+function showUserInfo(userInfoComponents,user) {
+  userInfoComponents.form.classList.add('hidden')
+  userInfoComponents.description.classList.remove('hidden')
+  userInfoComponents.logoutBtn.classList.remove('hidden')
+
+  populateUserInfo(user)
+}
+
+// populate user info fields from user object
+function populateUserInfo(user) {
+  for(const key in user.profile) {
+    const field = document.querySelector(`[data-field=${key}]`)
+
+    if (field) {
+      if (user.profile[key]) {
+        field.textContent = user.profile[key]
+      } else {
+        field.textContent = 'No information'
+      }
+    }
   }
 }

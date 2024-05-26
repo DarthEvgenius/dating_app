@@ -8,10 +8,11 @@
 
         <input
           type="text"
-          name="profile-name-edit"
+          name="full_name"
           id="profile-name-edit"
           class="edit-field__input"
-          placeholder="Enter your full name here">
+          placeholder="Enter your full name here"
+          required>
       </div>
 
       <div class="profile__info-field profile__info-formfield">
@@ -21,16 +22,17 @@
           type="number"
           min="16"
           max="150"
-          name="profile-age-edit"
+          name="age"
           id="profile-age-edit"
           class="edit-field__input"
-          placeholder="Your age">
+          placeholder="Your age"
+          required>
       </div>
 
       <div class="profile__info-field profile__info-formfield">
         <label for="profile-about-edit" class="profile__info-subtitle">About me:</label>
         <textarea
-          name="profile-about-edit"
+          name="about_me"
           id="profile-about-edit"
           cols="100"
           rows="10"
@@ -44,13 +46,13 @@
         <!-- the order matters: input + label for previous input -->
         <input
           type="radio"
-          name="profile-gender-edit"
+          name="gender"
           id="profile-gender-male"
           value="male">
         <label for="profile-gender-male" class="edit-field__input">male</label>
 
         <input type="radio"
-          name="profile-gender-edit"
+          name="gender"
           id="profile-gender-female"
           value="female">
         <label for="profile-gender-female" class="edit-field__input">female</label>
@@ -58,12 +60,12 @@
       </div>
 
       <div class="profile__info-field profile__info-formfield">
-        <label for="profile-motherland-edit" class="profile__info-subtitle">Place of birth:</label>
+        <label for="profile-birth_place-edit" class="profile__info-subtitle">Place of birth:</label>
 
         <input
           type="text"
-          name="profile-motherland-edit"
-          id="profile-motherland-edit"
+          name="birth_place"
+          id="profile-birth_place-edit"
           class="edit-field__input"
           placeholder="Enter your place of birth">
       </div>
@@ -73,7 +75,7 @@
 
         <input
           type="text"
-          name="profile-location-edit"
+          name="location"
           id="profile-location-edit"
           class="edit-field__input"
           placeholder="Enter your location">
@@ -84,13 +86,13 @@
 
         <input
           type="text"
-          name="profile-languages-edit"
+          name="languages"
           id="profile-languages-edit"
           class="edit-field__input"
           placeholder="Enter languages you know">
       </div>
 
-      <button type="submit" class="btn profile__info-btn" id="profile-edit-confirm">Save Profile Info</button>
+      <button type="submit" class="btn profile__info-btn" id="profile-form-save">Save Profile Info</button>
 
     </form>
 
@@ -99,11 +101,11 @@
       <div class="profile__info-field" id="profile-title">
         <dt class="visually-hidden">Profile name and age</dt>
         <dd class="profile__info-title" data-field="title">
-          <span id="profile-name">Alex Brandt</span>,
-          <span id="profile-age">31</span>
+          <span id="profile-name" data-field="full_name">Alex Brandt</span>,
+          <span id="profile-age" data-field="age">31</span>
         </dd>
 
-        <button class="profile__info-edit" aria-label="Edit profile">
+        <button class="profile__info-edit" aria-label="Edit profile" id="info-edit-btn">
         <svg class="edit-svg">
             <use xlink:href="img/sprite.svg#edit-pen"></use>
           </svg>
@@ -112,7 +114,7 @@
 
       <div class="profile__info-field" id="profile-about">
         <dt class="profile__info-subtitle">About me:</h4>
-        <dd class="profile__info-content" data-field="about">
+        <dd class="profile__info-content" data-field="about_me">
           Lorem ipsum dolor sit amet, consecteturis adipiscing elit se
           do eiusmod temporata incididunt ut labore et dolore magna
           aliqu. Ullamcorper malesuada consequat proin.
@@ -128,7 +130,7 @@
 
       <div class="profile__info-field" id="profile-motherland">
         <dt class="profile__info-subtitle">Place of birth:</dt>
-        <dd class="profile__info-content" data-field="motherland">
+        <dd class="profile__info-content" data-field="birth_place">
           London, UK
         </dd>
       </div>

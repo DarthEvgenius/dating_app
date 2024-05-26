@@ -8,8 +8,8 @@ import { userInfoRender } from './profile-section/userInfoRender.js'
 // get user profile!
 
 // user's profile
-const userObj = JSON.parse(localStorage.getItem('userInfo'))
+// const userObj = JSON.parse(localStorage.getItem('userInfo'))
 
-avatarForm(userObj)
+avatarForm()
 
-userInfoRender(userObj)
+userInfoRender()

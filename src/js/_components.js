@@ -9,6 +9,7 @@ import './components/simplebar.js';
 import './components/textarea-resize.js';
 import './components/getCookie.js';
 import './components/handleError.js';
+import './components/formDataToJSON.js';
 
 // import profile scripts to this file
 import './components/profileSection.js'

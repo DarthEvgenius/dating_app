@@ -5,15 +5,16 @@ import { handleError } from '../handleError.js'
 // upload files validator
 // fetch files to the server
 // add images to avatar slider
-export async function avatarForm(userObj) {
-  const userId = userObj.id
+export async function avatarForm() {
+  const user = JSON.parse(localStorage.getItem('userInfo'))
+  const userId = user.id
 
   const avatarForm = document.querySelector('[name="avatar__form"')
   const avatarSwiper = document.querySelector('.avatar__swiper')
   const avatarUpload = document.querySelector('#avatar-upload')
 
   if (avatarForm && avatarUpload) {
-    avatarFormRender(userObj, avatarForm, avatarSwiper)
+    avatarFormRender(user, avatarForm, avatarSwiper)
 
     avatarForm.addEventListener('submit', (event) => {
       event.preventDefault()
