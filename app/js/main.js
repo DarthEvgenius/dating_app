@@ -366,8 +366,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
 /* harmony import */ var _components_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
 /* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
-/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
-/* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
+/* harmony import */ var _components_plansSection_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/plansSection.js */ "./src/js/components/plansSection.js");
+/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
+/* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
 
 
 
@@ -380,7 +381,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// import profile scripts to this file
+// import profile scripts here
+
+
+// import choose-plans scripts here
 
 
 // main chat script
@@ -1238,6 +1242,28 @@ function socketConnect(chatId, userId) {
 
 /***/ }),
 
+/***/ "./src/js/components/choose-section/renderPlansSection.js":
+/*!****************************************************************!*\
+  !*** ./src/js/components/choose-section/renderPlansSection.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   renderPlansSection: () => (/* binding */ renderPlansSection)
+/* harmony export */ });
+function renderPlansSection() {
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+  if (!user.subscription.title) {
+    // if user has no subscription => show choosePlan
+  } else {
+    // if user has subscription => show planInfo, set plan class to main app element
+  }
+}
+
+/***/ }),
+
 /***/ "./src/js/components/find-swiper.js":
 /*!******************************************!*\
   !*** ./src/js/components/find-swiper.js ***!
@@ -1370,6 +1396,20 @@ options.forEach(e => {
 function changeLanguage(e) {
   btnImg.src = `./img/flag-${this.dataset.lang}.png`;
 }
+
+/***/ }),
+
+/***/ "./src/js/components/plansSection.js":
+/*!*******************************************!*\
+  !*** ./src/js/components/plansSection.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _choose_section_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./choose-section/renderPlansSection.js */ "./src/js/components/choose-section/renderPlansSection.js");
+
+(0,_choose_section_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_0__.renderPlansSection)();
 
 /***/ }),
 
@@ -1812,14 +1852,14 @@ const userObj = {
     'avatar': false
   },
   'subscription': {
-    'title': undefined,
+    'title': null,
     // friends, love, work
     'subscription_info': {
-      'description': undefined,
-      'preferable_gender': undefined,
-      'preferable_age': undefined,
-      'occupation': undefined,
-      'income': undefined
+      'description': null,
+      'preferable_gender': null,
+      'preferable_age': null,
+      'occupation': null,
+      'income': null
     }
   }
 };

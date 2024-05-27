@@ -33,13 +33,13 @@ const userObj = {
     'avatar': false
   },
   'subscription': {
-    'title': undefined, // friends, love, work
+    'title': null, // friends, love, work
     'subscription_info': {
-      'description': undefined,
-      'preferable_gender': undefined,
-      'preferable_age': undefined,
-      'occupation': undefined,
-      'income': undefined
+      'description': null,
+      'preferable_gender': null,
+      'preferable_age': null,
+      'occupation': null,
+      'income': null
     }
   }
 }

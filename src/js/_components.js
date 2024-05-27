@@ -11,8 +11,11 @@ import './components/getCookie.js';
 import './components/handleError.js';
 import './components/formDataToJSON.js';
 
-// import profile scripts to this file
+// import profile scripts here
 import './components/profileSection.js'
+
+// import choose-plans scripts here
+import './components/plansSection.js'
 
 // main chat script
 // import './components/ChatClass.js';
