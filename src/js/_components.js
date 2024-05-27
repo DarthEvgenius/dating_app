@@ -11,6 +11,8 @@ import './components/getCookie.js';
 import './components/handleError.js';
 import './components/formDataToJSON.js';
 
+import './components/mainApp.js'
+
 // import profile scripts here
 import './components/profileSection.js'
 

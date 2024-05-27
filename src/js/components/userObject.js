@@ -17,6 +17,12 @@ const userId = getCookie('userID')
 //   return user
 // }
 
+export class User {
+  constructor(userObj) {
+    Object.assign(this, userObj)
+  }
+}
+
 
 // mock user object
 const userObj = {
@@ -33,7 +39,7 @@ const userObj = {
     'avatar': false
   },
   'subscription': {
-    'title': null, // friends, love, work
+    'title': '', // friends, love, work
     'subscription_info': {
       'description': null,
       'preferable_gender': null,
@@ -44,42 +50,47 @@ const userObj = {
   }
 }
 
-localStorage.setItem('userInfo', JSON.stringify(userObj))
+export let user = new User(userObj)
 
-export async function updateUser(formData) {
-  // for server fetching
-  // const user = await sendUserInfo(userId, data)
+localStorage.setItem('userInfo', JSON.stringify(user))
 
-  // local use
-  const user = JSON.parse(localStorage.getItem('userInfo'))
-  for(let [name, value] of formData) {
-    if (value) {
-      user.profile[name] = value
+export async function updateUser(data) {
+  // user is taken from above: User instance
+
+  // for submitted profile form
+  if(data instanceof FormData) {
+    for(let [name, value] of data) {
+        if (value) {
+          user.profile[name] = value
+        }
+      }
     }
+
+  if(data instanceof User) {
+    console.log('user update:', data);
+
   }
 
+  // user = await sendUserInfo(user)
   // always usable
   localStorage.setItem('userInfo', JSON.stringify(user))
 }
 
-// need formData format
-async function sendUserInfo(userId, formData) {
-  const data = formData
-
-  // if server requires json
-  // data = formDataToJSON(formData)
+// returns userObj
+async function sendUserInfo(user) {
 
   const response = await fetch(
-    `http://vm592483.eurodir.ru/api/v1/${userId}`,
+    `http://vm592483.eurodir.ru/api/v1/${user.id}`,
     {
       method: "POST",
       headers: {
-        // "Content-Type": "application/json",
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: data
+      body: user
     }
   )
-  const user = await response.json()
+  const userObj = await response.json()
+  user = new User(userObj)
   return user
 }

@@ -365,10 +365,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
 /* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
 /* harmony import */ var _components_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
-/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
-/* harmony import */ var _components_plansSection_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/plansSection.js */ "./src/js/components/plansSection.js");
-/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
-/* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
+/* harmony import */ var _components_mainApp_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/mainApp.js */ "./src/js/components/mainApp.js");
+/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
+/* harmony import */ var _components_plansSection_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/plansSection.js */ "./src/js/components/plansSection.js");
+/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
+/* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
+
 
 
 
@@ -1253,14 +1255,44 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   renderPlansSection: () => (/* binding */ renderPlansSection)
 /* harmony export */ });
+/* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
+/* harmony import */ var _mainApp_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mainApp.js */ "./src/js/components/mainApp.js");
+
+
 function renderPlansSection() {
-  const user = JSON.parse(localStorage.getItem('userInfo'));
-  const choosePlanSection = document.querySelector('');
-  if (!user.subscription.title) {
-    // if user has no subscription => show choosePlan
+  // const user = JSON.parse(localStorage.getItem('userInfo'))
+  const planSectionComponents = {
+    choosePlan: document.querySelector('.choose'),
+    selectedPlan: document.querySelector('.selected-plan'),
+    choosePlanBtns: document.querySelectorAll('[data-choose-plan')
+  };
+  planSectionComponents.choosePlanBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      planChooseBtnsHandler(e.target);
+    });
+  });
+  if (!_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title) {
+    // if user has no subscription
+    showChoosePlans(planSectionComponents);
   } else {
-    // if user has subscription => show planInfo, set plan class to main app element
+    // if user has subscription
+    showSelectedPlan(planSectionComponents);
   }
+}
+function showChoosePlans(components) {
+  components.choosePlan.classList.remove('hidden');
+  components.selectedPlan.classList.add('hidden');
+}
+function showSelectedPlan(components) {
+  components.choosePlan.classList.add('hidden');
+  components.selectedPlan.classList.remove('hidden');
+}
+function planChooseBtnsHandler(button) {
+  // const user = JSON.parse(localStorage.getItem('userInfo'))
+  const plan = button.getAttribute('data-choose-plan');
+  _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title = plan;
+  (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
+  (0,_mainApp_js__WEBPACK_IMPORTED_MODULE_1__.setAppPlan)(plan);
 }
 
 /***/ }),
@@ -1396,6 +1428,24 @@ options.forEach(e => {
 // change selected language flag
 function changeLanguage(e) {
   btnImg.src = `./img/flag-${this.dataset.lang}.png`;
+}
+
+/***/ }),
+
+/***/ "./src/js/components/mainApp.js":
+/*!**************************************!*\
+  !*** ./src/js/components/mainApp.js ***!
+  \**************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   setAppPlan: () => (/* binding */ setAppPlan)
+/* harmony export */ });
+function setAppPlan(plan) {
+  const appContainer = document.querySelector('.app');
+  appContainer.className = `app ${plan}`;
 }
 
 /***/ }),
@@ -1816,7 +1866,9 @@ function setTextareaSize() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   updateUser: () => (/* binding */ updateUser)
+/* harmony export */   User: () => (/* binding */ User),
+/* harmony export */   updateUser: () => (/* binding */ updateUser),
+/* harmony export */   user: () => (/* binding */ user)
 /* harmony export */ });
 /* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getCookie.js */ "./src/js/components/getCookie.js");
 /* harmony import */ var _formDataToJSON_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
@@ -1838,6 +1890,12 @@ const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)('userID'
 //   return user
 // }
 
+class User {
+  constructor(userObj) {
+    Object.assign(this, userObj);
+  }
+}
+
 // mock user object
 const userObj = {
   id: 4,
@@ -1853,7 +1911,7 @@ const userObj = {
     'avatar': false
   },
   'subscription': {
-    'title': null,
+    'title': '',
     // friends, love, work
     'subscription_info': {
       'description': null,
@@ -1864,39 +1922,40 @@ const userObj = {
     }
   }
 };
-localStorage.setItem('userInfo', JSON.stringify(userObj));
-async function updateUser(formData) {
-  // for server fetching
-  // const user = await sendUserInfo(userId, data)
+let user = new User(userObj);
+localStorage.setItem('userInfo', JSON.stringify(user));
+async function updateUser(data) {
+  // user is taken from above: User instance
 
-  // local use
-  const user = JSON.parse(localStorage.getItem('userInfo'));
-  for (let [name, value] of formData) {
-    if (value) {
-      user.profile[name] = value;
+  // for submitted profile form
+  if (data instanceof FormData) {
+    for (let [name, value] of data) {
+      if (value) {
+        user.profile[name] = value;
+      }
     }
   }
+  if (data instanceof User) {
+    console.log('user update:', data);
+  }
 
+  // user = await sendUserInfo(user)
   // always usable
   localStorage.setItem('userInfo', JSON.stringify(user));
 }
 
-// need formData format
-async function sendUserInfo(userId, formData) {
-  const data = formData;
-
-  // if server requires json
-  // data = formDataToJSON(formData)
-
-  const response = await fetch(`http://vm592483.eurodir.ru/api/v1/${userId}`, {
+// returns userObj
+async function sendUserInfo(user) {
+  const response = await fetch(`http://vm592483.eurodir.ru/api/v1/${user.id}`, {
     method: "POST",
     headers: {
-      // "Content-Type": "application/json",
-      'Content-Type': 'application/x-www-form-urlencoded'
+      "Content-Type": "application/json"
+      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: data
+    body: user
   });
-  const user = await response.json();
+  const userObj = await response.json();
+  user = new User(userObj);
   return user;
 }
 
