@@ -1690,9 +1690,13 @@ async function userInfoRender() {
   } else {
     showUserInfo(userInfoComponents, user);
   }
-  userInfoComponents.editBtn.addEventListener('click', () => {
-    showInfoForm(userInfoComponents, user);
-  });
+
+  // userInfoComponents.editBtn.addEventListener(
+  //   'click', () => {
+  //     showInfoForm(userInfoComponents, user)
+  // })
+
+  userInfoComponents.editBtn.addEventListener('click', showInfoForm.bind(null, userInfoComponents, user));
   userInfoComponents.form.addEventListener('submit', event => {
     event.preventDefault();
     (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(userInfoComponents.form));

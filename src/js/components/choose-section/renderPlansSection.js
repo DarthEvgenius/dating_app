@@ -42,5 +42,6 @@ function planChooseBtnsHandler(button) {
   user.subscription.title = plan
   updateUser(user)
   setAppPlan(plan)
+
 }
 

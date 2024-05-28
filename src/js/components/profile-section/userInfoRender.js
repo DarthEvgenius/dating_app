@@ -20,10 +20,13 @@ export async function userInfoRender() {
     showUserInfo(userInfoComponents, user)
   }
 
-  userInfoComponents.editBtn.addEventListener(
-    'click', () => {
-      showInfoForm(userInfoComponents, user)
-  })
+  // userInfoComponents.editBtn.addEventListener(
+  //   'click', () => {
+  //     showInfoForm(userInfoComponents, user)
+  // })
+
+    userInfoComponents.editBtn.addEventListener(
+    'click', showInfoForm.bind(null, userInfoComponents, user))
 
   userInfoComponents.form.addEventListener('submit', (event) => {
     event.preventDefault()
