@@ -28,28 +28,14 @@ function showSelectedPlan(components) {
   components.choosePlan.classList.add('hidden')
   components.selectedPlan.classList.remove('hidden')
 
-  const planElement = components.selectedPlan.querySelector(
-    `.selected-plan--${user.subscription.title}`)
-
-  console.log(planElement);
-
-
-  // if(user.subscription.title === 'love') {
-  //   const planElement = components.selectedPlan.querySelector(
-  //     `..selected-plan--${user.subscription.title}`
-  //   )
-
-  // } else if (user.subscription.title === 'friends') {
-  //   components.planLove.classList.add('hidden')
-  //   components.planFriends.classList.add('hidden')
-  //   components.planWork.classList.add('hidden')
-
-  // } else if (user.subscription.title === 'work') {
-  //   components.planLove.classList.add('hidden')
-  //   components.planFriends.classList.add('hidden')
-  //   components.planWork.classList.add('hidden')
-  // }
-
+  // show selected plan, hide others
+  for (const elem of components.planInfoSections) {
+    if(elem.classList.contains(`selected-plan--${user.subscription.title}`)) {
+      elem.classList.remove('hidden')
+    } else {
+      elem.classList.add('hidden')
+    }
+  }
 }
 
 function planChooseBtnsHandler(button) {

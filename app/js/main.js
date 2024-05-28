@@ -1281,24 +1281,15 @@ function showChoosePlans(components) {
 function showSelectedPlan(components) {
   components.choosePlan.classList.add('hidden');
   components.selectedPlan.classList.remove('hidden');
-  const planElement = components.selectedPlan.querySelector(`.selected-plan--${_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title}`);
-  console.log(planElement);
 
-  // if(user.subscription.title === 'love') {
-  //   const planElement = components.selectedPlan.querySelector(
-  //     `..selected-plan--${user.subscription.title}`
-  //   )
-
-  // } else if (user.subscription.title === 'friends') {
-  //   components.planLove.classList.add('hidden')
-  //   components.planFriends.classList.add('hidden')
-  //   components.planWork.classList.add('hidden')
-
-  // } else if (user.subscription.title === 'work') {
-  //   components.planLove.classList.add('hidden')
-  //   components.planFriends.classList.add('hidden')
-  //   components.planWork.classList.add('hidden')
-  // }
+  // show selected plan, hide others
+  for (const elem of components.planInfoSections) {
+    if (elem.classList.contains(`selected-plan--${_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title}`)) {
+      elem.classList.remove('hidden');
+    } else {
+      elem.classList.add('hidden');
+    }
+  }
 }
 function planChooseBtnsHandler(button) {
   // const user = JSON.parse(localStorage.getItem('userInfo'))
@@ -1477,9 +1468,7 @@ const planSectionComponents = {
   choosePlan: document.querySelector('.choose'),
   selectedPlan: document.querySelector('.selected-plan'),
   choosePlanBtns: document.querySelectorAll('[data-choose-plan'),
-  planLove: document.querySelector('.selected-plan--love'),
-  planFriends: document.querySelector('.selected-plan--friends'),
-  planWork: document.querySelector('.selected-plan--work')
+  planInfoSections: [document.querySelector('.selected-plan--love'), document.querySelector('.selected-plan--friends'), document.querySelector('.selected-plan--work')]
 };
 if (planSectionComponents.choosePlan || planSectionComponents.selectedPlan) {
   (0,_choose_section_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_0__.renderPlansSection)(planSectionComponents);
