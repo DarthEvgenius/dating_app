@@ -1259,16 +1259,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mainApp_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mainApp.js */ "./src/js/components/mainApp.js");
 
 
-function renderPlansSection() {
-  // const user = JSON.parse(localStorage.getItem('userInfo'))
-  const planSectionComponents = {
-    choosePlan: document.querySelector('.choose'),
-    selectedPlan: document.querySelector('.selected-plan'),
-    choosePlanBtns: document.querySelectorAll('[data-choose-plan')
-  };
+function renderPlansSection(planSectionComponents) {
   planSectionComponents.choosePlanBtns.forEach(btn => {
     btn.addEventListener('click', e => {
       planChooseBtnsHandler(e.target);
+      showSelectedPlan(planSectionComponents);
     });
   });
   if (!_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title) {
@@ -1286,6 +1281,24 @@ function showChoosePlans(components) {
 function showSelectedPlan(components) {
   components.choosePlan.classList.add('hidden');
   components.selectedPlan.classList.remove('hidden');
+  const planElement = components.selectedPlan.querySelector(`.selected-plan--${_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title}`);
+  console.log(planElement);
+
+  // if(user.subscription.title === 'love') {
+  //   const planElement = components.selectedPlan.querySelector(
+  //     `..selected-plan--${user.subscription.title}`
+  //   )
+
+  // } else if (user.subscription.title === 'friends') {
+  //   components.planLove.classList.add('hidden')
+  //   components.planFriends.classList.add('hidden')
+  //   components.planWork.classList.add('hidden')
+
+  // } else if (user.subscription.title === 'work') {
+  //   components.planLove.classList.add('hidden')
+  //   components.planFriends.classList.add('hidden')
+  //   components.planWork.classList.add('hidden')
+  // }
 }
 function planChooseBtnsHandler(button) {
   // const user = JSON.parse(localStorage.getItem('userInfo'))
@@ -1460,7 +1473,17 @@ function setAppPlan(plan) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _choose_section_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./choose-section/renderPlansSection.js */ "./src/js/components/choose-section/renderPlansSection.js");
 
-(0,_choose_section_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_0__.renderPlansSection)();
+const planSectionComponents = {
+  choosePlan: document.querySelector('.choose'),
+  selectedPlan: document.querySelector('.selected-plan'),
+  choosePlanBtns: document.querySelectorAll('[data-choose-plan'),
+  planLove: document.querySelector('.selected-plan--love'),
+  planFriends: document.querySelector('.selected-plan--friends'),
+  planWork: document.querySelector('.selected-plan--work')
+};
+if (planSectionComponents.choosePlan || planSectionComponents.selectedPlan) {
+  (0,_choose_section_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_0__.renderPlansSection)(planSectionComponents);
+}
 
 /***/ }),
 
@@ -1676,15 +1699,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
 
-async function userInfoRender() {
+async function userInfoRender(userInfoComponents) {
   const user = JSON.parse(localStorage.getItem('userInfo'));
-  const userInfoComponents = {
-    description: document.querySelector('.profile__info-description'),
-    form: document.querySelector('[name="profile__info-form"'),
-    editBtn: document.querySelector('#info-edit-btn'),
-    saveBtn: document.querySelector('#profile-form-save'),
-    logoutBtn: document.querySelector('#profile-logout')
-  };
   if (!user.profile.full_name || !user.profile.age) {
     showInfoForm(userInfoComponents, user);
   } else {
@@ -1782,8 +1798,17 @@ __webpack_require__.r(__webpack_exports__);
 // user's profile
 // const userObj = JSON.parse(localStorage.getItem('userInfo'))
 
+const userInfoComponents = {
+  description: document.querySelector('.profile__info-description'),
+  form: document.querySelector('[name="profile__info-form"'),
+  editBtn: document.querySelector('#info-edit-btn'),
+  saveBtn: document.querySelector('#profile-form-save'),
+  logoutBtn: document.querySelector('#profile-logout')
+};
 (0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_3__.avatarForm)();
-(0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_4__.userInfoRender)();
+if (userInfoComponents.form || userInfoComponents.description) {
+  (0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_4__.userInfoRender)(userInfoComponents);
+}
 
 /***/ }),
 

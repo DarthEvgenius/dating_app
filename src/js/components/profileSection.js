@@ -10,6 +10,16 @@ import { userInfoRender } from './profile-section/userInfoRender.js'
 // user's profile
 // const userObj = JSON.parse(localStorage.getItem('userInfo'))
 
+const userInfoComponents = {
+  description: document.querySelector('.profile__info-description'),
+  form: document.querySelector('[name="profile__info-form"'),
+  editBtn: document.querySelector('#info-edit-btn'),
+  saveBtn: document.querySelector('#profile-form-save'),
+  logoutBtn: document.querySelector('#profile-logout')
+}
+
 avatarForm()
 
-userInfoRender()
+if(userInfoComponents.form || userInfoComponents.description) {
+  userInfoRender(userInfoComponents)
+}

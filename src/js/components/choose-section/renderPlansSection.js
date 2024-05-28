@@ -1,18 +1,12 @@
 import { user, updateUser } from "../userObject.js";
 import { setAppPlan } from "../mainApp.js";
 
-export function renderPlansSection() {
-  // const user = JSON.parse(localStorage.getItem('userInfo'))
-  const planSectionComponents = {
-    choosePlan: document.querySelector('.choose'),
-    selectedPlan: document.querySelector('.selected-plan'),
-    choosePlanBtns: document.querySelectorAll('[data-choose-plan')
-  }
-
+export function renderPlansSection(planSectionComponents) {
 
   planSectionComponents.choosePlanBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       planChooseBtnsHandler(e.target)
+      showSelectedPlan(planSectionComponents)
     })
   })
 
@@ -33,6 +27,29 @@ function showChoosePlans(components) {
 function showSelectedPlan(components) {
   components.choosePlan.classList.add('hidden')
   components.selectedPlan.classList.remove('hidden')
+
+  const planElement = components.selectedPlan.querySelector(
+    `.selected-plan--${user.subscription.title}`)
+
+  console.log(planElement);
+
+
+  // if(user.subscription.title === 'love') {
+  //   const planElement = components.selectedPlan.querySelector(
+  //     `..selected-plan--${user.subscription.title}`
+  //   )
+
+  // } else if (user.subscription.title === 'friends') {
+  //   components.planLove.classList.add('hidden')
+  //   components.planFriends.classList.add('hidden')
+  //   components.planWork.classList.add('hidden')
+
+  // } else if (user.subscription.title === 'work') {
+  //   components.planLove.classList.add('hidden')
+  //   components.planFriends.classList.add('hidden')
+  //   components.planWork.classList.add('hidden')
+  // }
+
 }
 
 function planChooseBtnsHandler(button) {

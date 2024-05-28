@@ -1,15 +1,9 @@
 import { updateUser } from "../userObject.js"
 
-export async function userInfoRender() {
+export async function userInfoRender(userInfoComponents) {
   const user = JSON.parse(localStorage.getItem('userInfo'))
 
-  const userInfoComponents = {
-    description: document.querySelector('.profile__info-description'),
-    form: document.querySelector('[name="profile__info-form"'),
-    editBtn: document.querySelector('#info-edit-btn'),
-    saveBtn: document.querySelector('#profile-form-save'),
-    logoutBtn: document.querySelector('#profile-logout')
-  }
+
 
   if (
     !user.profile.full_name ||
