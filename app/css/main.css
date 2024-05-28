@@ -359,6 +359,7 @@ a {
   font-weight: 400;
   font-size: var(--fs-0-5);
   color: var(--light-color);
+  background-color: var(--dark-color);
 }
 
 .offset-container {
@@ -450,7 +451,7 @@ a {
   .profile-tabs__container::-webkit-scrollbar-thumb,
   .chat-opponent::-webkit-scrollbar-thumb,
   .content__plans::-webkit-scrollbar-thumb {
-    background-color: var(--olive-light);
+    background-color: var(--plan-color, var(--olive-light));
     border: 1px solid var(--bd-sign-in);
     border-radius: 10px;
   }
