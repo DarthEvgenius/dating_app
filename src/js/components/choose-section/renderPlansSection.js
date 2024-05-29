@@ -1,5 +1,6 @@
 import { user, updateUser } from "../userObject.js";
 import { setAppPlan } from "../mainApp.js";
+import { planFormHandler } from "./planForms.js";
 
 export function renderPlansSection(planSectionComponents) {
 
@@ -16,6 +17,7 @@ export function renderPlansSection(planSectionComponents) {
   } else {
     // if user has subscription
     showSelectedPlan(planSectionComponents)
+
   }
 }
 
@@ -28,12 +30,15 @@ function showSelectedPlan(components) {
   components.choosePlan.classList.add('hidden')
   components.selectedPlan.classList.remove('hidden')
 
+  const planClass = `selected-plan--${user.subscription.title}`
+
   // show selected plan, hide others
-  for (const elem of components.planInfoSections) {
-    if(elem.classList.contains(`selected-plan--${user.subscription.title}`)) {
-      elem.classList.remove('hidden')
+  for (const planSection of components.planInfoSections) {
+    if(planSection.classList.contains(planClass)) {
+      planSection.classList.remove('hidden')
+      planFormHandler(planSection)
     } else {
-      elem.classList.add('hidden')
+      planSection.classList.add('hidden')
     }
   }
 }

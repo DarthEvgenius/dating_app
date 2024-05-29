@@ -1,9 +1,7 @@
-import { updateUser } from "../userObject.js"
+import { user, updateUser, refreshUser } from "../userObject.js"
 
 export async function userInfoRender(userInfoComponents) {
-  const user = JSON.parse(localStorage.getItem('userInfo'))
-
-
+  // const user = JSON.parse(localStorage.getItem('userInfo'))
 
   if (
     !user.profile.full_name ||
@@ -19,14 +17,17 @@ export async function userInfoRender(userInfoComponents) {
   //     showInfoForm(userInfoComponents, user)
   // })
 
-    userInfoComponents.editBtn.addEventListener(
-    'click', showInfoForm.bind(null, userInfoComponents, user))
+  userInfoComponents.editBtn.addEventListener(
+  'click', showInfoForm.bind(null, userInfoComponents, user))
 
   userInfoComponents.form.addEventListener('submit', (event) => {
     event.preventDefault()
     updateUser(new FormData(userInfoComponents.form))
     userInfoRender()
   })
+
+  userInfoComponents.logoutBtn.removeEventListener('click', refreshUser)
+  userInfoComponents.logoutBtn.addEventListener('click', refreshUser)
 }
 
 function showInfoForm(userInfoComponents, user) {

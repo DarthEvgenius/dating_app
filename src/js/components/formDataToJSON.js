@@ -1,6 +1,6 @@
 export function formDataToJSON(formData) {
   if (!(formData instanceof FormData)) {
-    throw TypeError('formData argument is not an instance of FormData');
+    throw TypeError('Function argument is not an instance of FormData');
   }
 
   const data = {}

@@ -1,17 +1,20 @@
 import { handleError } from '../handleError.js'
+import { user } from '../userObject.js'
 
 // avatar form handler
-// shows form lsrge/small depends on user's avatar
+// shows form large/small, depends on user's avatar
 // upload files validator
 // fetch files to the server
 // add images to avatar slider
 export async function avatarForm() {
-  const user = JSON.parse(localStorage.getItem('userInfo'))
+  // const user = JSON.parse(localStorage.getItem('userInfo'))
   const userId = user.id
 
-  const avatarForm = document.querySelector('[name="avatar__form"')
+  const avatarForm = document.querySelector('[name="avatar__form"]')
   const avatarSwiper = document.querySelector('.avatar__swiper')
   const avatarUpload = document.querySelector('#avatar-upload')
+  console.log(avatarForm);
+
 
   if (avatarForm && avatarUpload) {
     avatarFormRender(user, avatarForm, avatarSwiper)
@@ -23,6 +26,9 @@ export async function avatarForm() {
 
       if (validateFiles(image)) {
         createSlide(image, avatarForm, avatarSwiper)
+        const imageURL = URL.createObjectURL(image)
+        console.log(imageURL);
+
 
         fetch(actionURL, {
           method: 'PATCH',

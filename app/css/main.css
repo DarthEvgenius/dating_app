@@ -352,8 +352,8 @@ a {
 }
 
 .plan-btn {
-  height: 40px;
-  padding-block: 11px;
+  min-height: 40px;
+  padding-block: 13px;
   padding-inline: 24px;
   font-family: var(--font-sailec);
   font-weight: 400;

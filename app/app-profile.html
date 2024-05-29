@@ -388,7 +388,7 @@
     <h3 class="content__plans-header__title">
       Friends
     </h3>
-    <button type="submit" form="friends-form" class="plan-btn btn">Confirm</button>
+    <button type="submit" form="friends-form" class="plan-btn btn form-submit">Confirm</button>
   </div>
 
   <p class="content__plans-description selected-plan__description">
@@ -402,12 +402,12 @@
     <h4 class="profile__info-subtitle selected-plan__form-title">About me:</h4>
 
     <textarea
-      name="friends-form__about"
+      name="friends_description"
       id="friends-form__about"
       cols="100"
       rows="10"
-      class="edit-field__input">Lorem ipsum dolor sit amet, consecteturis adipiscing elit se do eiusmod temporati incididunt ut labore et dolore magna aliqu. Ullamcorper malesuada consequat proin. Ornare massa eget egestas purus viverra accumsan in nisl nisi.
-    </textarea>
+      class="edit-field__input"
+      placeholder="Write something here..."></textarea>
   </form>
 
 </div>
@@ -422,7 +422,10 @@
     <h3 class="content__plans-header__title">
       Love
     </h3>
-    <button type="submit" form="love-form" class="plan-btn btn">Confirm</button>
+    <button
+      type="submit"
+      form="love-form"
+      class="plan-btn btn form-submit">Confirm</button>
   </div>
 
   <p class="content__plans-description selected-plan__description">
@@ -441,13 +444,13 @@
       <div class="radio-input love-form__gender">
         <input
           type="radio"
-          name="prefer-gender"
+          name="preferable_gender"
           id="prefer-gender-male"
           value="male">
         <label for="prefer-gender-male" class="edit-field__input">male</label>
 
         <input type="radio"
-          name="prefer-gender"
+          name="preferable_gender"
           id="prefer-gender-female"
           value="female">
         <label for="prefer-gender-female" class="edit-field__input">female</label>
@@ -455,12 +458,13 @@
     </fieldset>
 
     <fieldset>
-      <h4 class="profile__info-subtitle selected-plan__form-title">About me:</h4>
+      <h4 class="profile__info-subtitle selected-plan__form-title">My relationship goals:</h4>
 
       <textarea
-        name="love-form__about"
+        name="love_description"
         id="love-form__about"
-        class="edit-field__input">Lorem ipsum dolor sit amet, consecteturis adipiscing elit se do eiusmod temporati incididunt ut labore et dolore magna aliqu. Ullamcorper malesuada consequat proin. Ornare massa eget egestas purus viverra accumsan in nisl nisi.</textarea>
+        class="edit-field__input"
+        placeholder="Write something here..."></textarea>
     </fieldset>
 
     <fieldset>
@@ -471,7 +475,7 @@
       <div class="radio-input love-form__age">
         <input
           type="radio"
-          name="prefer-age"
+          name="preferable_age"
           id="prefer-age-1"
           value="18-25">
         <label for="prefer-age-1" class="edit-field__input">18-25</label>
@@ -510,7 +514,7 @@
     <h3 class="content__plans-header__title">
       Work
     </h3>
-    <button type="submit" form="work-form" class="plan-btn btn">Confirm</button>
+    <button type="submit" form="work-form" class="plan-btn btn form-submit" >Confirm</button>
   </div>
 
   <p class="content__plans-description selected-plan__description">
@@ -528,7 +532,7 @@
 
       <input
         type="text"
-        name="work-occupation"
+        name="occupation"
         id="work-occupation"
         class="edit-field__input"
         placeholder="House furniture and accessories">
@@ -541,7 +545,7 @@
 
       <input
         type="text"
-        name="work-income"
+        name="income"
         id="work-income"
         class="edit-field__input"
         placeholder="$21,000">
@@ -555,15 +559,15 @@
       <div class="radio-input work-form__strategy">
         <input
           type="radio"
-          name="work-strategy"
+          name="work_strategy"
           id="strategy-employment"
-          value="male">
+          value="employment">
         <label for="strategy-employment" class="edit-field__input">Employment</label>
 
         <input type="radio"
-          name="work-strategy"
+          name="work_strategy"
           id="strategy-partner"
-          value="female">
+          value="business_partner">
         <label for="strategy-partner" class="edit-field__input"> Business partner</label>
       </div>
     </fieldset>
@@ -574,7 +578,7 @@
       </h4>
 
       <select
-        name="work-skills"
+        name="skills"
         id="work-skills"
         class="edit-field__input">
           <option value="" disabled selected>Choose your skills</option>

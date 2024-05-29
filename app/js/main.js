@@ -1244,6 +1244,38 @@ function socketConnect(chatId, userId) {
 
 /***/ }),
 
+/***/ "./src/js/components/choose-section/planForms.js":
+/*!*******************************************************!*\
+  !*** ./src/js/components/choose-section/planForms.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   planFormHandler: () => (/* binding */ planFormHandler)
+/* harmony export */ });
+/* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
+
+
+
+// get form
+// add listener
+// check if user.subscription contains information
+// fill the fields from user.subscription
+// on submit update userObj
+
+function planFormHandler(planSection) {
+  const planForm = planSection.querySelector('.selected-plan__form');
+  const submitButton = planSection.querySelector('.form-submit');
+  submitButton.addEventListener('click', event => {
+    event.preventDefault();
+    (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(planForm));
+  });
+}
+
+/***/ }),
+
 /***/ "./src/js/components/choose-section/renderPlansSection.js":
 /*!****************************************************************!*\
   !*** ./src/js/components/choose-section/renderPlansSection.js ***!
@@ -1257,6 +1289,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
 /* harmony import */ var _mainApp_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mainApp.js */ "./src/js/components/mainApp.js");
+/* harmony import */ var _planForms_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./planForms.js */ "./src/js/components/choose-section/planForms.js");
+
 
 
 function renderPlansSection(planSectionComponents) {
@@ -1281,13 +1315,15 @@ function showChoosePlans(components) {
 function showSelectedPlan(components) {
   components.choosePlan.classList.add('hidden');
   components.selectedPlan.classList.remove('hidden');
+  const planClass = `selected-plan--${_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title}`;
 
   // show selected plan, hide others
-  for (const elem of components.planInfoSections) {
-    if (elem.classList.contains(`selected-plan--${_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title}`)) {
-      elem.classList.remove('hidden');
+  for (const planSection of components.planInfoSections) {
+    if (planSection.classList.contains(planClass)) {
+      planSection.classList.remove('hidden');
+      (0,_planForms_js__WEBPACK_IMPORTED_MODULE_2__.planFormHandler)(planSection);
     } else {
-      elem.classList.add('hidden');
+      planSection.classList.add('hidden');
     }
   }
 }
@@ -1367,7 +1403,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function formDataToJSON(formData) {
   if (!(formData instanceof FormData)) {
-    throw TypeError('formData argument is not an instance of FormData');
+    throw TypeError('Function argument is not an instance of FormData');
   }
   const data = {};
   for (const [name, value] of formData) {
@@ -1447,6 +1483,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   setAppPlan: () => (/* binding */ setAppPlan)
 /* harmony export */ });
+/* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./userObject.js */ "./src/js/components/userObject.js");
+
+if (_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title) {
+  setAppPlan(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title);
+} else {
+  const appContainer = document.querySelector('.app');
+  appContainer.className = 'app';
+}
 function setAppPlan(plan) {
   const appContainer = document.querySelector('.app');
   appContainer.className = `app ${plan}`;
@@ -1488,27 +1532,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   avatarForm: () => (/* binding */ avatarForm)
 /* harmony export */ });
 /* harmony import */ var _handleError_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handleError.js */ "./src/js/components/handleError.js");
+/* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
+
 
 
 // avatar form handler
-// shows form lsrge/small depends on user's avatar
+// shows form large/small, depends on user's avatar
 // upload files validator
 // fetch files to the server
 // add images to avatar slider
 async function avatarForm() {
-  const user = JSON.parse(localStorage.getItem('userInfo'));
-  const userId = user.id;
-  const avatarForm = document.querySelector('[name="avatar__form"');
+  // const user = JSON.parse(localStorage.getItem('userInfo'))
+  const userId = _userObject_js__WEBPACK_IMPORTED_MODULE_1__.user.id;
+  const avatarForm = document.querySelector('[name="avatar__form"]');
   const avatarSwiper = document.querySelector('.avatar__swiper');
   const avatarUpload = document.querySelector('#avatar-upload');
+  console.log(avatarForm);
   if (avatarForm && avatarUpload) {
-    avatarFormRender(user, avatarForm, avatarSwiper);
+    avatarFormRender(_userObject_js__WEBPACK_IMPORTED_MODULE_1__.user, avatarForm, avatarSwiper);
     avatarForm.addEventListener('submit', event => {
       event.preventDefault();
       const image = avatarUpload.files[0];
       const actionURL = `http://vm592483.eurodir.ru/api/v1/profile/${userId}/`;
       if (validateFiles(image)) {
         createSlide(image, avatarForm, avatarSwiper);
+        const imageURL = URL.createObjectURL(image);
+        console.log(imageURL);
         fetch(actionURL, {
           method: 'PATCH',
           body: new FormData(avatarForm)
@@ -1689,11 +1738,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
 
 async function userInfoRender(userInfoComponents) {
-  const user = JSON.parse(localStorage.getItem('userInfo'));
-  if (!user.profile.full_name || !user.profile.age) {
-    showInfoForm(userInfoComponents, user);
+  // const user = JSON.parse(localStorage.getItem('userInfo'))
+
+  if (!_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.profile.full_name || !_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.profile.age) {
+    showInfoForm(userInfoComponents, _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
   } else {
-    showUserInfo(userInfoComponents, user);
+    showUserInfo(userInfoComponents, _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
   }
 
   // userInfoComponents.editBtn.addEventListener(
@@ -1701,12 +1751,14 @@ async function userInfoRender(userInfoComponents) {
   //     showInfoForm(userInfoComponents, user)
   // })
 
-  userInfoComponents.editBtn.addEventListener('click', showInfoForm.bind(null, userInfoComponents, user));
+  userInfoComponents.editBtn.addEventListener('click', showInfoForm.bind(null, userInfoComponents, _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user));
   userInfoComponents.form.addEventListener('submit', event => {
     event.preventDefault();
     (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(userInfoComponents.form));
     userInfoRender();
   });
+  userInfoComponents.logoutBtn.removeEventListener('click', _userObject_js__WEBPACK_IMPORTED_MODULE_0__.refreshUser);
+  userInfoComponents.logoutBtn.addEventListener('click', _userObject_js__WEBPACK_IMPORTED_MODULE_0__.refreshUser);
 }
 function showInfoForm(userInfoComponents, user) {
   userInfoComponents.form.classList.remove('hidden');
@@ -1795,7 +1847,7 @@ const userInfoComponents = {
   logoutBtn: document.querySelector('#profile-logout')
 };
 (0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_3__.avatarForm)();
-if (userInfoComponents.form || userInfoComponents.description) {
+if (userInfoComponents.form || userInfoComponents.description || userInfoComponents.logoutBtn) {
   (0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_4__.userInfoRender)(userInfoComponents);
 }
 
@@ -1885,6 +1937,7 @@ function setTextareaSize() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   User: () => (/* binding */ User),
+/* harmony export */   refreshUser: () => (/* binding */ refreshUser),
 /* harmony export */   updateUser: () => (/* binding */ updateUser),
 /* harmony export */   user: () => (/* binding */ user)
 /* harmony export */ });
@@ -1926,21 +1979,27 @@ const userObj = {
     'birth_place': null,
     'location': null,
     'languages': null,
-    'avatar': false
+    'avatar': [] // urls for images
   },
   'subscription': {
     'title': '',
     // friends, love, work
     'subscription_info': {
-      'description': null,
+      'love_description': null,
+      'friends_description': null,
       'preferable_gender': null,
       'preferable_age': null,
       'occupation': null,
-      'income': null
+      'income': null,
+      'work_strategy': null,
+      'skills': null
     }
   }
 };
-let user = new User(userObj);
+let user = JSON.parse(localStorage.getItem('userInfo'));
+if (!user) {
+  user = new User(userObj);
+}
 localStorage.setItem('userInfo', JSON.stringify(user));
 async function updateUser(data) {
   // user is taken from above: User instance
@@ -1949,12 +2008,13 @@ async function updateUser(data) {
   if (data instanceof FormData) {
     for (let [name, value] of data) {
       if (value) {
-        user.profile[name] = value;
+        setValueToObjectKey(user, name, value);
       }
     }
+    console.log('user updated:\n', user);
   }
   if (data instanceof User) {
-    console.log('user update:', data);
+    console.log('user update:\n', data);
   }
 
   // user = await sendUserInfo(user)
@@ -1975,6 +2035,25 @@ async function sendUserInfo(user) {
   const userObj = await response.json();
   user = new User(userObj);
   return user;
+}
+function refreshUser() {
+  user = new User(userObj);
+  localStorage.setItem('userInfo', JSON.stringify(user));
+  window.location.href = './app-profile.html';
+}
+
+// find key in object and set value to this key
+function setValueToObjectKey(object, key, value) {
+  Object.keys(object).some(function (k) {
+    if (k === key) {
+      object[k] = value;
+      console.log('user field updated:', `${k} = ${object[k]}`);
+      return;
+    }
+    if (object[k] && typeof object[k] === 'object') {
+      setValueToObjectKey(object[k], key, value);
+    }
+  });
 }
 
 /***/ }),

@@ -36,21 +36,28 @@ const userObj = {
     'birth_place': null,
     'location': null,
     'languages': null,
-    'avatar': false
+    'avatar': [] // urls for images
   },
   'subscription': {
     'title': '', // friends, love, work
     'subscription_info': {
-      'description': null,
+      'love_description': null,
+      'friends_description': null,
       'preferable_gender': null,
       'preferable_age': null,
       'occupation': null,
-      'income': null
+      'income': null,
+      'work_strategy': null,
+      'skills': null
     }
   }
 }
 
-export let user = new User(userObj)
+export let user = JSON.parse(localStorage.getItem('userInfo'))
+
+if(!user) {
+  user = new User(userObj)
+}
 
 localStorage.setItem('userInfo', JSON.stringify(user))
 
@@ -60,14 +67,16 @@ export async function updateUser(data) {
   // for submitted profile form
   if(data instanceof FormData) {
     for(let [name, value] of data) {
-        if (value) {
-          user.profile[name] = value
-        }
+      if (value) {
+        setValueToObjectKey(user, name, value)
       }
     }
+    console.log('user updated:\n', user);
+
+  }
 
   if(data instanceof User) {
-    console.log('user update:', data);
+    console.log('user update:\n', data);
 
   }
 
@@ -93,4 +102,24 @@ async function sendUserInfo(user) {
   const userObj = await response.json()
   user = new User(userObj)
   return user
+}
+
+export function refreshUser() {
+  user = new User(userObj)
+  localStorage.setItem('userInfo', JSON.stringify(user))
+  window.location.href = './app-profile.html'
+}
+
+// find key in object and set value to this key
+function setValueToObjectKey(object, key, value) {
+  Object.keys(object).some(function(k) {
+    if (k === key) {
+      object[k] = value
+      console.log('user field updated:',`${k} = ${object[k]}`);
+      return
+    }
+    if (object[k] && typeof object[k] === 'object') {
+      setValueToObjectKey(object[k], key, value)
+    }
+  })
 }

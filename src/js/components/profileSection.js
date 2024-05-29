@@ -20,6 +20,9 @@ const userInfoComponents = {
 
 avatarForm()
 
-if(userInfoComponents.form || userInfoComponents.description) {
+if(userInfoComponents.form ||
+  userInfoComponents.description ||
+  userInfoComponents.logoutBtn
+) {
   userInfoRender(userInfoComponents)
 }
