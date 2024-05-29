@@ -1271,6 +1271,7 @@ function planFormHandler(planSection) {
   submitButton.addEventListener('click', event => {
     event.preventDefault();
     (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(planForm));
+    window.location.href = './app-matches.html';
   });
 }
 
@@ -1547,7 +1548,6 @@ async function avatarForm() {
   const avatarForm = document.querySelector('[name="avatar__form"]');
   const avatarSwiper = document.querySelector('.avatar__swiper');
   const avatarUpload = document.querySelector('#avatar-upload');
-  console.log(avatarForm);
   if (avatarForm && avatarUpload) {
     avatarFormRender(_userObject_js__WEBPACK_IMPORTED_MODULE_1__.user, avatarForm, avatarSwiper);
     avatarForm.addEventListener('submit', event => {
@@ -1555,9 +1555,10 @@ async function avatarForm() {
       const image = avatarUpload.files[0];
       const actionURL = `http://vm592483.eurodir.ru/api/v1/profile/${userId}/`;
       if (validateFiles(image)) {
-        createSlide(image, avatarForm, avatarSwiper);
         const imageURL = URL.createObjectURL(image);
-        console.log(imageURL);
+        createSlide(imageURL, avatarForm, avatarSwiper);
+        // updateUser(imageURL)
+
         fetch(actionURL, {
           method: 'PATCH',
           body: new FormData(avatarForm)
@@ -1579,11 +1580,15 @@ function avatarFormRender(_ref, avatarForm, avatarSwiper) {
   let {
     profile
   } = _ref;
-  if (profile.avatar) {
+  if (profile.avatar.length) {
     // add class "avatar__form--small" and show avatar swiper
     avatarForm.classList.remove('avatar__form--large');
     avatarForm.classList.add('avatar__form--small');
     avatarSwiper.classList.remove('hidden');
+
+    // profile.avatar.forEach(url => {
+    //   createSlide(url, avatarForm, avatarSwiper)
+    // })
   } else {
     // add class "avatar__form--large" and hide avatar swiper
     avatarForm.classList.remove('avatar__form--small');
@@ -1596,7 +1601,7 @@ function validateFiles(file) {
   const fileTypes = ["image/jpg", "image/jpeg", "image/png", "image/webp"];
   return fileTypes.includes(file.type);
 }
-function createSlide(image, avatarForm, avatarSwiper) {
+function createSlide(src, avatarForm, avatarSwiper) {
   if (avatarSwiper.classList.contains('hidden')) {
     avatarForm.classList.remove('avatar__form--large');
     avatarForm.classList.add('avatar__form--small');
@@ -1605,7 +1610,7 @@ function createSlide(image, avatarForm, avatarSwiper) {
   const swiper = avatarSwiper.querySelector('.swiper-wrapper');
   const slide = document.createElement('div');
   slide.classList.add('swiper-slide');
-  const src = URL.createObjectURL(image);
+  // const src = URL.createObjectURL(image)
   slide.innerHTML = `
       <img loading="lazy" src="${src}" class="image" width="360" height="360" alt="Avatar photo">
     `;
@@ -1724,6 +1729,35 @@ window.addEventListener('resize', () => {
 
 /***/ }),
 
+/***/ "./src/js/components/profile-section/renderPlanTitle.js":
+/*!**************************************************************!*\
+  !*** ./src/js/components/profile-section/renderPlanTitle.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   renderPlanTitle: () => (/* binding */ renderPlanTitle)
+/* harmony export */ });
+function renderPlanTitle(user, profileComponents) {
+  const planTitle = profileComponents.planTitle;
+  planTitle.classList.remove('hidden');
+  const title = planTitle.querySelector('.profile__plan-title');
+  title.innerHTML = `
+    <svg class="plan-svg">
+      <use xlink:href="img/sprite.svg#${user.subscription.title}"></use>
+    </svg>
+    ${user.subscription.title.charAt(0).toUpperCase() + user.subscription.title.slice(1)}
+  `;
+  const detailsBtn = planTitle.querySelector('.plan-btn');
+  detailsBtn.addEventListener('click', () => {
+    window.location.href = './app-profile.html';
+  });
+}
+
+/***/ }),
+
 /***/ "./src/js/components/profile-section/userInfoRender.js":
 /*!*************************************************************!*\
   !*** ./src/js/components/profile-section/userInfoRender.js ***!
@@ -1826,29 +1860,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _profile_section_plan_banner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./profile-section/plan-banner.js */ "./src/js/components/profile-section/plan-banner.js");
 /* harmony import */ var _profile_section_profileSizes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profile-section/profileSizes.js */ "./src/js/components/profile-section/profileSizes.js");
 /* harmony import */ var _profile_section_profile_sections_height_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./profile-section/profile-sections-height.js */ "./src/js/components/profile-section/profile-sections-height.js");
-/* harmony import */ var _profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./profile-section/avatarForm.js */ "./src/js/components/profile-section/avatarForm.js");
-/* harmony import */ var _profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./profile-section/userInfoRender.js */ "./src/js/components/profile-section/userInfoRender.js");
+/* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./userObject.js */ "./src/js/components/userObject.js");
+/* harmony import */ var _profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./profile-section/avatarForm.js */ "./src/js/components/profile-section/avatarForm.js");
+/* harmony import */ var _profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./profile-section/userInfoRender.js */ "./src/js/components/profile-section/userInfoRender.js");
+/* harmony import */ var _profile_section_renderPlanTitle_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./profile-section/renderPlanTitle.js */ "./src/js/components/profile-section/renderPlanTitle.js");
 
 
 
 
 
 
-// get user profile!
+
 
 // user's profile
 // const userObj = JSON.parse(localStorage.getItem('userInfo'))
 
-const userInfoComponents = {
+const profileComponents = {
   description: document.querySelector('.profile__info-description'),
   form: document.querySelector('[name="profile__info-form"'),
   editBtn: document.querySelector('#info-edit-btn'),
   saveBtn: document.querySelector('#profile-form-save'),
-  logoutBtn: document.querySelector('#profile-logout')
+  logoutBtn: document.querySelector('#profile-logout'),
+  planTitle: document.querySelector('.profile__plan')
 };
-(0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_3__.avatarForm)();
-if (userInfoComponents.form || userInfoComponents.description || userInfoComponents.logoutBtn) {
-  (0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_4__.userInfoRender)(userInfoComponents);
+(0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__.avatarForm)();
+if (profileComponents.form || profileComponents.description || profileComponents.logoutBtn) {
+  (0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__.userInfoRender)(profileComponents);
+}
+
+// selected plan title
+if (_userObject_js__WEBPACK_IMPORTED_MODULE_3__.user.subscription.title && profileComponents.planTitle) {
+  (0,_profile_section_renderPlanTitle_js__WEBPACK_IMPORTED_MODULE_6__.renderPlanTitle)(_userObject_js__WEBPACK_IMPORTED_MODULE_3__.user, profileComponents);
 }
 
 /***/ }),
@@ -2016,6 +2058,12 @@ async function updateUser(data) {
   if (data instanceof User) {
     console.log('user update:\n', data);
   }
+
+  // if(data.search('blob:') !== -1) {
+  //   // image url is passed in
+  //   user.profile.avatar.push(data)
+  //   console.log(user.profile.avatar);
+  // }
 
   // user = await sendUserInfo(user)
   // always usable

@@ -1,5 +1,5 @@
 import { handleError } from '../handleError.js'
-import { user } from '../userObject.js'
+import { user, updateUser } from '../userObject.js'
 
 // avatar form handler
 // shows form large/small, depends on user's avatar
@@ -13,8 +13,6 @@ export async function avatarForm() {
   const avatarForm = document.querySelector('[name="avatar__form"]')
   const avatarSwiper = document.querySelector('.avatar__swiper')
   const avatarUpload = document.querySelector('#avatar-upload')
-  console.log(avatarForm);
-
 
   if (avatarForm && avatarUpload) {
     avatarFormRender(user, avatarForm, avatarSwiper)
@@ -25,10 +23,9 @@ export async function avatarForm() {
       const actionURL = `http://vm592483.eurodir.ru/api/v1/profile/${userId}/`
 
       if (validateFiles(image)) {
-        createSlide(image, avatarForm, avatarSwiper)
         const imageURL = URL.createObjectURL(image)
-        console.log(imageURL);
-
+        createSlide(imageURL, avatarForm, avatarSwiper)
+        // updateUser(imageURL)
 
         fetch(actionURL, {
           method: 'PATCH',
@@ -51,11 +48,15 @@ export async function avatarForm() {
 // check if profile has avatar, render avatar form small/large
 // takes "profile" form userObj, form element, swiper element
 function avatarFormRender({ profile }, avatarForm, avatarSwiper) {
-  if (profile.avatar) {
+  if (profile.avatar.length) {
     // add class "avatar__form--small" and show avatar swiper
     avatarForm.classList.remove('avatar__form--large')
     avatarForm.classList.add('avatar__form--small')
     avatarSwiper.classList.remove('hidden')
+
+    // profile.avatar.forEach(url => {
+    //   createSlide(url, avatarForm, avatarSwiper)
+    // })
   } else {
     // add class "avatar__form--large" and hide avatar swiper
     avatarForm.classList.remove('avatar__form--small')
@@ -77,7 +78,7 @@ function validateFiles(file) {
 
 }
 
-function createSlide(image, avatarForm, avatarSwiper) {
+function createSlide(src, avatarForm, avatarSwiper) {
   if (avatarSwiper.classList.contains('hidden')) {
     avatarForm.classList.remove('avatar__form--large')
     avatarForm.classList.add('avatar__form--small')
@@ -88,7 +89,7 @@ function createSlide(image, avatarForm, avatarSwiper) {
 
   const slide = document.createElement('div')
   slide.classList.add('swiper-slide')
-  const src = URL.createObjectURL(image)
+  // const src = URL.createObjectURL(image)
   slide.innerHTML =
     `
       <img loading="lazy" src="${src}" class="image" width="360" height="360" alt="Avatar photo">

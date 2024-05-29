@@ -14,5 +14,6 @@ export function planFormHandler(planSection) {
   submitButton.addEventListener('click', (event) => {
     event.preventDefault()
     updateUser(new FormData(planForm))
+    window.location.href = './app-matches.html'
   })
 }

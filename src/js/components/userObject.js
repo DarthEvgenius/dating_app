@@ -77,8 +77,13 @@ export async function updateUser(data) {
 
   if(data instanceof User) {
     console.log('user update:\n', data);
-
   }
+
+  // if(data.search('blob:') !== -1) {
+  //   // image url is passed in
+  //   user.profile.avatar.push(data)
+  //   console.log(user.profile.avatar);
+  // }
 
   // user = await sendUserInfo(user)
   // always usable
