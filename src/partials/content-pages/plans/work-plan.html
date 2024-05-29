@@ -8,7 +8,7 @@
     <h3 class="content__plans-header__title">
       Work
     </h3>
-    <button type="submit" form="work-form" class="plan-btn btn">Confirm</button>
+    <button type="submit" form="work-form" class="plan-btn btn form-submit" >Confirm</button>
   </div>
 
   <p class="content__plans-description selected-plan__description">
@@ -26,7 +26,7 @@
 
       <input
         type="text"
-        name="work-occupation"
+        name="occupation"
         id="work-occupation"
         class="edit-field__input"
         placeholder="House furniture and accessories">
@@ -39,7 +39,7 @@
 
       <input
         type="text"
-        name="work-income"
+        name="income"
         id="work-income"
         class="edit-field__input"
         placeholder="$21,000">
@@ -53,15 +53,15 @@
       <div class="radio-input work-form__strategy">
         <input
           type="radio"
-          name="work-strategy"
+          name="work_strategy"
           id="strategy-employment"
-          value="male">
+          value="employment">
         <label for="strategy-employment" class="edit-field__input">Employment</label>
 
         <input type="radio"
-          name="work-strategy"
+          name="work_strategy"
           id="strategy-partner"
-          value="female">
+          value="business_partner">
         <label for="strategy-partner" class="edit-field__input"> Business partner</label>
       </div>
     </fieldset>
@@ -72,7 +72,7 @@
       </h4>
 
       <select
-        name="work-skills"
+        name="skills"
         id="work-skills"
         class="edit-field__input">
           <option value="" disabled selected>Choose your skills</option>
