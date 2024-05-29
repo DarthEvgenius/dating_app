@@ -1301,6 +1301,13 @@ function renderPlansSection(planSectionComponents) {
       showSelectedPlan(planSectionComponents);
     });
   });
+  planSectionComponents.changePlanBtn.forEach(btn => {
+    btn.addEventListener('click', () => {
+      _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title = '';
+      (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
+      window.location.href = './app-profile.html';
+    });
+  });
   if (!_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title) {
     // if user has no subscription
     showChoosePlans(planSectionComponents);
@@ -1513,6 +1520,7 @@ const planSectionComponents = {
   choosePlan: document.querySelector('.choose'),
   selectedPlan: document.querySelector('.selected-plan'),
   choosePlanBtns: document.querySelectorAll('[data-choose-plan'),
+  changePlanBtn: document.querySelectorAll('.selected-plan__change'),
   planInfoSections: [document.querySelector('.selected-plan--love'), document.querySelector('.selected-plan--friends'), document.querySelector('.selected-plan--work')]
 };
 if (planSectionComponents.choosePlan || planSectionComponents.selectedPlan) {
@@ -2038,7 +2046,7 @@ const userObj = {
     }
   }
 };
-let user = JSON.parse(localStorage.getItem('userInfo'));
+let user = new User(JSON.parse(localStorage.getItem('userInfo')));
 if (!user) {
   user = new User(userObj);
 }

@@ -53,7 +53,7 @@ const userObj = {
   }
 }
 
-export let user = JSON.parse(localStorage.getItem('userInfo'))
+export let user =new User(JSON.parse(localStorage.getItem('userInfo')))
 
 if(!user) {
   user = new User(userObj)

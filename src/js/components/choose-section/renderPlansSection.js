@@ -11,6 +11,14 @@ export function renderPlansSection(planSectionComponents) {
     })
   })
 
+  planSectionComponents.changePlanBtn.forEach(btn => {
+    btn.addEventListener('click', () => {
+      user.subscription.title = ''
+      updateUser(user)
+      window.location.href = './app-profile.html'
+    })
+  })
+
   if(!user.subscription.title) {
     // if user has no subscription
     showChoosePlans(planSectionComponents)
@@ -41,6 +49,8 @@ function showSelectedPlan(components) {
       planSection.classList.add('hidden')
     }
   }
+
+
 }
 
 function planChooseBtnsHandler(button) {

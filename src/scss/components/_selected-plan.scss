@@ -1,11 +1,15 @@
 .selected-plan {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
   align-items: start;
 
   &__title {
-    margin-bottom: 25px;
+    position: absolute;
+    top: calc((1lh + var(--container-offset)) * -1);
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
     text-transform: uppercase;
   }

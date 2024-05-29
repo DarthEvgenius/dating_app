@@ -4,6 +4,7 @@ const planSectionComponents = {
   choosePlan: document.querySelector('.choose'),
   selectedPlan: document.querySelector('.selected-plan'),
   choosePlanBtns: document.querySelectorAll('[data-choose-plan'),
+  changePlanBtn: document.querySelectorAll('.selected-plan__change'),
   planInfoSections: [
     document.querySelector('.selected-plan--love'),
     document.querySelector('.selected-plan--friends'),
