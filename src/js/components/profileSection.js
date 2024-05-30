@@ -12,7 +12,7 @@ import { renderPlanTitle } from './profile-section/renderPlanTitle.js'
 
 const profileComponents = {
   description: document.querySelector('.profile__info-description'),
-  form: document.querySelector('[name="profile__info-form"'),
+  form: document.querySelector('[name="profile__info-form"]'),
   editBtn: document.querySelector('#info-edit-btn'),
   saveBtn: document.querySelector('#profile-form-save'),
   logoutBtn: document.querySelector('#profile-logout'),

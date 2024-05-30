@@ -1787,17 +1787,17 @@ async function userInfoRender(userInfoComponents) {
   } else {
     showUserInfo(userInfoComponents, _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
   }
+  userInfoComponents.editBtn.addEventListener('click', () => {
+    showInfoForm(userInfoComponents, _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
+  });
 
   // userInfoComponents.editBtn.addEventListener(
-  //   'click', () => {
-  //     showInfoForm(userInfoComponents, user)
-  // })
+  // 'click', showInfoForm.bind(null, userInfoComponents, user))
 
-  userInfoComponents.editBtn.addEventListener('click', showInfoForm.bind(null, userInfoComponents, _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user));
   userInfoComponents.form.addEventListener('submit', event => {
     event.preventDefault();
     (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(userInfoComponents.form));
-    userInfoRender();
+    userInfoRender(userInfoComponents);
   });
   userInfoComponents.logoutBtn.removeEventListener('click', _userObject_js__WEBPACK_IMPORTED_MODULE_0__.refreshUser);
   userInfoComponents.logoutBtn.addEventListener('click', _userObject_js__WEBPACK_IMPORTED_MODULE_0__.refreshUser);
@@ -1885,7 +1885,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const profileComponents = {
   description: document.querySelector('.profile__info-description'),
-  form: document.querySelector('[name="profile__info-form"'),
+  form: document.querySelector('[name="profile__info-form"]'),
   editBtn: document.querySelector('#info-edit-btn'),
   saveBtn: document.querySelector('#profile-form-save'),
   logoutBtn: document.querySelector('#profile-logout'),

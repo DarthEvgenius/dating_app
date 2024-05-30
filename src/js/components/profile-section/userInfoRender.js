@@ -12,18 +12,18 @@ export async function userInfoRender(userInfoComponents) {
     showUserInfo(userInfoComponents, user)
   }
 
-  // userInfoComponents.editBtn.addEventListener(
-  //   'click', () => {
-  //     showInfoForm(userInfoComponents, user)
-  // })
-
   userInfoComponents.editBtn.addEventListener(
-  'click', showInfoForm.bind(null, userInfoComponents, user))
+    'click', () => {
+      showInfoForm(userInfoComponents, user)
+  })
+
+  // userInfoComponents.editBtn.addEventListener(
+  // 'click', showInfoForm.bind(null, userInfoComponents, user))
 
   userInfoComponents.form.addEventListener('submit', (event) => {
     event.preventDefault()
     updateUser(new FormData(userInfoComponents.form))
-    userInfoRender()
+    userInfoRender(userInfoComponents)
   })
 
   userInfoComponents.logoutBtn.removeEventListener('click', refreshUser)
@@ -72,7 +72,7 @@ function populateForm(userInfoComponents, user) {
   }
 }
 
-function showUserInfo(userInfoComponents,user) {
+function showUserInfo(userInfoComponents, user) {
   userInfoComponents.form.classList.add('hidden')
   userInfoComponents.description.classList.remove('hidden')
   userInfoComponents.logoutBtn.classList.remove('hidden')
