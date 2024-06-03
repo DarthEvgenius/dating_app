@@ -43,7 +43,7 @@ export async function avatarForm() {
           headers: {
             Authorization: `${token}`,
             // "Content-Type": "application/json",
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'multipart/form-data; boundary=--***--',
             // 'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: form
