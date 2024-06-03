@@ -19,7 +19,7 @@ export function renderPlansSection(planSectionComponents) {
     })
   })
 
-  if(!user.subscription.title) {
+  if(!user?.subscription?.title) {
     // if user has no subscription
     showChoosePlans(planSectionComponents)
   } else {

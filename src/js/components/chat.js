@@ -13,8 +13,7 @@ import { handleSocketMessage } from './chat/chatViewScripts/handleSocketMessage.
 
 window.addEventListener('resize', setChatElementSizes)
 
-// Delete this!
-// document.cookie = "userID=4"
+
 
 const userId = getCookie("userID")
 let chatId = null

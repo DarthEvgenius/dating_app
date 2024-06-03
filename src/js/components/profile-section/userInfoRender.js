@@ -1,7 +1,15 @@
-import { user, updateUser, refreshUser } from "../userObject.js"
+import { user as userOrigin, updateUser, refreshUser, User } from "../userObject.js"
 
 export async function userInfoRender(userInfoComponents) {
-  // const user = JSON.parse(localStorage.getItem('userInfo'))
+  let user = JSON.parse(localStorage.getItem('userInfo'))
+
+  if (!user?.profile) {
+    user = userOrigin
+    if(!user?.profile) {
+      // log out
+      return
+    }
+  }
 
   if (
     !user.profile.full_name ||

@@ -100,3 +100,7 @@
 Добавить сообщение в чат:
 
 `addMessage(className: string, text: string)`. Параметр "className" принимает два значения: "incoming" или "outgoing".
+
+## Примечания
+
+Токены: userObject.js; fetchChatInfo.js

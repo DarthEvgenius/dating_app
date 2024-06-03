@@ -1,6 +1,6 @@
 import { user } from "./userObject.js"
 
-if(user.subscription.title) {
+if(user?.subscription?.title) {
   setAppPlan(user.subscription.title)
 } else {
   const appContainer = document.querySelector('.app')

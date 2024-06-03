@@ -1,21 +1,51 @@
 import { getCookie } from "./getCookie.js"
 import { formDataToJSON } from "./formDataToJSON.js"
+import { handleError } from './handleError.js'
+
+// Delete this!
+// document.cookie = "userID=4"
 
 const userId = getCookie('userID')
 
-// need URL with GET method for fetching userInfo
+let userOrigin = await getUserInfo(userId).catch(handleError)
 
-// const user = await getUserInfo()
 
-// async function getUserInfo(userId) {
-//   const response = await fetch(
-//     `http://vm592483.eurodir.ru/api/v1/${userId}`
-//   )
+if(!userOrigin) {
+  // log out
+  // window.location.href = 'http://vm592483.eurodir.ru/mainapp/'
+  console.log('No user Origin:', userOrigin);
+} else {
+  console.log('user Origin:', userOrigin);
+}
 
-//   const user = await response.json()
 
-//   return user
-// }
+
+async function getUserInfo(userId) {
+  try {
+    const token = getCookie("ws_login")
+    // console.log(token);
+
+    // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
+
+    const response = await fetch(
+      `http://vm592483.eurodir.ru/api/v1/users/${userId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `${token}`,
+          'Cross-Origin-Opener-Policy': 'unsafe-none',
+        },
+        mode: 'no-cors'
+      }
+    )
+    console.log(response);
+
+    const user = await response.json()
+    return user
+  } catch(e) {
+    console.log(e);
+  }
+}
 
 export class User {
   constructor(userObj) {
@@ -36,7 +66,7 @@ const userObj = {
     'birth_place': null,
     'location': null,
     'languages': null,
-    'avatar': [] // urls for images
+    'avatars': [] // urls for images
   },
   'subscription': {
     'title': '', // friends, love, work
@@ -53,11 +83,10 @@ const userObj = {
   }
 }
 
-export let user =new User(JSON.parse(localStorage.getItem('userInfo')))
+// export let user = new User(JSON.parse(localStorage.getItem('userInfo')))
+export let user = new User(userOrigin)
 
-if(!user) {
-  user = new User(userObj)
-}
+
 
 localStorage.setItem('userInfo', JSON.stringify(user))
 
@@ -77,6 +106,7 @@ export async function updateUser(data) {
 
   if(data instanceof User) {
     console.log('user update:\n', data);
+
   }
 
   // if(data.search('blob:') !== -1) {
@@ -94,7 +124,7 @@ export async function updateUser(data) {
 async function sendUserInfo(user) {
 
   const response = await fetch(
-    `http://vm592483.eurodir.ru/api/v1/${user.id}`,
+    `http://vm592483.eurodir.ru/api/v1/users/${user.id}`,
     {
       method: "POST",
       headers: {
@@ -103,7 +133,7 @@ async function sendUserInfo(user) {
       },
       body: user
     }
-  )
+  ).catch(handleError)
   const userObj = await response.json()
   user = new User(userObj)
   return user
@@ -112,7 +142,7 @@ async function sendUserInfo(user) {
 export function refreshUser() {
   user = new User(userObj)
   localStorage.setItem('userInfo', JSON.stringify(user))
-  window.location.href = './app-profile.html'
+  window.location.href = './authapp/logout'
 }
 
 // find key in object and set value to this key

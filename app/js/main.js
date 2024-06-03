@@ -350,9 +350,10 @@ class GraphTabs {
 /*!*******************************!*\
   !*** ./src/js/_components.js ***!
   \*******************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/userObject.js */ "./src/js/components/userObject.js");
 /* harmony import */ var _components_lang_menu_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/lang-menu.js */ "./src/js/components/lang-menu.js");
@@ -370,6 +371,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_plansSection_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/plansSection.js */ "./src/js/components/plansSection.js");
 /* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
 /* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_components_userObject_js__WEBPACK_IMPORTED_MODULE_0__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_11__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_12__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_13__]);
+([_components_userObject_js__WEBPACK_IMPORTED_MODULE_0__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_11__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_12__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_13__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
 
 
@@ -393,6 +396,8 @@ __webpack_require__.r(__webpack_exports__);
 // import './components/ChatClass.js';
 
 
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -470,10 +475,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.addEventListener('resize', _chat_chatViewScripts_chatSizes_js__WEBPACK_IMPORTED_MODULE_6__.setChatElementSizes);
-
-// Delete this!
-// document.cookie = "userID=4"
-
 const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_8__.getCookie)("userID");
 let chatId = null;
 
@@ -1086,9 +1087,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../getCookie.js */ "./src/js/components/getCookie.js");
 
 async function fetchChatInfo(chatId) {
-  const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="';
-  // const token = getCookie("ws_login")
-
+  // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
+  const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
   let url = `http://vm592483.eurodir.ru/api/v1/chat/${chatId}/`;
   try {
     const response = await fetch(url, {
@@ -1248,14 +1248,17 @@ function socketConnect(chatId, userId) {
 /*!*******************************************************!*\
   !*** ./src/js/components/choose-section/planForms.js ***!
   \*******************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   planFormHandler: () => (/* binding */ planFormHandler)
 /* harmony export */ });
 /* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_0__]);
+_userObject_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
@@ -1274,6 +1277,8 @@ function planFormHandler(planSection) {
     window.location.href = './app-matches.html';
   });
 }
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -1281,9 +1286,10 @@ function planFormHandler(planSection) {
 /*!****************************************************************!*\
   !*** ./src/js/components/choose-section/renderPlansSection.js ***!
   \****************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   renderPlansSection: () => (/* binding */ renderPlansSection)
@@ -1291,6 +1297,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
 /* harmony import */ var _mainApp_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mainApp.js */ "./src/js/components/mainApp.js");
 /* harmony import */ var _planForms_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./planForms.js */ "./src/js/components/choose-section/planForms.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_0__, _mainApp_js__WEBPACK_IMPORTED_MODULE_1__, _planForms_js__WEBPACK_IMPORTED_MODULE_2__]);
+([_userObject_js__WEBPACK_IMPORTED_MODULE_0__, _mainApp_js__WEBPACK_IMPORTED_MODULE_1__, _planForms_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
 
 
@@ -1308,7 +1316,7 @@ function renderPlansSection(planSectionComponents) {
       window.location.href = './app-profile.html';
     });
   });
-  if (!_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title) {
+  if (!_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user?.subscription?.title) {
     // if user has no subscription
     showChoosePlans(planSectionComponents);
   } else {
@@ -1342,6 +1350,8 @@ function planChooseBtnsHandler(button) {
   (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
   (0,_mainApp_js__WEBPACK_IMPORTED_MODULE_1__.setAppPlan)(plan);
 }
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -1484,16 +1494,19 @@ function changeLanguage(e) {
 /*!**************************************!*\
   !*** ./src/js/components/mainApp.js ***!
   \**************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   setAppPlan: () => (/* binding */ setAppPlan)
 /* harmony export */ });
 /* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./userObject.js */ "./src/js/components/userObject.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_0__]);
+_userObject_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
-if (_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title) {
+if (_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user?.subscription?.title) {
   setAppPlan(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title);
 } else {
   const appContainer = document.querySelector('.app');
@@ -1503,6 +1516,8 @@ function setAppPlan(plan) {
   const appContainer = document.querySelector('.app');
   appContainer.className = `app ${plan}`;
 }
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -1510,11 +1525,14 @@ function setAppPlan(plan) {
 /*!*******************************************!*\
   !*** ./src/js/components/plansSection.js ***!
   \*******************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _choose_section_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./choose-section/renderPlansSection.js */ "./src/js/components/choose-section/renderPlansSection.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_choose_section_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_0__]);
+_choose_section_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 const planSectionComponents = {
   choosePlan: document.querySelector('.choose'),
@@ -1526,6 +1544,8 @@ const planSectionComponents = {
 if (planSectionComponents.choosePlan || planSectionComponents.selectedPlan) {
   (0,_choose_section_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_0__.renderPlansSection)(planSectionComponents);
 }
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -1533,15 +1553,20 @@ if (planSectionComponents.choosePlan || planSectionComponents.selectedPlan) {
 /*!*********************************************************!*\
   !*** ./src/js/components/profile-section/avatarForm.js ***!
   \*********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   avatarForm: () => (/* binding */ avatarForm)
 /* harmony export */ });
 /* harmony import */ var _handleError_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handleError.js */ "./src/js/components/handleError.js");
 /* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
+/* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../getCookie.js */ "./src/js/components/getCookie.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_1__]);
+_userObject_js__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+
 
 
 
@@ -1551,24 +1576,33 @@ __webpack_require__.r(__webpack_exports__);
 // fetch files to the server
 // add images to avatar slider
 async function avatarForm() {
-  // const user = JSON.parse(localStorage.getItem('userInfo'))
-  const userId = _userObject_js__WEBPACK_IMPORTED_MODULE_1__.user.id;
+  const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_2__.getCookie)("ws_login");
+
+  // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
+
+  let user = JSON.parse(localStorage.getItem('userInfo'));
+  const userId = user.id;
   const avatarForm = document.querySelector('[name="avatar__form"]');
   const avatarSwiper = document.querySelector('.avatar__swiper');
   const avatarUpload = document.querySelector('#avatar-upload');
   if (avatarForm && avatarUpload) {
-    avatarFormRender(_userObject_js__WEBPACK_IMPORTED_MODULE_1__.user, avatarForm, avatarSwiper);
+    avatarFormRender(user, avatarForm, avatarSwiper);
     avatarForm.addEventListener('submit', event => {
       event.preventDefault();
       const image = avatarUpload.files[0];
-      const actionURL = `http://vm592483.eurodir.ru/api/v1/profile/${userId}/`;
+      const actionURL = `http://vm592483.eurodir.ru/api/v1/users/${userId}/`;
       if (validateFiles(image)) {
         const imageURL = URL.createObjectURL(image);
         createSlide(imageURL, avatarForm, avatarSwiper);
         // updateUser(imageURL)
 
         fetch(actionURL, {
-          method: 'PATCH',
+          method: 'POST',
+          headers: {
+            Authorization: `${token}`,
+            // "Content-Type": "application/json",
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
           body: new FormData(avatarForm)
         }).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_0__.handleError);
         console.log('Image was sent to the server');
@@ -1588,7 +1622,7 @@ function avatarFormRender(_ref, avatarForm, avatarSwiper) {
   let {
     profile
   } = _ref;
-  if (profile.avatar.length) {
+  if (profile?.avatars?.length) {
     // add class "avatar__form--small" and show avatar swiper
     avatarForm.classList.remove('avatar__form--large');
     avatarForm.classList.add('avatar__form--small');
@@ -1624,6 +1658,8 @@ function createSlide(src, avatarForm, avatarSwiper) {
     `;
   swiper.prepend(slide);
 }
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -1770,25 +1806,34 @@ function renderPlanTitle(user, profileComponents) {
 /*!*************************************************************!*\
   !*** ./src/js/components/profile-section/userInfoRender.js ***!
   \*************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   userInfoRender: () => (/* binding */ userInfoRender)
 /* harmony export */ });
 /* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_0__]);
+_userObject_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 async function userInfoRender(userInfoComponents) {
-  // const user = JSON.parse(localStorage.getItem('userInfo'))
-
-  if (!_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.profile.full_name || !_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.profile.age) {
-    showInfoForm(userInfoComponents, _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
+  let user = JSON.parse(localStorage.getItem('userInfo'));
+  if (!user?.profile) {
+    user = _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user;
+    if (!user?.profile) {
+      // log out
+      return;
+    }
+  }
+  if (!user.profile.full_name || !user.profile.age) {
+    showInfoForm(userInfoComponents, user);
   } else {
-    showUserInfo(userInfoComponents, _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
+    showUserInfo(userInfoComponents, user);
   }
   userInfoComponents.editBtn.addEventListener('click', () => {
-    showInfoForm(userInfoComponents, _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
+    showInfoForm(userInfoComponents, user);
   });
 
   // userInfoComponents.editBtn.addEventListener(
@@ -1854,6 +1899,8 @@ function populateUserInfo(user) {
     }
   }
 }
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -1861,9 +1908,10 @@ function populateUserInfo(user) {
 /*!*********************************************!*\
   !*** ./src/js/components/profileSection.js ***!
   \*********************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _profile_section_plan_banner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./profile-section/plan-banner.js */ "./src/js/components/profile-section/plan-banner.js");
 /* harmony import */ var _profile_section_profileSizes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profile-section/profileSizes.js */ "./src/js/components/profile-section/profileSizes.js");
@@ -1872,6 +1920,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./profile-section/avatarForm.js */ "./src/js/components/profile-section/avatarForm.js");
 /* harmony import */ var _profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./profile-section/userInfoRender.js */ "./src/js/components/profile-section/userInfoRender.js");
 /* harmony import */ var _profile_section_renderPlanTitle_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./profile-section/renderPlanTitle.js */ "./src/js/components/profile-section/renderPlanTitle.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_3__, _profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__, _profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__]);
+([_userObject_js__WEBPACK_IMPORTED_MODULE_3__, _profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__, _profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
 
 
@@ -1881,25 +1931,36 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // user's profile
-// const userObj = JSON.parse(localStorage.getItem('userInfo'))
+let user = JSON.parse(localStorage.getItem('userInfo'));
+renderProfileSection();
+function renderProfileSection() {
+  if (!user?.profile) {
+    user = _userObject_js__WEBPACK_IMPORTED_MODULE_3__.user;
+    if (!user?.profile) {
+      // log out
+      return;
+    }
+  }
+  const profileComponents = {
+    description: document.querySelector('.profile__info-description'),
+    form: document.querySelector('[name="profile__info-form"]'),
+    editBtn: document.querySelector('#info-edit-btn'),
+    saveBtn: document.querySelector('#profile-form-save'),
+    logoutBtn: document.querySelector('#profile-logout'),
+    planTitle: document.querySelector('.profile__plan')
+  };
+  (0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__.avatarForm)();
+  if (profileComponents.form || profileComponents.description || profileComponents.logoutBtn) {
+    (0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__.userInfoRender)(profileComponents);
+  }
 
-const profileComponents = {
-  description: document.querySelector('.profile__info-description'),
-  form: document.querySelector('[name="profile__info-form"]'),
-  editBtn: document.querySelector('#info-edit-btn'),
-  saveBtn: document.querySelector('#profile-form-save'),
-  logoutBtn: document.querySelector('#profile-logout'),
-  planTitle: document.querySelector('.profile__plan')
-};
-(0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__.avatarForm)();
-if (profileComponents.form || profileComponents.description || profileComponents.logoutBtn) {
-  (0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__.userInfoRender)(profileComponents);
+  // selected plan title
+  if (user?.subscription?.title && profileComponents.planTitle) {
+    (0,_profile_section_renderPlanTitle_js__WEBPACK_IMPORTED_MODULE_6__.renderPlanTitle)(user, profileComponents);
+  }
 }
-
-// selected plan title
-if (_userObject_js__WEBPACK_IMPORTED_MODULE_3__.user.subscription.title && profileComponents.planTitle) {
-  (0,_profile_section_renderPlanTitle_js__WEBPACK_IMPORTED_MODULE_6__.renderPlanTitle)(_userObject_js__WEBPACK_IMPORTED_MODULE_3__.user, profileComponents);
-}
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -1981,9 +2042,10 @@ function setTextareaSize() {
 /*!*****************************************!*\
   !*** ./src/js/components/userObject.js ***!
   \*****************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   User: () => (/* binding */ User),
@@ -1993,24 +2055,45 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _getCookie_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getCookie.js */ "./src/js/components/getCookie.js");
 /* harmony import */ var _formDataToJSON_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
+/* harmony import */ var _handleError_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./handleError.js */ "./src/js/components/handleError.js");
 
+
+
+
+// Delete this!
+// document.cookie = "userID=4"
 
 const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)('userID');
+let userOrigin = await getUserInfo(userId).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
+if (!userOrigin) {
+  // log out
+  // window.location.href = 'http://vm592483.eurodir.ru/mainapp/'
+  console.log('No user Origin:', userOrigin);
+} else {
+  console.log('user Origin:', userOrigin);
+}
+async function getUserInfo(userId) {
+  try {
+    const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
+    // console.log(token);
 
-// need URL with GET method for fetching userInfo
+    // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
 
-// const user = await getUserInfo()
-
-// async function getUserInfo(userId) {
-//   const response = await fetch(
-//     `http://vm592483.eurodir.ru/api/v1/${userId}`
-//   )
-
-//   const user = await response.json()
-
-//   return user
-// }
-
+    const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${userId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `${token}`,
+        'Cross-Origin-Opener-Policy': 'unsafe-none'
+      },
+      mode: 'no-cors'
+    });
+    console.log(response);
+    const user = await response.json();
+    return user;
+  } catch (e) {
+    console.log(e);
+  }
+}
 class User {
   constructor(userObj) {
     Object.assign(this, userObj);
@@ -2029,7 +2112,7 @@ const userObj = {
     'birth_place': null,
     'location': null,
     'languages': null,
-    'avatar': [] // urls for images
+    'avatars': [] // urls for images
   },
   'subscription': {
     'title': '',
@@ -2046,10 +2129,9 @@ const userObj = {
     }
   }
 };
-let user = new User(JSON.parse(localStorage.getItem('userInfo')));
-if (!user) {
-  user = new User(userObj);
-}
+
+// export let user = new User(JSON.parse(localStorage.getItem('userInfo')))
+let user = new User(userOrigin);
 localStorage.setItem('userInfo', JSON.stringify(user));
 async function updateUser(data) {
   // user is taken from above: User instance
@@ -2080,14 +2162,14 @@ async function updateUser(data) {
 
 // returns userObj
 async function sendUserInfo(user) {
-  const response = await fetch(`http://vm592483.eurodir.ru/api/v1/${user.id}`, {
+  const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${user.id}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: user
-  });
+  }).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
   const userObj = await response.json();
   user = new User(userObj);
   return user;
@@ -2095,7 +2177,7 @@ async function sendUserInfo(user) {
 function refreshUser() {
   user = new User(userObj);
   localStorage.setItem('userInfo', JSON.stringify(user));
-  window.location.href = './app-profile.html';
+  window.location.href = './authapp/logout';
 }
 
 // find key in object and set value to this key
@@ -2111,6 +2193,26 @@ function setValueToObjectKey(object, key, value) {
     }
   });
 }
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } }, 1);
+
+/***/ }),
+
+/***/ "./src/js/main.js":
+/*!************************!*\
+  !*** ./src/js/main.js ***!
+  \************************/
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_components.js */ "./src/js/_components.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_components_js__WEBPACK_IMPORTED_MODULE_0__]);
+_components_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -14516,6 +14618,75 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && queue.d < 1) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = -1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && queue.d < 0 && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -14545,18 +14716,12 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-/*!************************!*\
-  !*** ./src/js/main.js ***!
-  \************************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_components.js */ "./src/js/_components.js");
-
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module used 'module' so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/js/main.js");
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=main.js.map
