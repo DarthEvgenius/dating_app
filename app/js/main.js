@@ -1506,15 +1506,27 @@ __webpack_require__.r(__webpack_exports__);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_0__]);
 _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
-if (_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user?.subscription?.title) {
-  setAppPlan(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title);
+let user = JSON.parse(localStorage.getItem('userInfo'));
+if (!user?.profile) {
+  user = _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user;
+  if (!user?.profile) {
+    // log out
+    (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.refreshUser)();
+  }
+}
+if (user?.subscription?.title) {
+  setAppPlan(user.subscription.title);
 } else {
   const appContainer = document.querySelector('.app');
-  appContainer.className = 'app';
+  if (appContainer) {
+    appContainer.className = 'app';
+  }
 }
 function setAppPlan(plan) {
   const appContainer = document.querySelector('.app');
-  appContainer.className = `app ${plan}`;
+  if (appContainer) {
+    appContainer.className = `app ${plan}`;
+  }
 }
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
@@ -1581,31 +1593,34 @@ async function avatarForm() {
   // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
 
   let user = JSON.parse(localStorage.getItem('userInfo'));
-  const userId = user.id;
   const avatarForm = document.querySelector('[name="avatar__form"]');
   const avatarSwiper = document.querySelector('.avatar__swiper');
   const avatarUpload = document.querySelector('#avatar-upload');
   if (avatarForm && avatarUpload) {
     avatarFormRender(user, avatarForm, avatarSwiper);
-    avatarForm.addEventListener('submit', event => {
+    avatarForm.addEventListener('submit', async event => {
       event.preventDefault();
       const image = avatarUpload.files[0];
-      const actionURL = `http://vm592483.eurodir.ru/api/v1/users/${userId}/`;
+      const actionURL = `http://vm592483.eurodir.ru/api/v1/users/avatar/`;
       if (validateFiles(image)) {
         const imageURL = URL.createObjectURL(image);
         createSlide(imageURL, avatarForm, avatarSwiper);
-        // updateUser(imageURL)
-
-        fetch(actionURL, {
+        let form = new FormData();
+        form.append('avatar-upload', image);
+        console.log(form);
+        console.log(form.has('avatar-upload'));
+        console.log(form.get('avatar-upload'));
+        const response = await fetch(actionURL, {
           method: 'POST',
           headers: {
             Authorization: `${token}`,
             // "Content-Type": "application/json",
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'multipart/form-data'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: new FormData(avatarForm)
+          body: form
         }).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_0__.handleError);
-        console.log('Image was sent to the server');
+        console.log('Image was sent to the server\nResponse:', response.json());
       } else {
         console.log('Supported image formats: .jpg, .jpeg, .png, .webp');
       }
@@ -1627,10 +1642,11 @@ function avatarFormRender(_ref, avatarForm, avatarSwiper) {
     avatarForm.classList.remove('avatar__form--large');
     avatarForm.classList.add('avatar__form--small');
     avatarSwiper.classList.remove('hidden');
-
-    // profile.avatar.forEach(url => {
-    //   createSlide(url, avatarForm, avatarSwiper)
-    // })
+    const swiperWrapper = avatarSwiper.querySelector('.swiper-wrapper');
+    swiperWrapper.innerHTML = '';
+    profile.avatars.forEach(elem => {
+      createSlide(elem.image_path, avatarForm, avatarSwiper);
+    });
   } else {
     // add class "avatar__form--large" and hide avatar swiper
     avatarForm.classList.remove('avatar__form--small');
@@ -2063,37 +2079,6 @@ __webpack_require__.r(__webpack_exports__);
 // Delete this!
 // document.cookie = "userID=4"
 
-const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)('userID');
-let userOrigin = await getUserInfo(userId).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
-if (!userOrigin) {
-  // log out
-  // window.location.href = 'http://vm592483.eurodir.ru/mainapp/'
-  console.log('No user Origin:', userOrigin);
-} else {
-  console.log('user Origin:', userOrigin);
-}
-async function getUserInfo(userId) {
-  try {
-    const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
-    // console.log(token);
-
-    // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
-
-    const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${userId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `${token}`,
-        'Cross-Origin-Opener-Policy': 'unsafe-none'
-      },
-      mode: 'no-cors'
-    });
-    console.log(response);
-    const user = await response.json();
-    return user;
-  } catch (e) {
-    console.log(e);
-  }
-}
 class User {
   constructor(userObj) {
     Object.assign(this, userObj);
@@ -2129,10 +2114,41 @@ const userObj = {
     }
   }
 };
+const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)('userID');
+let user;
+if (userId) {
+  let userOrigin = await getUserInfo(userId).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
+  if (!userOrigin) {
+    // log out
+    refreshUser();
+    console.log('No user Origin:', userOrigin);
+  } else {
+    console.log('user Origin:', userOrigin);
+  }
+  user = new User(userOrigin);
+  localStorage.setItem('userInfo', JSON.stringify(user));
+}
+async function getUserInfo(userId) {
+  try {
+    const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
+    // console.log(token);
 
-// export let user = new User(JSON.parse(localStorage.getItem('userInfo')))
-let user = new User(userOrigin);
-localStorage.setItem('userInfo', JSON.stringify(user));
+    // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
+
+    const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${userId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `${token}`,
+        'Cross-Origin-Opener-Policy': 'unsafe-none'
+      },
+      mode: 'no-cors'
+    });
+    const user = await response.json();
+    return user;
+  } catch (e) {
+    console.log(e);
+  }
+}
 async function updateUser(data) {
   // user is taken from above: User instance
 
@@ -2175,9 +2191,9 @@ async function sendUserInfo(user) {
   return user;
 }
 function refreshUser() {
-  user = new User(userObj);
-  localStorage.setItem('userInfo', JSON.stringify(user));
-  window.location.href = './authapp/logout';
+  // user = new User(userObj)
+  // localStorage.setItem('userInfo', JSON.stringify(user))
+  window.location.href = '/authapp/logout';
 }
 
 // find key in object and set value to this key

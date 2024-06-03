@@ -14,7 +14,6 @@ export async function avatarForm() {
   // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
 
   let user = JSON.parse(localStorage.getItem('userInfo'))
-  const userId = user.id
 
   const avatarForm = document.querySelector('[name="avatar__form"]')
   const avatarSwiper = document.querySelector('.avatar__swiper')
@@ -23,27 +22,34 @@ export async function avatarForm() {
   if (avatarForm && avatarUpload) {
     avatarFormRender(user, avatarForm, avatarSwiper)
 
-    avatarForm.addEventListener('submit', (event) => {
+    avatarForm.addEventListener('submit', async (event) => {
       event.preventDefault()
       const image = avatarUpload.files[0]
-      const actionURL = `http://vm592483.eurodir.ru/api/v1/users/${userId}/`
+      const actionURL = `http://vm592483.eurodir.ru/api/v1/users/avatar/`
 
       if (validateFiles(image)) {
         const imageURL = URL.createObjectURL(image)
         createSlide(imageURL, avatarForm, avatarSwiper)
-        // updateUser(imageURL)
 
-        fetch(actionURL, {
+        let form = new FormData()
+        form.append('avatar-upload', image)
+        console.log(form);
+        console.log(form.has('avatar-upload'));
+        console.log(form.get('avatar-upload'));
+
+
+        const response = await fetch(actionURL, {
           method: 'POST',
           headers: {
             Authorization: `${token}`,
             // "Content-Type": "application/json",
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: new FormData(avatarForm)
+          body: form
         }).catch(handleError)
 
-        console.log('Image was sent to the server');
+        console.log('Image was sent to the server\nResponse:', response.json());
 
       } else {
         console.log('Supported image formats: .jpg, .jpeg, .png, .webp')
@@ -59,15 +65,19 @@ export async function avatarForm() {
 // check if profile has avatar, render avatar form small/large
 // takes "profile" form userObj, form element, swiper element
 function avatarFormRender({ profile }, avatarForm, avatarSwiper) {
+
   if (profile?.avatars?.length) {
     // add class "avatar__form--small" and show avatar swiper
     avatarForm.classList.remove('avatar__form--large')
     avatarForm.classList.add('avatar__form--small')
     avatarSwiper.classList.remove('hidden')
 
-    // profile.avatar.forEach(url => {
-    //   createSlide(url, avatarForm, avatarSwiper)
-    // })
+    const swiperWrapper = avatarSwiper.querySelector('.swiper-wrapper')
+    swiperWrapper.innerHTML = ''
+
+    profile.avatars.forEach(elem => {
+      createSlide(elem.image_path, avatarForm, avatarSwiper)
+    })
   } else {
     // add class "avatar__form--large" and hide avatar swiper
     avatarForm.classList.remove('avatar__form--small')

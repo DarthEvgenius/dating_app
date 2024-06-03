@@ -5,54 +5,12 @@ import { handleError } from './handleError.js'
 // Delete this!
 // document.cookie = "userID=4"
 
-const userId = getCookie('userID')
-
-let userOrigin = await getUserInfo(userId).catch(handleError)
-
-
-if(!userOrigin) {
-  // log out
-  // window.location.href = 'http://vm592483.eurodir.ru/mainapp/'
-  console.log('No user Origin:', userOrigin);
-} else {
-  console.log('user Origin:', userOrigin);
-}
-
-
-
-async function getUserInfo(userId) {
-  try {
-    const token = getCookie("ws_login")
-    // console.log(token);
-
-    // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
-
-    const response = await fetch(
-      `http://vm592483.eurodir.ru/api/v1/users/${userId}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `${token}`,
-          'Cross-Origin-Opener-Policy': 'unsafe-none',
-        },
-        mode: 'no-cors'
-      }
-    )
-    console.log(response);
-
-    const user = await response.json()
-    return user
-  } catch(e) {
-    console.log(e);
-  }
-}
 
 export class User {
   constructor(userObj) {
     Object.assign(this, userObj)
   }
 }
-
 
 // mock user object
 const userObj = {
@@ -83,12 +41,51 @@ const userObj = {
   }
 }
 
-// export let user = new User(JSON.parse(localStorage.getItem('userInfo')))
-export let user = new User(userOrigin)
+const userId = getCookie('userID')
+export let user
+
+if(userId) {
+  let userOrigin = await getUserInfo(userId).catch(handleError)
+
+  if(!userOrigin) {
+    // log out
+    refreshUser()
+    console.log('No user Origin:', userOrigin);
+  } else {
+    console.log('user Origin:', userOrigin);
+  }
+
+  user = new User(userOrigin)
+  localStorage.setItem('userInfo', JSON.stringify(user))
+
+}
+
+async function getUserInfo(userId) {
+  try {
+    const token = getCookie("ws_login")
+    // console.log(token);
+
+    // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
+
+    const response = await fetch(
+      `http://vm592483.eurodir.ru/api/v1/users/${userId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `${token}`,
+          'Cross-Origin-Opener-Policy': 'unsafe-none',
+        },
+        mode: 'no-cors'
+      }
+    )
+    const user = await response.json()
+    return user
+  } catch(e) {
+    console.log(e);
+  }
+}
 
 
-
-localStorage.setItem('userInfo', JSON.stringify(user))
 
 export async function updateUser(data) {
   // user is taken from above: User instance
@@ -140,9 +137,9 @@ async function sendUserInfo(user) {
 }
 
 export function refreshUser() {
-  user = new User(userObj)
-  localStorage.setItem('userInfo', JSON.stringify(user))
-  window.location.href = './authapp/logout'
+  // user = new User(userObj)
+  // localStorage.setItem('userInfo', JSON.stringify(user))
+  window.location.href = '/authapp/logout'
 }
 
 // find key in object and set value to this key

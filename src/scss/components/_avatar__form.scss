@@ -30,8 +30,9 @@
 
   &--small {
     position: absolute;
-    bottom: calc(25px + var(--swiper-padding-bottom) + var(--swiper-pagination-size));
+    // bottom: calc(25px + var(--swiper-padding-bottom) + var(--swiper-pagination-size));
     right: 22px;
+    bottom: 22px;
     z-index: 10;
     border-radius: 50%;
   }
