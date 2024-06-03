@@ -1608,19 +1608,21 @@ async function avatarForm() {
         let form = new FormData();
         form.append('avatar-upload', image);
         console.log(form);
-        console.log(form.has('avatar-upload'));
+        let form2 = new FormData(avatarForm);
+        console.log(form2);
         console.log(form.get('avatar-upload'));
+        console.log(form2.get('avatar-upload'));
         const response = await fetch(actionURL, {
           method: 'POST',
           headers: {
-            Authorization: `${token}`,
+            Authorization: `${token}`
             // "Content-Type": "application/json",
-            'Content-Type': 'multipart/form-data; boundary=--***--'
+            // 'Content-Type': 'multipart/form-data; boundary=--***--',
             // 'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: form
         }).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_0__.handleError);
-        console.log('Image was sent to the server\nResponse:', response.json());
+        console.log('Image was sent to the server\nResponse:', response);
       } else {
         console.log('Supported image formats: .jpg, .jpeg, .png, .webp');
       }
