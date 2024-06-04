@@ -2172,6 +2172,7 @@ async function updateUser(data) {
 
 // returns userObj
 async function sendUserInfo(user) {
+  const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
   const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${user.id}/`, {
     method: "POST",
     headers: {

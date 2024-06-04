@@ -109,6 +109,7 @@ export async function updateUser(data) {
 
 // returns userObj
 async function sendUserInfo(user) {
+  const token = getCookie("ws_login")
 
   const response = await fetch(
     `http://vm592483.eurodir.ru/api/v1/users/${user.id}/`,
