@@ -2166,23 +2166,16 @@ async function updateUser(data) {
   if (data instanceof User) {
     console.log('user update:\n', data);
   }
-
-  // if(data.search('blob:') !== -1) {
-  //   // image url is passed in
-  //   user.profile.avatar.push(data)
-  //   console.log(user.profile.avatar);
-  // }
-
-  // user = await sendUserInfo(user)
-  // always usable
+  user = await sendUserInfo(user);
   localStorage.setItem('userInfo', JSON.stringify(user));
 }
 
 // returns userObj
 async function sendUserInfo(user) {
-  const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${user.id}`, {
+  const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${user.id}/`, {
     method: "POST",
     headers: {
+      Authorization: `${token}`,
       "Content-Type": "application/json"
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
