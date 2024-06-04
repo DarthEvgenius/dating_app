@@ -2176,8 +2176,8 @@ async function sendUserInfo(user) {
   const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${user.id}/`, {
     method: "POST",
     headers: {
-      Authorization: `${token}`
-      // "Content-Type": "application/json",
+      Authorization: `${token}`,
+      "Content-Type": "application/json"
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: JSON.stringify(user)

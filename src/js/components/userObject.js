@@ -117,7 +117,7 @@ async function sendUserInfo(user) {
       method: "POST",
       headers: {
         Authorization: `${token}`,
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: JSON.stringify(user)
