@@ -120,7 +120,7 @@ async function sendUserInfo(user) {
         // "Content-Type": "application/json",
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: user
+      body: JSON.stringify(user)
     }
   ).catch(handleError)
   const userObj = await response.json()

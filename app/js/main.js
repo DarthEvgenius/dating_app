@@ -2180,7 +2180,7 @@ async function sendUserInfo(user) {
       // "Content-Type": "application/json",
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: user
+    body: JSON.stringify(user)
   }).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
   const userObj = await response.json();
   user = new User(userObj);
