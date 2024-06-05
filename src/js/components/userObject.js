@@ -95,24 +95,25 @@ export async function updateUser(data) {
       }
     }
     console.log('user updated:\n', user);
-
-  }
-
-  if(data instanceof User) {
+  } else if(data instanceof User) {
+    user = new User(data)
     console.log('user update:\n', data);
+  } else {
+    console.log('user is not updated!');
   }
-
-  user = await sendUserInfo(user)
 
   localStorage.setItem('userInfo', JSON.stringify(user))
+  return user
 }
 
 // returns userObj
-async function sendUserInfo(user) {
+export async function sendUserInfo(user) {
+
   const token = getCookie("ws_login")
+  const userJSON = localStorage.getItem('userInfo')
 
   const response = await fetch(
-    `http://vm592483.eurodir.ru/api/v1/users/${user.id}/`,
+    `http://vm592483.eurodir.ru/api/v1/users/${userId}/`,
     {
       method: "POST",
       headers: {
@@ -120,17 +121,20 @@ async function sendUserInfo(user) {
         "Content-Type": "application/json",
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify(user)
+      body: userJSON
+      // body: JSON.stringify(user)
     }
   ).catch(handleError)
   const userObj = await response.json()
+
+  console.log('New user from server:', userObj);
   user = new User(userObj)
+  localStorage.setItem('userInfo', JSON.stringify(user))
   return user
 }
 
 export function refreshUser() {
-  // user = new User(userObj)
-  // localStorage.setItem('userInfo', JSON.stringify(user))
+  localStorage.removeItem('userInfo')
   window.location.href = '/authapp/logout'
 }
 
@@ -139,7 +143,6 @@ function setValueToObjectKey(object, key, value) {
   Object.keys(object).some(function(k) {
     if (k === key) {
       object[k] = value
-      console.log('user field updated:',`${k} = ${object[k]}`);
       return
     }
     if (object[k] && typeof object[k] === 'object') {
