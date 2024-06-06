@@ -1,12 +1,15 @@
-import { user as userOrigin, updateUser, refreshUser, User } from "../userObject.js"
+import { user as userOrigin, updateUser, sendUserInfo, refreshUser, User } from "../userObject.js"
 
 export async function userInfoRender(userInfoComponents) {
+  removeUserInfoEventListeners(userInfoComponents)
+
   let user = JSON.parse(localStorage.getItem('userInfo'))
 
   if (!user?.profile) {
     user = userOrigin
     if(!user?.profile) {
       // log out
+      refreshUser()
       return
     }
   }
@@ -28,15 +31,23 @@ export async function userInfoRender(userInfoComponents) {
   // userInfoComponents.editBtn.addEventListener(
   // 'click', showInfoForm.bind(null, userInfoComponents, user))
 
-  userInfoComponents.form.addEventListener('submit', (event) => {
-    event.preventDefault()
-    updateUser(new FormData(userInfoComponents.form))
-    userInfoRender(userInfoComponents)
+  userInfoComponents.form.addEventListener('submit', submitUserInfoForm.bind(userInfoComponents),
+  {
+    once: true,
   })
 
-  userInfoComponents.logoutBtn.removeEventListener('click', refreshUser)
+  // userInfoComponents.form.addEventListener('submit', async (event) => {
+  //   event.preventDefault()
+
+  //   user = updateUser(new FormData(userInfoComponents.form))
+  //   userInfoRender(userInfoComponents)
+  //   sendUserInfo()
+  // })
+
   userInfoComponents.logoutBtn.addEventListener('click', refreshUser)
 }
+
+
 
 function showInfoForm(userInfoComponents, user) {
   userInfoComponents.form.classList.remove('hidden')
@@ -47,8 +58,9 @@ function showInfoForm(userInfoComponents, user) {
 }
 
 // populate form inputs with user's info
-function populateForm(userInfoComponents, user) {
+function populateForm(userInfoComponents) {
   const form = userInfoComponents.form
+  const user = JSON.parse(localStorage.getItem('userInfo'))
 
   if (user.profile.full_name) {
     form['profile-name-edit'].value = `${user.profile.full_name}`
@@ -80,6 +92,15 @@ function populateForm(userInfoComponents, user) {
   }
 }
 
+async function submitUserInfoForm(event) {
+  event.preventDefault()
+
+  updateUser(new FormData(this.form))
+  userInfoRender(this)
+  sendUserInfo()
+
+}
+
 function showUserInfo(userInfoComponents, user) {
   userInfoComponents.form.classList.add('hidden')
   userInfoComponents.description.classList.remove('hidden')
@@ -101,4 +122,9 @@ function populateUserInfo(user) {
       }
     }
   }
+}
+
+function removeUserInfoEventListeners(userInfoComponents) {
+  userInfoComponents.form.removeEventListener('submit', submitUserInfoForm)
+  userInfoComponents.logoutBtn.removeEventListener('click', refreshUser)
 }

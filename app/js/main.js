@@ -1819,11 +1819,13 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_use
 _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 async function userInfoRender(userInfoComponents) {
+  removeUserInfoEventListeners(userInfoComponents);
   let user = JSON.parse(localStorage.getItem('userInfo'));
   if (!user?.profile) {
     user = _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user;
     if (!user?.profile) {
       // log out
+      (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.refreshUser)();
       return;
     }
   }
@@ -1839,12 +1841,18 @@ async function userInfoRender(userInfoComponents) {
   // userInfoComponents.editBtn.addEventListener(
   // 'click', showInfoForm.bind(null, userInfoComponents, user))
 
-  userInfoComponents.form.addEventListener('submit', event => {
-    event.preventDefault();
-    (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(userInfoComponents.form));
-    userInfoRender(userInfoComponents);
+  userInfoComponents.form.addEventListener('submit', submitUserInfoForm.bind(userInfoComponents), {
+    once: true
   });
-  userInfoComponents.logoutBtn.removeEventListener('click', _userObject_js__WEBPACK_IMPORTED_MODULE_0__.refreshUser);
+
+  // userInfoComponents.form.addEventListener('submit', async (event) => {
+  //   event.preventDefault()
+
+  //   user = updateUser(new FormData(userInfoComponents.form))
+  //   userInfoRender(userInfoComponents)
+  //   sendUserInfo()
+  // })
+
   userInfoComponents.logoutBtn.addEventListener('click', _userObject_js__WEBPACK_IMPORTED_MODULE_0__.refreshUser);
 }
 function showInfoForm(userInfoComponents, user) {
@@ -1855,8 +1863,9 @@ function showInfoForm(userInfoComponents, user) {
 }
 
 // populate form inputs with user's info
-function populateForm(userInfoComponents, user) {
+function populateForm(userInfoComponents) {
   const form = userInfoComponents.form;
+  const user = JSON.parse(localStorage.getItem('userInfo'));
   if (user.profile.full_name) {
     form['profile-name-edit'].value = `${user.profile.full_name}`;
   }
@@ -1879,6 +1888,12 @@ function populateForm(userInfoComponents, user) {
     form['profile-languages-edit'].value = `${user.profile.languages}`;
   }
 }
+async function submitUserInfoForm(event) {
+  event.preventDefault();
+  (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(this.form));
+  userInfoRender(this);
+  (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.sendUserInfo)();
+}
 function showUserInfo(userInfoComponents, user) {
   userInfoComponents.form.classList.add('hidden');
   userInfoComponents.description.classList.remove('hidden');
@@ -1898,6 +1913,10 @@ function populateUserInfo(user) {
       }
     }
   }
+}
+function removeUserInfoEventListeners(userInfoComponents) {
+  userInfoComponents.form.removeEventListener('submit', submitUserInfoForm);
+  userInfoComponents.logoutBtn.removeEventListener('click', _userObject_js__WEBPACK_IMPORTED_MODULE_0__.refreshUser);
 }
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
@@ -2050,6 +2069,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   User: () => (/* binding */ User),
 /* harmony export */   refreshUser: () => (/* binding */ refreshUser),
+/* harmony export */   sendUserInfo: () => (/* binding */ sendUserInfo),
 /* harmony export */   updateUser: () => (/* binding */ updateUser),
 /* harmony export */   user: () => (/* binding */ user)
 /* harmony export */ });
@@ -2063,37 +2083,6 @@ __webpack_require__.r(__webpack_exports__);
 // Delete this!
 // document.cookie = "userID=4"
 
-const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)('userID');
-let userOrigin = await getUserInfo(userId).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
-if (!userOrigin) {
-  // log out
-  // window.location.href = 'http://vm592483.eurodir.ru/mainapp/'
-  console.log('No user Origin:', userOrigin);
-} else {
-  console.log('user Origin:', userOrigin);
-}
-async function getUserInfo(userId) {
-  try {
-    const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
-    // console.log(token);
-
-    // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
-
-    const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${userId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `${token}`,
-        'Cross-Origin-Opener-Policy': 'unsafe-none'
-      },
-      mode: 'no-cors'
-    });
-    console.log(response);
-    const user = await response.json();
-    return user;
-  } catch (e) {
-    console.log(e);
-  }
-}
 class User {
   constructor(userObj) {
     Object.assign(this, userObj);
@@ -2129,10 +2118,41 @@ const userObj = {
     }
   }
 };
+const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)('userID');
+let user;
+if (userId) {
+  let userOrigin = await getUserInfo(userId).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
+  if (!userOrigin) {
+    // log out
+    refreshUser();
+    console.log('No user Origin:', userOrigin);
+  } else {
+    console.log('user Origin:', userOrigin);
+  }
+  user = new User(userOrigin);
+  localStorage.setItem('userInfo', JSON.stringify(user));
+}
+async function getUserInfo(userId) {
+  try {
+    const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
+    // console.log(token);
 
-// export let user = new User(JSON.parse(localStorage.getItem('userInfo')))
-let user = new User(userOrigin);
-localStorage.setItem('userInfo', JSON.stringify(user));
+    // const token = '"dGVzdGVyNTU=.cGJrZGYyX3NoYTI1NiQ3MjAwMDAkZjc3ZTY0ZTA0OWI5Y2ZiYjBlNTk1ZmViMzNkNTJlZmM1YTIxMWYzNGUxYzUyMWMxZDEzYzg4ODU5MTQyZjJmOSRZMDI5K25NbVd2bFc3YzYwYTE2U2ZUQXd1V1J5NjFNb3JGUnRaMlVIVUZJPQ=="'
+
+    const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${userId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `${token}`,
+        'Cross-Origin-Opener-Policy': 'unsafe-none'
+      },
+      mode: 'no-cors'
+    });
+    const user = await response.json();
+    return user;
+  } catch (e) {
+    console.log(e);
+  }
+}
 async function updateUser(data) {
   // user is taken from above: User instance
 
@@ -2144,40 +2164,39 @@ async function updateUser(data) {
       }
     }
     console.log('user updated:\n', user);
-  }
-  if (data instanceof User) {
+  } else if (data instanceof User) {
+    user = new User(data);
     console.log('user update:\n', data);
+  } else {
+    console.log('user is not updated!');
   }
-
-  // if(data.search('blob:') !== -1) {
-  //   // image url is passed in
-  //   user.profile.avatar.push(data)
-  //   console.log(user.profile.avatar);
-  // }
-
-  // user = await sendUserInfo(user)
-  // always usable
   localStorage.setItem('userInfo', JSON.stringify(user));
+  return user;
 }
 
 // returns userObj
 async function sendUserInfo(user) {
-  const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${user.id}`, {
+  const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");
+  const userJSON = localStorage.getItem('userInfo');
+  const response = await fetch(`http://vm592483.eurodir.ru/api/v1/users/${userId}/`, {
     method: "POST",
     headers: {
+      Authorization: `${token}`,
       "Content-Type": "application/json"
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: user
+    body: userJSON
+    // body: JSON.stringify(user)
   }).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
   const userObj = await response.json();
+  console.log('New user from server:', userObj);
   user = new User(userObj);
+  localStorage.setItem('userInfo', JSON.stringify(user));
   return user;
 }
 function refreshUser() {
-  user = new User(userObj);
-  localStorage.setItem('userInfo', JSON.stringify(user));
-  window.location.href = './authapp/logout';
+  localStorage.removeItem('userInfo');
+  window.location.href = '/authapp/logout';
 }
 
 // find key in object and set value to this key
@@ -2185,7 +2204,6 @@ function setValueToObjectKey(object, key, value) {
   Object.keys(object).some(function (k) {
     if (k === key) {
       object[k] = value;
-      console.log('user field updated:', `${k} = ${object[k]}`);
       return;
     }
     if (object[k] && typeof object[k] === 'object') {
