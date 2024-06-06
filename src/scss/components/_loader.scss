@@ -1,0 +1,32 @@
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background-color: #fff;
+
+
+
+  &__spinner {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border-top: 10px solid var(--love-color-dark);
+    border-bottom: 10px solid var(--friends-color);
+
+    animation: turning 2s ease-in-out infinite
+  }
+
+  @keyframes turning {
+    from {
+      transform: rotate(0turn);
+    }
+    to {
+      transform: rotate(1turn);
+    }
+  }
+}

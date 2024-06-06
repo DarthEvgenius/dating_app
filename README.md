@@ -103,4 +103,13 @@
 
 ## Примечания
 
-Токены: userObject.js; fetchChatInfo.js
+Использование промисов для создания макета запроса на бэкенд:
+``` javascript
+async function getUserLocal() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(createMockUser())
+    }, 2000)
+  })
+}
+```

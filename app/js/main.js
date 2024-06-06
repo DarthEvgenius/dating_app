@@ -1506,11 +1506,27 @@ __webpack_require__.r(__webpack_exports__);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_0__]);
 _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
+function showLoader() {
+  const loaderContainer = document.createElement('div');
+  loaderContainer.classList.add('loader');
+  const loaderSpinner = document.createElement('div');
+  loaderSpinner.classList.add('loader__spinner');
+  loaderContainer.append(loaderSpinner);
+  const appContainer = document.querySelector('.app');
+  appContainer.append(loaderContainer);
+}
+showLoader();
+setTimeout(() => {
+  const loaderContainer = document.querySelector('.loader');
+  loaderContainer.classList.add('hidden');
+}, 2000);
 if (_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user?.subscription?.title) {
   setAppPlan(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title);
 } else {
   const appContainer = document.querySelector('.app');
-  appContainer.className = 'app';
+  if (appContainer) {
+    appContainer.className = 'app';
+  }
 }
 function setAppPlan(plan) {
   const appContainer = document.querySelector('.app');
@@ -2068,6 +2084,7 @@ __webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   User: () => (/* binding */ User),
+/* harmony export */   clearUserLocal: () => (/* binding */ clearUserLocal),
 /* harmony export */   refreshUser: () => (/* binding */ refreshUser),
 /* harmony export */   sendUserInfo: () => (/* binding */ sendUserInfo),
 /* harmony export */   updateUser: () => (/* binding */ updateUser),
@@ -2080,7 +2097,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// Delete this!
+// Local only!
 // document.cookie = "userID=4"
 
 class User {
@@ -2088,43 +2105,16 @@ class User {
     Object.assign(this, userObj);
   }
 }
-
-// mock user object
-const userObj = {
-  id: 4,
-  'username': 'tester55',
-  'profile': {
-    'full_name': 'Alex Brandt',
-    'age': 31,
-    'about_me': null,
-    'gender': null,
-    'birth_place': null,
-    'location': null,
-    'languages': null,
-    'avatars': [] // urls for images
-  },
-  'subscription': {
-    'title': '',
-    // friends, love, work
-    'subscription_info': {
-      'love_description': null,
-      'friends_description': null,
-      'preferable_gender': null,
-      'preferable_age': null,
-      'occupation': null,
-      'income': null,
-      'work_strategy': null,
-      'skills': null
-    }
-  }
-};
 const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)('userID');
 let user;
 if (userId) {
-  let userOrigin = await getUserInfo(userId).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
+  // let userOrigin = await getUserInfo(userId).catch(handleError)
+
+  // for local usage =========================================
+  let userOrigin = await getUserLocal();
+  // =========================================================
+
   if (!userOrigin) {
-    // log out
-    refreshUser();
     console.log('No user Origin:', userOrigin);
   } else {
     console.log('user Origin:', userOrigin);
@@ -2196,7 +2186,10 @@ async function sendUserInfo(user) {
 }
 function refreshUser() {
   localStorage.removeItem('userInfo');
-  window.location.href = '/authapp/logout';
+  // window.location.href = '/authapp/logout'
+
+  // for local usage =========================================
+  window.location.href = '/';
 }
 
 // find key in object and set value to this key
@@ -2210,6 +2203,52 @@ function setValueToObjectKey(object, key, value) {
       setValueToObjectKey(object[k], key, value);
     }
   });
+}
+
+// for local usage =========================================
+function clearUserLocal() {
+  localStorage.removeItem('userInfo');
+  window.location.href = '/';
+}
+async function getUserLocal() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(createMockUser());
+    }, 2000);
+  });
+}
+
+// mock user object
+function createMockUser() {
+  const user = {
+    id: 4,
+    'username': 'tester55',
+    'profile': {
+      'full_name': 'Alex Brandt',
+      'age': 31,
+      'about_me': null,
+      'gender': null,
+      'birth_place': null,
+      'location': null,
+      'languages': null,
+      'avatars': [] // urls for images
+    },
+    'subscription': {
+      'title': '',
+      // friends, love, work
+      'subscription_info': {
+        'love_description': null,
+        'friends_description': null,
+        'preferable_gender': null,
+        'preferable_age': null,
+        'occupation': null,
+        'income': null,
+        'work_strategy': null,
+        'skills': null
+      }
+    }
+  };
+  return user;
 }
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } }, 1);

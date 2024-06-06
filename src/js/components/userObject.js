@@ -2,7 +2,7 @@ import { getCookie } from "./getCookie.js"
 import { formDataToJSON } from "./formDataToJSON.js"
 import { handleError } from './handleError.js'
 
-// Delete this!
+// Local only!
 // document.cookie = "userID=4"
 
 
@@ -12,44 +12,18 @@ export class User {
   }
 }
 
-// mock user object
-const userObj = {
-  id: 4,
-  'username': 'tester55',
-  'profile': {
-    'full_name': 'Alex Brandt',
-    'age': 31,
-    'about_me': null,
-    'gender': null,
-    'birth_place': null,
-    'location': null,
-    'languages': null,
-    'avatars': [] // urls for images
-  },
-  'subscription': {
-    'title': '', // friends, love, work
-    'subscription_info': {
-      'love_description': null,
-      'friends_description': null,
-      'preferable_gender': null,
-      'preferable_age': null,
-      'occupation': null,
-      'income': null,
-      'work_strategy': null,
-      'skills': null
-    }
-  }
-}
-
 const userId = getCookie('userID')
 export let user
 
 if(userId) {
-  let userOrigin = await getUserInfo(userId).catch(handleError)
+
+  // let userOrigin = await getUserInfo(userId).catch(handleError)
+
+  // for local usage =========================================
+  let userOrigin = await getUserLocal()
+  // =========================================================
 
   if(!userOrigin) {
-    // log out
-    refreshUser()
     console.log('No user Origin:', userOrigin);
   } else {
     console.log('user Origin:', userOrigin);
@@ -57,6 +31,8 @@ if(userId) {
 
   user = new User(userOrigin)
   localStorage.setItem('userInfo', JSON.stringify(user))
+
+
 }
 
 async function getUserInfo(userId) {
@@ -135,7 +111,10 @@ export async function sendUserInfo(user) {
 
 export function refreshUser() {
   localStorage.removeItem('userInfo')
-  window.location.href = '/authapp/logout'
+  // window.location.href = '/authapp/logout'
+
+  // for local usage =========================================
+  window.location.href = '/'
 }
 
 // find key in object and set value to this key
@@ -149,4 +128,51 @@ function setValueToObjectKey(object, key, value) {
       setValueToObjectKey(object[k], key, value)
     }
   })
+}
+
+// for local usage =========================================
+export function clearUserLocal() {
+  localStorage.removeItem('userInfo')
+  window.location.href = '/'
+}
+
+async function getUserLocal() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(createMockUser())
+    }, 2000)
+  })
+}
+
+// mock user object
+function createMockUser() {
+  const user = {
+    id: 4,
+    'username': 'tester55',
+    'profile': {
+      'full_name': 'Alex Brandt',
+      'age': 31,
+      'about_me': null,
+      'gender': null,
+      'birth_place': null,
+      'location': null,
+      'languages': null,
+      'avatars': [] // urls for images
+    },
+    'subscription': {
+      'title': '', // friends, love, work
+      'subscription_info': {
+        'love_description': null,
+        'friends_description': null,
+        'preferable_gender': null,
+        'preferable_age': null,
+        'occupation': null,
+        'income': null,
+        'work_strategy': null,
+        'skills': null
+      }
+    }
+  }
+
+  return user
 }

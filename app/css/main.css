@@ -490,6 +490,48 @@ a {
   border-bottom: 2px solid #000;
 }
 
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+  background-color: #fff;
+}
+.loader__spinner {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border-top: 10px solid var(--love-color-dark);
+  border-bottom: 10px solid var(--friends-color);
+  -webkit-animation: turning 2s ease-in-out infinite;
+  animation: turning 2s ease-in-out infinite;
+}
+@-webkit-keyframes turning {
+  from {
+    -webkit-transform: rotate(0turn);
+    transform: rotate(0turn);
+  }
+  to {
+    -webkit-transform: rotate(1turn);
+    transform: rotate(1turn);
+  }
+}
+@keyframes turning {
+  from {
+    -webkit-transform: rotate(0turn);
+    transform: rotate(0turn);
+  }
+  to {
+    -webkit-transform: rotate(1turn);
+    transform: rotate(1turn);
+  }
+}
+
 .bg-wrapper {
   min-height: 100vh;
   display: -webkit-box;
