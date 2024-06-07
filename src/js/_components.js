@@ -1,3 +1,4 @@
+import './components/loader.js'
 import './components/mainApp.js'
 import './components/userObject.js'
 
