@@ -2010,6 +2010,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./profile-section/avatarForm.js */ "./src/js/components/profile-section/avatarForm.js");
 /* harmony import */ var _profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./profile-section/userInfoRender.js */ "./src/js/components/profile-section/userInfoRender.js");
 /* harmony import */ var _profile_section_renderPlanTitle_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./profile-section/renderPlanTitle.js */ "./src/js/components/profile-section/renderPlanTitle.js");
+/* harmony import */ var _loader_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./loader.js */ "./src/js/components/loader.js");
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_3__, _profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__, _profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__]);
 ([_userObject_js__WEBPACK_IMPORTED_MODULE_3__, _profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__, _profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
@@ -2020,33 +2021,38 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_use
 
 
 
-// user's profile
-let user = JSON.parse(localStorage.getItem('userInfo'));
-renderProfileSection();
+
+// let user = JSON.parse(localStorage.getItem('userInfo'))
+
+const profileComponents = {
+  description: document.querySelector('.profile__info-description'),
+  form: document.querySelector('[name="profile__info-form"]'),
+  editBtn: document.querySelector('#info-edit-btn'),
+  saveBtn: document.querySelector('#profile-form-save'),
+  logoutBtn: document.querySelector('#profile-logout'),
+  planTitle: document.querySelector('.profile__plan')
+};
+
+// run if there are profile sections on page
+if (profileComponents.description && profileComponents.planTitle) {
+  const appContainer = document.querySelector('.app');
+  const loader = (0,_loader_js__WEBPACK_IMPORTED_MODULE_7__.createLoader)(appContainer);
+  loader.show();
+  renderProfileSection();
+}
 function renderProfileSection() {
-  if (!user?.profile) {
-    user = _userObject_js__WEBPACK_IMPORTED_MODULE_3__.user;
-    if (!user?.profile) {
-      // log out
-      return;
-    }
+  if (!_userObject_js__WEBPACK_IMPORTED_MODULE_3__.user) {
+    return;
   }
-  const profileComponents = {
-    description: document.querySelector('.profile__info-description'),
-    form: document.querySelector('[name="profile__info-form"]'),
-    editBtn: document.querySelector('#info-edit-btn'),
-    saveBtn: document.querySelector('#profile-form-save'),
-    logoutBtn: document.querySelector('#profile-logout'),
-    planTitle: document.querySelector('.profile__plan')
-  };
+  loader.hide();
   (0,_profile_section_avatarForm_js__WEBPACK_IMPORTED_MODULE_4__.avatarForm)();
   if (profileComponents.form || profileComponents.description || profileComponents.logoutBtn) {
     (0,_profile_section_userInfoRender_js__WEBPACK_IMPORTED_MODULE_5__.userInfoRender)(profileComponents);
   }
 
   // selected plan title
-  if (user?.subscription?.title && profileComponents.planTitle) {
-    (0,_profile_section_renderPlanTitle_js__WEBPACK_IMPORTED_MODULE_6__.renderPlanTitle)(user, profileComponents);
+  if (_userObject_js__WEBPACK_IMPORTED_MODULE_3__.user?.subscription?.title && profileComponents.planTitle) {
+    (0,_profile_section_renderPlanTitle_js__WEBPACK_IMPORTED_MODULE_6__.renderPlanTitle)(_userObject_js__WEBPACK_IMPORTED_MODULE_3__.user, profileComponents);
   }
 }
 __webpack_async_result__();
@@ -2153,6 +2159,13 @@ __webpack_require__.r(__webpack_exports__);
 class User {
   constructor(userObj) {
     Object.assign(this, userObj);
+    this.loggedIn = false;
+  }
+  get isLoggedIn() {
+    return this.loggedIn;
+  }
+  set isLoggedIn(value) {
+    this.loggedIn = value;
   }
 }
 
@@ -2186,19 +2199,38 @@ const userObj = {
   }
 };
 const userId = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)('userID');
-let user;
-if (userId) {
-  let userOrigin = await getUserInfo(userId).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
-  if (!userOrigin) {
-    // log out
-    refreshUser();
-    console.log('No user Origin:', userOrigin);
+let user = await makeUserInstance(userId);
+
+// make new user instance only if there is userID in Cookies
+async function makeUserInstance(userId) {
+  if (userId) {
+    let userOrigin = await getUserInfo(userId).catch(_handleError_js__WEBPACK_IMPORTED_MODULE_2__.handleError);
+    user = new User(userOrigin);
+    user.isLoggedIn = true;
+    localStorage.setItem('userInfo', JSON.stringify(user));
+    return user;
   } else {
-    console.log('user Origin:', userOrigin);
+    console.log('No user ID provided');
+    localStorage.setItem('userInfo', undefined);
+    return undefined;
   }
-  user = new User(userOrigin);
-  localStorage.setItem('userInfo', JSON.stringify(user));
 }
+
+// if(userId) {
+//   let userOrigin = await getUserInfo(userId).catch(handleError)
+
+//   if(!userOrigin) {
+//     // log out
+//     refreshUser()
+//     console.log('No user Origin:', userOrigin);
+//   } else {
+//     console.log('user Origin:', userOrigin);
+//   }
+
+//   user = new User(userOrigin)
+//   localStorage.setItem('userInfo', JSON.stringify(user))
+// }
+
 async function getUserInfo(userId) {
   try {
     const token = (0,_getCookie_js__WEBPACK_IMPORTED_MODULE_0__.getCookie)("ws_login");

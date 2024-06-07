@@ -5,6 +5,15 @@ import { handleError } from './handleError.js'
 export class User {
   constructor(userObj) {
     Object.assign(this, userObj)
+    this.loggedIn = false
+  }
+
+  get isLoggedIn() {
+    return this.loggedIn
+  }
+
+  set isLoggedIn(value) {
+    this.loggedIn = value
   }
 }
 
@@ -38,22 +47,37 @@ const userObj = {
 }
 
 const userId = getCookie('userID')
-export let user
+export let user = await makeUserInstance(userId)
 
-if(userId) {
-  let userOrigin = await getUserInfo(userId).catch(handleError)
-
-  if(!userOrigin) {
-    // log out
-    refreshUser()
-    console.log('No user Origin:', userOrigin);
+// make new user instance only if there is userID in Cookies
+async function makeUserInstance(userId) {
+  if(userId) {
+    let userOrigin = await getUserInfo(userId).catch(handleError)
+    user = new User(userOrigin)
+    user.isLoggedIn = true
+    localStorage.setItem('userInfo', JSON.stringify(user))
+    return user
   } else {
-    console.log('user Origin:', userOrigin);
+    console.log('No user ID provided')
+    localStorage.setItem('userInfo', undefined)
+    return undefined
   }
-
-  user = new User(userOrigin)
-  localStorage.setItem('userInfo', JSON.stringify(user))
 }
+
+// if(userId) {
+//   let userOrigin = await getUserInfo(userId).catch(handleError)
+
+//   if(!userOrigin) {
+//     // log out
+//     refreshUser()
+//     console.log('No user Origin:', userOrigin);
+//   } else {
+//     console.log('user Origin:', userOrigin);
+//   }
+
+//   user = new User(userOrigin)
+//   localStorage.setItem('userInfo', JSON.stringify(user))
+// }
 
 async function getUserInfo(userId) {
   try {
