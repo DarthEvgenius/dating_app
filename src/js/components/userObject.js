@@ -1,6 +1,7 @@
 import { getCookie } from "./getCookie.js"
 import { formDataToJSON } from "./formDataToJSON.js"
 import { handleError } from './handleError.js'
+import { loader, createLoader } from "./loader.js"
 
 // Local only!
 // document.cookie = "userID=4"
@@ -13,27 +14,37 @@ export class User {
 }
 
 const userId = getCookie('userID')
-export let user
+export let user = JSON.parse(localStorage.getItem('userInfo'))
 
-if(userId) {
-
-  // let userOrigin = await getUserInfo(userId).catch(handleError)
-
-  // for local usage =========================================
-  let userOrigin = await getUserLocal()
-  // =========================================================
-
-  if(!userOrigin) {
-    console.log('No user Origin:', userOrigin);
-  } else {
-    console.log('user Origin:', userOrigin);
-  }
-
-  user = new User(userOrigin)
-  localStorage.setItem('userInfo', JSON.stringify(user))
-
-
+if(window.location.href == 'http://localhost:3000/' || window.location.href == 'http://localhost:3000/index.html') {
+  user = ''
+  localStorage.removeItem('userInfo')
 }
+console.log(window.location.href);
+
+
+if (+user?.id !== +userId &&
+    (window.location.href != 'http://localhost:3000/index.html' ||
+    window.location.href != 'http://localhost:3000/')
+  ) {
+  const loader = createLoader(document.querySelector('.page__body'))
+  if(userId) {
+    // let userOrigin = await getUserInfo(userId).catch(handleError)
+
+    // for local usage =========================================
+    let userOrigin = await getUserLocal()
+    // =========================================================
+
+    user = new User(userOrigin)
+    localStorage.setItem('userInfo', JSON.stringify(user))
+    loader.hide()
+  }
+} else {
+  console.log('user:', user);
+  // loader.hide()
+}
+
+
 
 async function getUserInfo(userId) {
   try {
@@ -111,6 +122,8 @@ export async function sendUserInfo(user) {
 
 export function refreshUser() {
   localStorage.removeItem('userInfo')
+  user = null
+
   // window.location.href = '/authapp/logout'
 
   // for local usage =========================================

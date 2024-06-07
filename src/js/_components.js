@@ -1,3 +1,4 @@
+import './components/loader.js'
 import './components/userObject.js'
 
 import './components/lang-menu.js';
