@@ -105,8 +105,6 @@ async function getUserInfo(userId) {
 }
 
 export async function updateUser(data) {
-  // user is taken from above: User instance
-
   // for submitted profile form
   if(data instanceof FormData) {
     for(let [name, value] of data) {
@@ -145,9 +143,10 @@ export async function sendUserInfo(user) {
       // body: JSON.stringify(user)
     }
   ).catch(handleError)
-  const userObj = await response.json()
 
+  const userObj = await response.json()
   console.log('New user from server:', userObj);
+
   user = new User(userObj)
   localStorage.setItem('userInfo', JSON.stringify(user))
   return user

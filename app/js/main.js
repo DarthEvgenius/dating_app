@@ -1275,8 +1275,9 @@ function planFormHandler(planSection) {
   const submitButton = planSection.querySelector('.form-submit');
   submitButton.addEventListener('click', event => {
     event.preventDefault();
-    (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(planForm));
-    window.location.href = './app-matches.html';
+    const newUser = (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(planForm));
+    const userOrigin = (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.sendUserInfo)();
+    window.location.reload();
   });
 }
 __webpack_async_result__();
@@ -1315,7 +1316,7 @@ function renderPlansSection(planSectionComponents) {
     btn.addEventListener('click', () => {
       _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title = '';
       (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
-      window.location.href = './app-profile.html';
+      window.location.reload();
     });
   });
   if (!_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user?.subscription?.title) {
@@ -1350,6 +1351,7 @@ function planChooseBtnsHandler(button) {
   const plan = button.getAttribute('data-choose-plan');
   _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title = plan;
   (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
+  sendUserInfo();
   (0,_mainApp_js__WEBPACK_IMPORTED_MODULE_1__.setAppPlan)(plan);
 }
 __webpack_async_result__();
@@ -2253,8 +2255,6 @@ async function getUserInfo(userId) {
   }
 }
 async function updateUser(data) {
-  // user is taken from above: User instance
-
   // for submitted profile form
   if (data instanceof FormData) {
     for (let [name, value] of data) {

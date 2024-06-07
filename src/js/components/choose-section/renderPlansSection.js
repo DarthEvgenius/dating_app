@@ -15,7 +15,7 @@ export function renderPlansSection(planSectionComponents) {
     btn.addEventListener('click', () => {
       user.subscription.title = ''
       updateUser(user)
-      window.location.href = './app-profile.html'
+      window.location.reload()
     })
   })
 
@@ -25,7 +25,6 @@ export function renderPlansSection(planSectionComponents) {
   } else {
     // if user has subscription
     showSelectedPlan(planSectionComponents)
-
   }
 }
 
@@ -49,8 +48,6 @@ function showSelectedPlan(components) {
       planSection.classList.add('hidden')
     }
   }
-
-
 }
 
 function planChooseBtnsHandler(button) {
@@ -59,7 +56,7 @@ function planChooseBtnsHandler(button) {
 
   user.subscription.title = plan
   updateUser(user)
+  sendUserInfo()
   setAppPlan(plan)
-
 }
 
