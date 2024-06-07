@@ -20,8 +20,6 @@ if(window.location.href == 'http://localhost:3000/' || window.location.href == '
   user = ''
   localStorage.removeItem('userInfo')
 }
-console.log(window.location.href);
-
 
 if (+user?.id !== +userId &&
     (window.location.href != 'http://localhost:3000/index.html' ||

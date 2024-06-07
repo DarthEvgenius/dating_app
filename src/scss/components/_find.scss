@@ -17,6 +17,14 @@
     overflow: hidden;
   }
 
+  &__match {
+    position: absolute;
+
+    &:not(:first-of-type) {
+      display: none;
+    }
+  }
+
   &__swiper {
     --swiper-pagination-color: var(--plan-color, var(--olive-dark-color));
     --swiper-pagination-bullet-width: 140px;

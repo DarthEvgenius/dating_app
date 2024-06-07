@@ -355,25 +355,28 @@ class GraphTabs {
 "use strict";
 __webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_loader_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/loader.js */ "./src/js/components/loader.js");
-/* harmony import */ var _components_userObject_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/userObject.js */ "./src/js/components/userObject.js");
-/* harmony import */ var _components_lang_menu_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/lang-menu.js */ "./src/js/components/lang-menu.js");
-/* harmony import */ var _components_sign_in_modal_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/sign-in-modal.js */ "./src/js/components/sign-in-modal.js");
-/* harmony import */ var _components_avatar_swiper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/avatar-swiper.js */ "./src/js/components/avatar-swiper.js");
-/* harmony import */ var _components_find_swiper_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/find-swiper.js */ "./src/js/components/find-swiper.js");
-/* harmony import */ var _components_tabs_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/tabs.js */ "./src/js/components/tabs.js");
-/* harmony import */ var _components_simplebar_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/simplebar.js */ "./src/js/components/simplebar.js");
-/* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
-/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
-/* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
-/* harmony import */ var _components_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
-/* harmony import */ var _components_mainApp_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/mainApp.js */ "./src/js/components/mainApp.js");
-/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
-/* harmony import */ var _components_plansSection_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/plansSection.js */ "./src/js/components/plansSection.js");
-/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
-/* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
-var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_components_userObject_js__WEBPACK_IMPORTED_MODULE_1__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_12__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_13__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_14__]);
-([_components_userObject_js__WEBPACK_IMPORTED_MODULE_1__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_12__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_13__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_14__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+/* harmony import */ var _components_API_mock_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/API-mock.js */ "./src/js/components/API-mock.js");
+/* harmony import */ var _components_loader_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/loader.js */ "./src/js/components/loader.js");
+/* harmony import */ var _components_userObject_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/userObject.js */ "./src/js/components/userObject.js");
+/* harmony import */ var _components_lang_menu_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/lang-menu.js */ "./src/js/components/lang-menu.js");
+/* harmony import */ var _components_sign_in_modal_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/sign-in-modal.js */ "./src/js/components/sign-in-modal.js");
+/* harmony import */ var _components_avatar_swiper_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/avatar-swiper.js */ "./src/js/components/avatar-swiper.js");
+/* harmony import */ var _components_find_swiper_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/find-swiper.js */ "./src/js/components/find-swiper.js");
+/* harmony import */ var _components_tabs_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/tabs.js */ "./src/js/components/tabs.js");
+/* harmony import */ var _components_simplebar_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/simplebar.js */ "./src/js/components/simplebar.js");
+/* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
+/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
+/* harmony import */ var _components_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
+/* harmony import */ var _components_mainApp_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/mainApp.js */ "./src/js/components/mainApp.js");
+/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
+/* harmony import */ var _components_plansSection_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/plansSection.js */ "./src/js/components/plansSection.js");
+/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
+/* harmony import */ var _components_findSection_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/findSection.js */ "./src/js/components/findSection.js");
+/* harmony import */ var _components_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/findSwiperHideToggle.js */ "./src/js/components/findSwiperHideToggle.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_13__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_14__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_15__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_17__]);
+([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_13__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_14__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_15__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_17__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
 
 
 
@@ -398,8 +401,135 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_com
 // import './components/ChatClass.js';
 
 
+// find section scripts
+
+
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
+
+/***/ }),
+
+/***/ "./src/js/components/API-mock.js":
+/*!***************************************!*\
+  !*** ./src/js/components/API-mock.js ***!
+  \***************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   returnUsers: () => (/* binding */ returnUsers)
+/* harmony export */ });
+const user = {
+  id: 4,
+  'username': 'tester55',
+  'profile': {
+    'full_name': 'Alex Brandt',
+    'age': 31,
+    'about_me': null,
+    'gender': null,
+    'birth_place': null,
+    'location': null,
+    'languages': null,
+    'avatars': [] // urls for images
+  },
+  'subscription': {
+    'title': '',
+    // friends, love, work
+    'subscription_info': {
+      'love_description': null,
+      'friends_description': null,
+      'preferable_gender': null,
+      'preferable_age': null,
+      'occupation': null,
+      'income': null,
+      'work_strategy': null,
+      'skills': null
+    }
+  }
+};
+
+// example of users fetch
+// let a = await returnUsers(5)
+// console.log(a);
+
+async function returnUsers(amount) {
+  let users = createUsers(amount);
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(users());
+    }, 1000);
+  });
+}
+function createUsers(amount) {
+  let counter = 0;
+  return function () {
+    let users = Array.from({
+      length: amount
+    }, () => ({
+      id: `${counter}`,
+      'username': `${counter}`,
+      'profile': {
+        'full_name': `Name ${counter++}`,
+        'age': 31,
+        'about_me': null,
+        'gender': null,
+        'birth_place': null,
+        'location': null,
+        'languages': null,
+        'avatars': [] // urls for images
+      },
+      'subscription': {
+        'title': '',
+        // friends, love, work
+        'subscription_info': {
+          'love_description': null,
+          'friends_description': null,
+          'preferable_gender': null,
+          'preferable_age': null,
+          'occupation': null,
+          'income': null,
+          'work_strategy': null,
+          'skills': null
+        }
+      }
+    }));
+
+    // users.forEach(user => {
+    //   console.log(user);
+
+    //   user = {
+    //     id: `${counter}`,
+    //     'username': `${counter}`,
+    //     'profile': {
+    //       'full_name': `Name ${counter++}`,
+    //       'age': 31,
+    //       'about_me': null,
+    //       'gender': null,
+    //       'birth_place': null,
+    //       'location': null,
+    //       'languages': null,
+    //       'avatars': [] // urls for images
+    //     },
+    //     'subscription': {
+    //       'title': '', // friends, love, work
+    //       'subscription_info': {
+    //         'love_description': null,
+    //         'friends_description': null,
+    //         'preferable_gender': null,
+    //         'preferable_age': null,
+    //         'occupation': null,
+    //         'income': null,
+    //         'work_strategy': null,
+    //         'skills': null
+    //       }
+    //     }
+    //   }
+    // })
+
+    return users;
+  };
+}
 
 /***/ }),
 
@@ -1357,6 +1487,56 @@ __webpack_async_result__();
 
 /***/ }),
 
+/***/ "./src/js/components/find-section/fetchFindMatches.js":
+/*!************************************************************!*\
+  !*** ./src/js/components/find-section/fetchFindMatches.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   fetchFindMatches: () => (/* binding */ fetchFindMatches)
+/* harmony export */ });
+/* harmony import */ var _API_mock_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../API-mock.js */ "./src/js/components/API-mock.js");
+
+
+// fetch amount of accounts
+const AMOUNT = 5;
+
+// return an array of users' profiles
+async function fetchFindMatches() {
+  const users = await (0,_API_mock_js__WEBPACK_IMPORTED_MODULE_0__.returnUsers)(AMOUNT);
+  return users;
+}
+
+/***/ }),
+
+/***/ "./src/js/components/find-section/renderFindMatches.js":
+/*!*************************************************************!*\
+  !*** ./src/js/components/find-section/renderFindMatches.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   renderFindMatches: () => (/* binding */ renderFindMatches)
+/* harmony export */ });
+// takes an array of users' profiles
+function renderFindMatches(profilesArray) {
+  profilesArray.forEach(profile => {
+    createSlide(profile);
+  });
+  let amountOfSlides = profilesArray.length;
+  return amountOfSlides;
+}
+function createSlide(profile) {
+  console.log(profile.id);
+}
+
+/***/ }),
+
 /***/ "./src/js/components/find-swiper.js":
 /*!******************************************!*\
   !*** ./src/js/components/find-swiper.js ***!
@@ -1385,6 +1565,31 @@ const swiperFind = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.find__sw
   // prevent swiping
   allowTouchMove: false
 });
+
+/***/ }),
+
+/***/ "./src/js/components/findSection.js":
+/*!******************************************!*\
+  !*** ./src/js/components/findSection.js ***!
+  \******************************************/
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _find_section_fetchFindMatches_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./find-section/fetchFindMatches.js */ "./src/js/components/find-section/fetchFindMatches.js");
+/* harmony import */ var _find_section_renderFindMatches_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./find-section/renderFindMatches.js */ "./src/js/components/find-section/renderFindMatches.js");
+
+
+const findSection = document.querySelector('.find');
+if (findSection) {
+  const findMatches = await (0,_find_section_fetchFindMatches_js__WEBPACK_IMPORTED_MODULE_0__.fetchFindMatches)();
+  console.log(findMatches);
+  let slideCounter = (0,_find_section_renderFindMatches_js__WEBPACK_IMPORTED_MODULE_1__.renderFindMatches)(findMatches);
+  console.log(slideCounter);
+}
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } }, 1);
 
 /***/ }),
 
@@ -2151,7 +2356,6 @@ if (window.location.href == 'http://localhost:3000/' || window.location.href == 
   user = '';
   localStorage.removeItem('userInfo');
 }
-console.log(window.location.href);
 if (+user?.id !== +userId && (window.location.href != 'http://localhost:3000/index.html' || window.location.href != 'http://localhost:3000/')) {
   const loader = (0,_loader_js__WEBPACK_IMPORTED_MODULE_3__.createLoader)(document.querySelector('.page__body'));
   if (userId) {

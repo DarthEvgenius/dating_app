@@ -1,3 +1,5 @@
+import './components/API-mock.js'
+
 import './components/loader.js'
 import './components/userObject.js'
 
@@ -24,5 +26,6 @@ import './components/plansSection.js'
 // import './components/ChatClass.js';
 import './components/chat.js';
 
-
+// find section scripts
+import './components/findSection.js'
 import './components/findSwiperHideToggle.js';

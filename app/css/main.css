@@ -1680,6 +1680,12 @@ a {
   border-radius: 10px;
   overflow: hidden;
 }
+.find__match {
+  position: absolute;
+}
+.find__match:not(:first-of-type) {
+  display: none;
+}
 .find__swiper {
   --swiper-pagination-color: var(--plan-color, var(--olive-dark-color));
   --swiper-pagination-bullet-width: 140px;
