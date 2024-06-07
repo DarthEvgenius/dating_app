@@ -1504,7 +1504,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   createLoader: () => (/* binding */ createLoader),
 /* harmony export */   hideLoader: () => (/* binding */ hideLoader)
 /* harmony export */ });
-const appContainer = document.querySelector('.app');
+// creates loader within provided DOM element
+
 function createLoader(DOMelement) {
   const loader = document.createElement('div');
   loader.classList.add('loader');
@@ -2148,10 +2149,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _handleError_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./handleError.js */ "./src/js/components/handleError.js");
 
 
-
-
-// Delete this!
-// document.cookie = "userID=4"
 
 class User {
   constructor(userObj) {

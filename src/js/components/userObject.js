@@ -2,10 +2,6 @@ import { getCookie } from "./getCookie.js"
 import { formDataToJSON } from "./formDataToJSON.js"
 import { handleError } from './handleError.js'
 
-// Delete this!
-// document.cookie = "userID=4"
-
-
 export class User {
   constructor(userObj) {
     Object.assign(this, userObj)

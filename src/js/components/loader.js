@@ -1,4 +1,4 @@
-const appContainer = document.querySelector('.app')
+// creates loader within provided DOM element
 
 export function createLoader(DOMelement) {
   const loader = document.createElement('div')
