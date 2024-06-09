@@ -1,3 +1,4 @@
+import './find-section/find-swiper.js';
 import { fetchFindMatches } from "./find-section/fetchFindMatches.js"
 import { renderFindMatches } from "./find-section/renderFindMatches.js";
 
