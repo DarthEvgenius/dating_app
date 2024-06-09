@@ -471,39 +471,6 @@ function createUsers(amount) {
         }
       }
     }));
-
-    // users.forEach(user => {
-    //   console.log(user);
-
-    //   user = {
-    //     id: `${counter}`,
-    //     'username': `${counter}`,
-    //     'profile': {
-    //       'full_name': `Name ${counter++}`,
-    //       'age': 31,
-    //       'about_me': null,
-    //       'gender': null,
-    //       'birth_place': null,
-    //       'location': null,
-    //       'languages': null,
-    //       'avatars': [] // urls for images
-    //     },
-    //     'subscription': {
-    //       'title': '', // friends, love, work
-    //       'subscription_info': {
-    //         'love_description': null,
-    //         'friends_description': null,
-    //         'preferable_gender': null,
-    //         'preferable_age': null,
-    //         'occupation': null,
-    //         'income': null,
-    //         'work_strategy': null,
-    //         'skills': null
-    //       }
-    //     }
-    //   }
-    // })
-
     return users;
   };
 }
@@ -1454,6 +1421,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   fetchFindMatches: () => (/* binding */ fetchFindMatches)
 /* harmony export */ });
 /* harmony import */ var _API_mock_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../API-mock.js */ "./src/js/components/API-mock.js");
+// get profiles for find-match from the server
+
 
 
 // fetch amount of accounts
@@ -1528,7 +1497,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   renderFindMatches: () => (/* binding */ renderFindMatches)
 /* harmony export */ });
-// takes an array of users' profiles
+// render find swipers out of array of profiles
+
 function renderFindMatches(profilesArray) {
   profilesArray.forEach(profile => {
     createSlide(profile);
@@ -1798,8 +1768,6 @@ async function avatarForm() {
       if (validateFiles(image)) {
         const imageURL = URL.createObjectURL(image);
         createSlide(imageURL, avatarForm, avatarSwiper);
-        // updateUser(imageURL)
-
         fetch(actionURL, {
           method: 'POST',
           headers: {
@@ -1831,10 +1799,6 @@ function avatarFormRender(_ref, avatarForm, avatarSwiper) {
     avatarForm.classList.remove('avatar__form--large');
     avatarForm.classList.add('avatar__form--small');
     avatarSwiper.classList.remove('hidden');
-
-    // profile.avatar.forEach(url => {
-    //   createSlide(url, avatarForm, avatarSwiper)
-    // })
   } else {
     // add class "avatar__form--large" and hide avatar swiper
     avatarForm.classList.remove('avatar__form--small');

@@ -31,7 +31,6 @@ export async function avatarForm() {
       if (validateFiles(image)) {
         const imageURL = URL.createObjectURL(image)
         createSlide(imageURL, avatarForm, avatarSwiper)
-        // updateUser(imageURL)
 
         fetch(actionURL, {
           method: 'POST',
@@ -64,10 +63,6 @@ function avatarFormRender({ profile }, avatarForm, avatarSwiper) {
     avatarForm.classList.remove('avatar__form--large')
     avatarForm.classList.add('avatar__form--small')
     avatarSwiper.classList.remove('hidden')
-
-    // profile.avatar.forEach(url => {
-    //   createSlide(url, avatarForm, avatarSwiper)
-    // })
   } else {
     // add class "avatar__form--large" and hide avatar swiper
     avatarForm.classList.remove('avatar__form--small')

@@ -75,38 +75,6 @@ function createUsers(amount) {
       })
     )
 
-    // users.forEach(user => {
-    //   console.log(user);
-
-    //   user = {
-    //     id: `${counter}`,
-    //     'username': `${counter}`,
-    //     'profile': {
-    //       'full_name': `Name ${counter++}`,
-    //       'age': 31,
-    //       'about_me': null,
-    //       'gender': null,
-    //       'birth_place': null,
-    //       'location': null,
-    //       'languages': null,
-    //       'avatars': [] // urls for images
-    //     },
-    //     'subscription': {
-    //       'title': '', // friends, love, work
-    //       'subscription_info': {
-    //         'love_description': null,
-    //         'friends_description': null,
-    //         'preferable_gender': null,
-    //         'preferable_age': null,
-    //         'occupation': null,
-    //         'income': null,
-    //         'work_strategy': null,
-    //         'skills': null
-    //       }
-    //     }
-    //   }
-    // })
-
     return users
   }
 }

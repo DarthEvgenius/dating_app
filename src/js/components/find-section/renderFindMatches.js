@@ -1,4 +1,5 @@
-// takes an array of users' profiles
+// render find swipers out of array of profiles
+
 export function renderFindMatches(profilesArray) {
   profilesArray.forEach(profile => {
     createSlide(profile)
