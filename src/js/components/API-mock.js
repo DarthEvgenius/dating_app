@@ -9,7 +9,11 @@ const user = {
     'birth_place': null,
     'location': null,
     'languages': null,
-    'avatars': [] // urls for images
+    'avatars': [
+      {
+        'image_path': '/img/avatar1.jpg'
+      }
+    ] // urls for images
   },
   'subscription': {
     'title': '', // friends, love, work
@@ -57,7 +61,11 @@ function createUsers(amount) {
           'birth_place': null,
           'location': null,
           'languages': null,
-          'avatars': [] // urls for images
+          'avatars': [
+            {
+              'image_path': '/img/avatar1.jpg'
+            }
+          ] // urls for images
         },
         'subscription': {
           'title': '', // friends, love, work

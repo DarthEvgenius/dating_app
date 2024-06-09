@@ -63,6 +63,13 @@ function avatarFormRender({ profile }, avatarForm, avatarSwiper) {
     avatarForm.classList.remove('avatar__form--large')
     avatarForm.classList.add('avatar__form--small')
     avatarSwiper.classList.remove('hidden')
+
+    const swiperWrapper = avatarSwiper.querySelector('.swiper-wrapper')
+    swiperWrapper.innerHTML = ''
+
+    profile.avatars.forEach(elem => {
+      createSlide(elem.image_path, avatarForm, avatarSwiper)
+    })
   } else {
     // add class "avatar__form--large" and hide avatar swiper
     avatarForm.classList.remove('avatar__form--small')
