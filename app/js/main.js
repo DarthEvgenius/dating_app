@@ -1546,6 +1546,7 @@ function renderFindMatches(profilesArray) {
 }
 function createMatch(profile, templateNode) {
   const newMatch = templateNode.cloneNode(true);
+  newMatch.classList.remove('hidden');
   newMatch.setAttribute('data-match-id', profile.id);
   const swiperContainer = newMatch.querySelector('.swiper');
   swiperContainer.classList.add(`find__swiper--${profile.id}`, 'find__swiper');
