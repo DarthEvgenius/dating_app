@@ -1517,6 +1517,39 @@ function showSwiper() {
 
 /***/ }),
 
+/***/ "./src/js/components/find-section/likeLogic.js":
+/*!*****************************************************!*\
+  !*** ./src/js/components/find-section/likeLogic.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   dislikeHandler: () => (/* binding */ dislikeHandler),
+/* harmony export */   likeHandler: () => (/* binding */ likeHandler)
+/* harmony export */ });
+function likeHandler(e) {
+  const profileContainer = e.target.closest('.find__match');
+  profileContainer.dispatchEvent(matched);
+  profileContainer.addEventListener('transitionend', e => {
+    profileContainer.remove();
+  });
+  profileContainer.classList.add('liked');
+}
+function dislikeHandler(e) {
+  const profileContainer = e.target.closest('.find__match');
+  profileContainer.dispatchEvent(matched);
+  profileContainer.addEventListener('transitionend', e => {
+    profileContainer.remove();
+  });
+  profileContainer.classList.add('disliked');
+}
+const matched = new CustomEvent('matched', {
+  bubbles: true
+});
+
+/***/ }),
+
 /***/ "./src/js/components/find-section/renderFindMatches.js":
 /*!*************************************************************!*\
   !*** ./src/js/components/find-section/renderFindMatches.js ***!
@@ -1528,6 +1561,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   renderFindMatches: () => (/* binding */ renderFindMatches)
 /* harmony export */ });
 /* harmony import */ var _find_swiper_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./find-swiper.js */ "./src/js/components/find-section/find-swiper.js");
+/* harmony import */ var _likeLogic_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./likeLogic.js */ "./src/js/components/find-section/likeLogic.js");
+
 
 
 // render find swipers out of array of profiles
@@ -1541,9 +1576,9 @@ function renderFindMatches(profilesArray) {
     findContainer.append(match);
     const swiper = (0,_find_swiper_js__WEBPACK_IMPORTED_MODULE_0__.createSwiperFind)(profile.id);
     const likeBtn = match.querySelector('.btn--like');
-    likeBtn.addEventListener('click', likeHandler);
+    likeBtn.addEventListener('click', _likeLogic_js__WEBPACK_IMPORTED_MODULE_1__.likeHandler);
     const dislikeBtn = match.querySelector('.btn--dislike');
-    dislikeBtn.addEventListener('click', dislikeHandler);
+    dislikeBtn.addEventListener('click', _likeLogic_js__WEBPACK_IMPORTED_MODULE_1__.dislikeHandler);
   });
   let amountOfSlides = profilesArray.length;
   return amountOfSlides;
@@ -1585,19 +1620,23 @@ function createMatchSlide(src) {
     `;
   return slide;
 }
-function likeHandler(e) {
-  const profileContainer = e.target.closest('.find__match');
-  profileContainer.addEventListener('transitionend', e => {
-    profileContainer.remove();
-  });
-  profileContainer.classList.add('liked');
-}
-function dislikeHandler(e) {
-  const profileContainer = e.target.closest('.find__match');
-  profileContainer.addEventListener('transitionend', e => {
-    profileContainer.remove();
-  });
-  profileContainer.classList.add('disliked');
+
+/***/ }),
+
+/***/ "./src/js/components/find-section/showNoMatches.js":
+/*!*********************************************************!*\
+  !*** ./src/js/components/find-section/showNoMatches.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   showNoMatches: () => (/* binding */ showNoMatches)
+/* harmony export */ });
+function showNoMatches(findSection) {
+  const container = findSection.querySelector('.find__container');
+  container.textContent = 'No Matches Left!';
+  container.classList.add('nomatches');
 }
 
 /***/ }),
@@ -1613,6 +1652,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _find_section_find_swiper_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./find-section/find-swiper.js */ "./src/js/components/find-section/find-swiper.js");
 /* harmony import */ var _find_section_fetchFindMatches_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./find-section/fetchFindMatches.js */ "./src/js/components/find-section/fetchFindMatches.js");
 /* harmony import */ var _find_section_renderFindMatches_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./find-section/renderFindMatches.js */ "./src/js/components/find-section/renderFindMatches.js");
+/* harmony import */ var _find_section_showNoMatches_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./find-section/showNoMatches.js */ "./src/js/components/find-section/showNoMatches.js");
+
 
 
 
@@ -1622,6 +1663,14 @@ if (findSection) {
   console.log(findMatches);
   let slideCounter = (0,_find_section_renderFindMatches_js__WEBPACK_IMPORTED_MODULE_2__.renderFindMatches)(findMatches);
   console.log(slideCounter);
+  document.addEventListener('matched', e => {
+    slideCounter--;
+    if (!slideCounter) {
+      (0,_find_section_showNoMatches_js__WEBPACK_IMPORTED_MODULE_3__.showNoMatches)(findSection);
+    } else {
+      console.log(slideCounter);
+    }
+  });
 }
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } }, 1);

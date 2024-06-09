@@ -1,4 +1,5 @@
 import { createSwiperFind } from "./find-swiper.js"
+import { likeHandler, dislikeHandler } from './likeLogic.js'
 
 // render find swipers out of array of profiles
 
@@ -74,20 +75,3 @@ function createMatchSlide(src) {
 }
 
 
-function likeHandler(e) {
-  const profileContainer = e.target.closest('.find__match')
-
-  profileContainer.addEventListener('transitionend', (e) => {
-    profileContainer.remove()
-  })
-  profileContainer.classList.add('liked')
-}
-
-function dislikeHandler(e) {
-  const profileContainer = e.target.closest('.find__match')
-
-  profileContainer.addEventListener('transitionend', (e) => {
-    profileContainer.remove()
-  })
-  profileContainer.classList.add('disliked')
-}
