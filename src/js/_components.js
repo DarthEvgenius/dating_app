@@ -24,5 +24,6 @@ import './components/plansSection.js'
 // import './components/ChatClass.js';
 import './components/chat.js';
 
-
+// find section
+import './components/findSection.js'
 import './components/findSwiperHideToggle.js';
