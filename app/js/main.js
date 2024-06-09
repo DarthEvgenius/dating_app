@@ -344,20 +344,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_sign_in_modal_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/sign-in-modal.js */ "./src/js/components/sign-in-modal.js");
 /* harmony import */ var _components_avatar_swiper_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/avatar-swiper.js */ "./src/js/components/avatar-swiper.js");
 /* harmony import */ var _components_tabs_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/tabs.js */ "./src/js/components/tabs.js");
-Object(function webpackMissingModule() { var e = new Error("Cannot find module './components/simplebar.js'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-/* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
-/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
-/* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
-/* harmony import */ var _components_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
-/* harmony import */ var _components_mainApp_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/mainApp.js */ "./src/js/components/mainApp.js");
-/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
-/* harmony import */ var _components_plansSection_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/plansSection.js */ "./src/js/components/plansSection.js");
-/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
-/* harmony import */ var _components_findSection_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/findSection.js */ "./src/js/components/findSection.js");
-/* harmony import */ var _components_find_section_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/find-section/findSwiperHideToggle.js */ "./src/js/components/find-section/findSwiperHideToggle.js");
-var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_12__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_13__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_14__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_16__]);
-([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_12__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_13__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_14__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_16__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
-
+/* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
+/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
+/* harmony import */ var _components_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
+/* harmony import */ var _components_mainApp_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/mainApp.js */ "./src/js/components/mainApp.js");
+/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
+/* harmony import */ var _components_plansSection_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/plansSection.js */ "./src/js/components/plansSection.js");
+/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
+/* harmony import */ var _components_findSection_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/findSection.js */ "./src/js/components/findSection.js");
+/* harmony import */ var _components_find_section_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/find-section/findSwiperHideToggle.js */ "./src/js/components/find-section/findSwiperHideToggle.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_11__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_12__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_13__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_15__]);
+([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_11__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_12__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_13__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_15__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
 
 
