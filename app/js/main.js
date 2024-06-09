@@ -2376,7 +2376,7 @@ async function sendUserInfo(user) {
 }
 function refreshUser() {
   localStorage.removeItem('userInfo');
-  window.location.href = '/authapp/logout';
+  // window.location.href = '/authapp/logout'
 }
 
 // find key in object and set value to this key
