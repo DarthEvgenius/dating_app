@@ -21,9 +21,18 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    transition: transform 0.3s;
 
     &:not(:first-of-type) {
       display: none;
+    }
+
+    &.liked {
+      transform: translateX(100%);
+    }
+
+    &.disliked {
+      transform: translateX(-100%);
     }
   }
 

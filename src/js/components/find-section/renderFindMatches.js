@@ -11,6 +11,12 @@ export function renderFindMatches(profilesArray) {
     const match = createMatch(profile, templateNode)
     findContainer.append(match)
     const swiper = createSwiperFind(profile.id)
+
+    const likeBtn = match.querySelector('.btn--like')
+    likeBtn.addEventListener('click', likeHandler)
+
+    const dislikeBtn = match.querySelector('.btn--dislike')
+    dislikeBtn.addEventListener('click', dislikeHandler)
   })
 
   let amountOfSlides = profilesArray.length
@@ -41,6 +47,11 @@ function createMatch(profile, templateNode) {
   const nextBtn = newMatch.querySelector('.find__swiper-button-prev')
   nextBtn.classList.add(`find__swiper--${profile.id}-button-prev`)
 
+  const findName = newMatch.querySelector('.find__name')
+  findName.textContent = profile.profile.full_name
+
+  const findAge = newMatch.querySelector('.find__age')
+  findAge.textContent = profile.profile.age
 
   return newMatch
 }
@@ -60,4 +71,23 @@ function createMatchSlide(src) {
     </picture>
     `
   return slide
+}
+
+
+function likeHandler(e) {
+  const profileContainer = e.target.closest('.find__match')
+
+  profileContainer.addEventListener('transitionend', (e) => {
+    profileContainer.remove()
+  })
+  profileContainer.classList.add('liked')
+}
+
+function dislikeHandler(e) {
+  const profileContainer = e.target.closest('.find__match')
+
+  profileContainer.addEventListener('transitionend', (e) => {
+    profileContainer.remove()
+  })
+  profileContainer.classList.add('disliked')
 }

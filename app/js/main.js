@@ -1540,6 +1540,10 @@ function renderFindMatches(profilesArray) {
     const match = createMatch(profile, templateNode);
     findContainer.append(match);
     const swiper = (0,_find_swiper_js__WEBPACK_IMPORTED_MODULE_0__.createSwiperFind)(profile.id);
+    const likeBtn = match.querySelector('.btn--like');
+    likeBtn.addEventListener('click', likeHandler);
+    const dislikeBtn = match.querySelector('.btn--dislike');
+    dislikeBtn.addEventListener('click', dislikeHandler);
   });
   let amountOfSlides = profilesArray.length;
   return amountOfSlides;
@@ -1562,6 +1566,10 @@ function createMatch(profile, templateNode) {
   prevBtn.classList.add(`find__swiper--${profile.id}-button-next`);
   const nextBtn = newMatch.querySelector('.find__swiper-button-prev');
   nextBtn.classList.add(`find__swiper--${profile.id}-button-prev`);
+  const findName = newMatch.querySelector('.find__name');
+  findName.textContent = profile.profile.full_name;
+  const findAge = newMatch.querySelector('.find__age');
+  findAge.textContent = profile.profile.age;
   return newMatch;
 }
 function createMatchSlide(src) {
@@ -1576,6 +1584,20 @@ function createMatchSlide(src) {
     </picture>
     `;
   return slide;
+}
+function likeHandler(e) {
+  const profileContainer = e.target.closest('.find__match');
+  profileContainer.addEventListener('transitionend', e => {
+    profileContainer.remove();
+  });
+  profileContainer.classList.add('liked');
+}
+function dislikeHandler(e) {
+  const profileContainer = e.target.closest('.find__match');
+  profileContainer.addEventListener('transitionend', e => {
+    profileContainer.remove();
+  });
+  profileContainer.classList.add('disliked');
 }
 
 /***/ }),

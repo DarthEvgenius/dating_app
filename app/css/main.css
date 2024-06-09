@@ -1684,9 +1684,23 @@ a {
   position: absolute;
   width: 100%;
   height: 100%;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
 }
 .find__match:not(:first-of-type) {
   display: none;
+}
+.find__match.liked {
+  -webkit-transform: translateX(100%);
+  -ms-transform: translateX(100%);
+  transform: translateX(100%);
+}
+.find__match.disliked {
+  -webkit-transform: translateX(-100%);
+  -ms-transform: translateX(-100%);
+  transform: translateX(-100%);
 }
 .find__swiper {
   --swiper-pagination-color: var(--plan-color, var(--olive-dark-color));
