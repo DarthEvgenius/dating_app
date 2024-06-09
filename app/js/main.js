@@ -410,6 +410,8 @@ const user = {
     'languages': null,
     'avatars': [{
       'image_path': '/img/avatar1.jpg'
+    }, {
+      'image_path': '/img/avatar2.jpg'
     }] // urls for images
   },
   'subscription': {
@@ -458,6 +460,8 @@ function createUsers(amount) {
         'languages': null,
         'avatars': [{
           'image_path': '/img/avatar1.jpg'
+        }, {
+          'image_path': '/img/avatar2.jpg'
         }] // urls for images
       },
       'subscription': {
@@ -1447,26 +1451,48 @@ async function fetchFindMatches() {
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createSwiperFind: () => (/* binding */ createSwiperFind)
+/* harmony export */ });
 /* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.mjs");
 /* harmony import */ var swiper_modules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! swiper/modules */ "./node_modules/swiper/modules/index.mjs");
 
 
 swiper__WEBPACK_IMPORTED_MODULE_0__["default"].use([swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Navigation, swiper_modules__WEBPACK_IMPORTED_MODULE_1__.Pagination]);
-const swiperFind = new swiper__WEBPACK_IMPORTED_MODULE_0__["default"]('.find__swiper', {
-  slidesPerView: 'auto',
-  spaceBetween: 40,
-  navigation: {
-    nextEl: '.find__swiper-button-next',
-    prevEl: '.find__swiper-button-prev'
-  },
-  pagination: {
-    el: '.find__swiper-pagination',
-    type: 'bullets',
-    clickable: true
-  },
-  // prevent swiping
-  allowTouchMove: false
-});
+
+// const swiperFind = new Swiper('.find__swiper', {
+//   slidesPerView: 'auto',
+//   spaceBetween: 40,
+//   navigation: {
+//     nextEl: '.find__swiper-button-next',
+//     prevEl: '.find__swiper-button-prev',
+//   },
+//   pagination: {
+//     el: '.find__swiper-pagination',
+//     type: 'bullets',
+//     clickable: true,
+//   },
+//   // prevent swiping
+//   allowTouchMove: false,
+// });
+
+function createSwiperFind(id) {
+  return new swiper__WEBPACK_IMPORTED_MODULE_0__["default"](`.find__swiper--${id}`, {
+    slidesPerView: 'auto',
+    spaceBetween: 40,
+    navigation: {
+      nextEl: `.find__swiper--${id}-button-next`,
+      prevEl: `.find__swiper--${id}-button-prev`
+    },
+    pagination: {
+      el: `.find__swiper-pagination--${id}`,
+      type: 'bullets',
+      clickable: true
+    },
+    // prevent swiping
+    allowTouchMove: false
+  });
+}
 
 /***/ }),
 
@@ -1501,17 +1527,54 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   renderFindMatches: () => (/* binding */ renderFindMatches)
 /* harmony export */ });
+/* harmony import */ var _find_swiper_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./find-swiper.js */ "./src/js/components/find-section/find-swiper.js");
+
+
 // render find swipers out of array of profiles
 
 function renderFindMatches(profilesArray) {
+  const findContainer = document.querySelector('.find__container');
+  const templateNode = document.querySelector('.find__match');
+  findContainer.innerHTML = '';
   profilesArray.forEach(profile => {
-    createSlide(profile);
+    const match = createMatch(profile, templateNode);
+    findContainer.append(match);
+    const swiper = (0,_find_swiper_js__WEBPACK_IMPORTED_MODULE_0__.createSwiperFind)(profile.id);
   });
   let amountOfSlides = profilesArray.length;
   return amountOfSlides;
 }
-function createSlide(profile) {
-  console.log(profile.id);
+function createMatch(profile, templateNode) {
+  const newMatch = templateNode.cloneNode(true);
+  newMatch.setAttribute('data-match-id', profile.id);
+  const swiperContainer = newMatch.querySelector('.swiper');
+  swiperContainer.classList.add(`find__swiper--${profile.id}`, 'find__swiper');
+  const pagination = newMatch.querySelector('.find__swiper-pagination');
+  pagination.classList.add(`find__swiper-pagination--${profile.id}`);
+  const swiperWrapper = newMatch.querySelector('.swiper-wrapper');
+  swiperWrapper.innerHTML = '';
+  profile.profile.avatars.forEach(img => {
+    const slide = createMatchSlide(img.image_path);
+    swiperWrapper.append(slide);
+  });
+  const prevBtn = newMatch.querySelector('.find__swiper-button-next');
+  prevBtn.classList.add(`find__swiper--${profile.id}-button-next`);
+  const nextBtn = newMatch.querySelector('.find__swiper-button-prev');
+  nextBtn.classList.add(`find__swiper--${profile.id}-button-prev`);
+  return newMatch;
+}
+function createMatchSlide(src) {
+  const slide = document.createElement('div');
+  slide.classList.add('swiper-slide');
+  let imgName = src.split('/');
+  imgName = imgName[imgName.length - 1].split('.')[0];
+  slide.innerHTML = `
+    <picture class="find__photo">
+      <source srcset="./img/${imgName}.webp" type="image/webp">
+      <img loading="lazy" src="./img/${imgName}.jpg" class="image" width="480" height="651" alt="photo">
+    </picture>
+    `;
+  return slide;
 }
 
 /***/ }),

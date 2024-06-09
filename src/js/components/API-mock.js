@@ -11,8 +11,11 @@ const user = {
     'languages': null,
     'avatars': [
       {
-        'image_path': '/img/avatar1.jpg'
-      }
+        'image_path': '/img/avatar1.jpg',
+      },
+      {
+        'image_path': '/img/avatar2.jpg',
+      },
     ] // urls for images
   },
   'subscription': {
@@ -64,7 +67,10 @@ function createUsers(amount) {
           'avatars': [
             {
               'image_path': '/img/avatar1.jpg'
-            }
+            },
+            {
+              'image_path': '/img/avatar2.jpg',
+            },
           ] // urls for images
         },
         'subscription': {
