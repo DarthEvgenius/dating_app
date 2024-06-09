@@ -35,12 +35,6 @@ export async function avatarForm() {
         form.append('avatar-upload', image)
         console.log(form);
 
-        let form2 = new FormData(avatarForm)
-        console.log(form2);
-        console.log(form.get('avatar-upload'));
-        console.log(form2.get('avatar-upload'));
-
-
         const response = await fetch(actionURL, {
           method: 'POST',
           headers: {
