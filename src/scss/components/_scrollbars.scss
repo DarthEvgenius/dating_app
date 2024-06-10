@@ -26,7 +26,8 @@
   .profile__body::-webkit-scrollbar,
   .profile-tabs__container::-webkit-scrollbar,
   .chat-opponent::-webkit-scrollbar,
-  .content__plans::-webkit-scrollbar {
+  .content__plans::-webkit-scrollbar,
+  .find__description::-webkit-scrollbar {
     width: 7px;
     height: 7px;
   }
@@ -35,7 +36,8 @@
   .profile__body::-webkit-scrollbar-track,
   .profile-tabs__container::-webkit-scrollbar-track,
   .chat-opponent::-webkit-scrollbar-track,
-  .content__plans::-webkit-scrollbar-track {
+  .content__plans::-webkit-scrollbar-track,
+  .find__description::-webkit-scrollbar-track {
     margin-block: 0.5rem;
     background-color: var(--bd-sign-in);
     border-radius: 10px;
@@ -45,7 +47,8 @@
   .profile__body::-webkit-scrollbar-thumb,
   .profile-tabs__container::-webkit-scrollbar-thumb,
   .chat-opponent::-webkit-scrollbar-thumb,
-  .content__plans::-webkit-scrollbar-thumb {
+  .content__plans::-webkit-scrollbar-thumb,
+  .find__description::-webkit-scrollbar-thumb {
     background-color: var(--plan-color, var(--olive-light));
     border: 1px solid var(--bd-sign-in);
     border-radius: 10px;

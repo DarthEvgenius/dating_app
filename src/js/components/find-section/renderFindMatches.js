@@ -18,6 +18,13 @@ export function renderFindMatches(profilesArray) {
 
     const dislikeBtn = match.querySelector('.btn--dislike')
     dislikeBtn.addEventListener('click', dislikeHandler)
+
+    const infoBtn = match.querySelector('.find__info-btn')
+    infoBtn.addEventListener('click', (e) => {
+      const findInfo = e.target.closest('.find__info')
+      findInfo.classList.toggle('opened')
+
+    })
   })
 
   let amountOfSlides = profilesArray.length
@@ -53,6 +60,9 @@ function createMatch(profile, templateNode) {
 
   const findAge = newMatch.querySelector('.find__age')
   findAge.textContent = profile.profile.age
+
+  const findDescription = newMatch.querySelector('.find__description')
+  findDescription.textContent = profile.profile.about_me
 
   return newMatch
 }

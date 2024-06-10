@@ -433,7 +433,8 @@ a {
   .profile__body::-webkit-scrollbar,
   .profile-tabs__container::-webkit-scrollbar,
   .chat-opponent::-webkit-scrollbar,
-  .content__plans::-webkit-scrollbar {
+  .content__plans::-webkit-scrollbar,
+  .find__description::-webkit-scrollbar {
     width: 7px;
     height: 7px;
   }
@@ -441,7 +442,8 @@ a {
   .profile__body::-webkit-scrollbar-track,
   .profile-tabs__container::-webkit-scrollbar-track,
   .chat-opponent::-webkit-scrollbar-track,
-  .content__plans::-webkit-scrollbar-track {
+  .content__plans::-webkit-scrollbar-track,
+  .find__description::-webkit-scrollbar-track {
     margin-block: 0.5rem;
     background-color: var(--bd-sign-in);
     border-radius: 10px;
@@ -450,7 +452,8 @@ a {
   .profile__body::-webkit-scrollbar-thumb,
   .profile-tabs__container::-webkit-scrollbar-thumb,
   .chat-opponent::-webkit-scrollbar-thumb,
-  .content__plans::-webkit-scrollbar-thumb {
+  .content__plans::-webkit-scrollbar-thumb,
+  .find__description::-webkit-scrollbar-thumb {
     background-color: var(--plan-color, var(--olive-light));
     border: 1px solid var(--bd-sign-in);
     border-radius: 10px;
@@ -1675,7 +1678,7 @@ a {
   width: 100%;
   max-width: 480px;
   height: 100%;
-  max-height: min(740px, 90dvh);
+  max-height: min(620px, 75dvh);
   border: 1px solid var(--bd-plans-separator);
   border-radius: 10px;
   overflow: hidden;
@@ -1752,6 +1755,7 @@ a {
 }
 .find__info {
   width: 100%;
+  height: 45%;
   position: absolute;
   bottom: 0;
   display: -ms-grid;
@@ -1759,8 +1763,40 @@ a {
   place-items: center;
   color: var(--light-color);
   z-index: 50;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(hsla(0, 0%, 0%, 0)), color-stop(8%, hsla(0, 0%, 0%, 0.1)), color-stop(50%, hsla(0, 0%, 6%, 0.97)), to(hsl(0, 0%, 0%)));
-  background-image: linear-gradient(180deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.1) 8%, hsla(0, 0%, 6%, 0.97) 50%, hsl(0, 0%, 0%) 100%);
+  -webkit-transition: height 0.3s;
+  transition: height 0.3s;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(hsla(0, 0%, 0%, 0.01)), color-stop(15%, hsla(0, 0%, 0%, 0.15)), color-stop(50%, hsla(0, 0%, 6%, 0.97)), to(hsl(0, 0%, 0%)));
+  background-image: linear-gradient(180deg, hsla(0, 0%, 0%, 0.01) 0%, hsla(0, 0%, 0%, 0.15) 15%, hsla(0, 0%, 6%, 0.97) 50%, hsl(0, 0%, 0%) 100%);
+}
+.find__info-btn {
+  width: 30px;
+  height: 20px;
+  -ms-flex-item-align: end;
+  -ms-grid-row-align: end;
+  align-self: end;
+  border: 1px solid var(--grey-color);
+  border-radius: 5px;
+  opacity: 0.9;
+}
+.find__info-svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--bd-message);
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.find__info.opened {
+  height: 95%;
+}
+.find__info.opened .find__info-svg {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.find__info.opened .find__description {
+  display: block;
+  overflow-y: scroll;
 }
 .find__title {
   font-family: var(--font-nebulous);
@@ -1768,7 +1804,13 @@ a {
   font-size: var(--fs-app-match-title);
 }
 .find__description {
-  max-width: 361px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  padding-right: 10px;
+  max-width: 310px;
+  max-height: 80%;
   margin-bottom: 31px;
   font-weight: 400;
   font-size: var(--fs-app-text);
@@ -1778,6 +1820,9 @@ a {
   text-align-last: center;
 }
 .find__controls {
+  -ms-flex-item-align: end;
+  -ms-grid-row-align: end;
+  align-self: end;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

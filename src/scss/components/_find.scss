@@ -11,7 +11,7 @@
     width: 100%;
     max-width: 480px;
     height: 100%;
-    max-height: min(740px, 90dvh);
+    max-height: min(620px, 75dvh);
     border: 1px solid var(--bd-plans-separator);
     border-radius: 10px;
     overflow: hidden;
@@ -77,20 +77,51 @@
 
   &__info {
     width: 100%;
+    height: 45%;
     position: absolute;
     bottom: 0;
     display: grid;
     place-items: center;
     color: var(--light-color);
     z-index: 50;
+    transition: height 0.3s;
 
     background-image: linear-gradient(
       180deg,
-      hsl(0deg 0% 0% / 0%) 0%,
-      hsl(0deg 0% 0% / 10%) 8%,
+      hsl(0deg 0% 0% / 1%) 0%,
+      hsl(0deg 0% 0% / 15%) 15%,
       hsl(0deg 0% 6% / 97%) 50%,
       hsl(0deg 0% 0% / 100%) 100%
     );
+
+    &-btn {
+      width: 30px;
+      height: 20px;
+      align-self: end;
+      border: 1px solid var(--grey-color);
+      border-radius: 5px;
+      opacity: 0.9;
+    }
+
+    &-svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--bd-message);
+      transform: rotate(-90deg);
+    }
+
+    &.opened {
+      height: 95%;
+
+      & .find__info-svg {
+        transform: rotate(90deg);
+      }
+
+      & .find__description {
+        display: block;
+        overflow-y: scroll;
+      }
+    }
   }
 
   &__title {
@@ -100,7 +131,13 @@
   }
 
   &__description {
-    max-width: 361px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    padding-right: 10px;
+    max-width: 310px;
+    max-height: 80%;
     margin-bottom: 31px;
     font-weight: 400;
     font-size: var(--fs-app-text);
@@ -110,7 +147,7 @@
   }
 
   &__controls {
-
+    align-self: end;
     display: flex;
     justify-content: center;
     align-items: center;

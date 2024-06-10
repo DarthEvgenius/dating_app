@@ -57,9 +57,9 @@ function createUsers(amount) {
         id: `${counter}`,
         'username': `${counter}`,
         'profile': {
-          'full_name': `Name ${counter++}`,
+          'full_name': `Name ${counter++}-person`,
           'age': 31,
-          'about_me': null,
+          'about_me': 'Some very interesting information about me. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, praesentium numquam. Minus animi sed laborum necessitatibus ratione omnis exercitationem eaque perferendis labore? A saepe, fugiat veritatis, deleniti culpa animi dignissimos blanditiis velit, consequuntur autem repellat voluptatem error provident minus impedit dolores accusantium delectus. Sit optio suscipit, aliquam iusto alias dolorum!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, praesentium numquam. Minus animi sed laborum necessitatibus ratione omnis exercitationem eaque perferendis labore? A saepe, fugiat veritatis, deleniti culpa animi dignissimos blanditiis velit, consequuntur autem repellat voluptatem error provident minus impedit dolores accusantium delectus. Sit optio suscipit, aliquam iusto alias dolorum!',
           'gender': null,
           'birth_place': null,
           'location': null,

@@ -7,10 +7,8 @@ const findSection = document.querySelector('.find')
 
 if(findSection) {
   const findMatches = await fetchFindMatches()
-  console.log(findMatches);
 
   let slideCounter = renderFindMatches(findMatches)
-  console.log(slideCounter)
 
   document.addEventListener('matched', e => {
     slideCounter--

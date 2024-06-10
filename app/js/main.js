@@ -451,9 +451,9 @@ function createUsers(amount) {
       id: `${counter}`,
       'username': `${counter}`,
       'profile': {
-        'full_name': `Name ${counter++}`,
+        'full_name': `Name ${counter++}-person`,
         'age': 31,
-        'about_me': null,
+        'about_me': 'Some very interesting information about me. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, praesentium numquam. Minus animi sed laborum necessitatibus ratione omnis exercitationem eaque perferendis labore? A saepe, fugiat veritatis, deleniti culpa animi dignissimos blanditiis velit, consequuntur autem repellat voluptatem error provident minus impedit dolores accusantium delectus. Sit optio suscipit, aliquam iusto alias dolorum!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, praesentium numquam. Minus animi sed laborum necessitatibus ratione omnis exercitationem eaque perferendis labore? A saepe, fugiat veritatis, deleniti culpa animi dignissimos blanditiis velit, consequuntur autem repellat voluptatem error provident minus impedit dolores accusantium delectus. Sit optio suscipit, aliquam iusto alias dolorum!',
         'gender': null,
         'birth_place': null,
         'location': null,
@@ -1579,6 +1579,11 @@ function renderFindMatches(profilesArray) {
     likeBtn.addEventListener('click', _likeLogic_js__WEBPACK_IMPORTED_MODULE_1__.likeHandler);
     const dislikeBtn = match.querySelector('.btn--dislike');
     dislikeBtn.addEventListener('click', _likeLogic_js__WEBPACK_IMPORTED_MODULE_1__.dislikeHandler);
+    const infoBtn = match.querySelector('.find__info-btn');
+    infoBtn.addEventListener('click', e => {
+      const findInfo = e.target.closest('.find__info');
+      findInfo.classList.toggle('opened');
+    });
   });
   let amountOfSlides = profilesArray.length;
   return amountOfSlides;
@@ -1605,6 +1610,8 @@ function createMatch(profile, templateNode) {
   findName.textContent = profile.profile.full_name;
   const findAge = newMatch.querySelector('.find__age');
   findAge.textContent = profile.profile.age;
+  const findDescription = newMatch.querySelector('.find__description');
+  findDescription.textContent = profile.profile.about_me;
   return newMatch;
 }
 function createMatchSlide(src) {
@@ -1660,9 +1667,7 @@ __webpack_require__.r(__webpack_exports__);
 const findSection = document.querySelector('.find');
 if (findSection) {
   const findMatches = await (0,_find_section_fetchFindMatches_js__WEBPACK_IMPORTED_MODULE_1__.fetchFindMatches)();
-  console.log(findMatches);
   let slideCounter = (0,_find_section_renderFindMatches_js__WEBPACK_IMPORTED_MODULE_2__.renderFindMatches)(findMatches);
-  console.log(slideCounter);
   document.addEventListener('matched', e => {
     slideCounter--;
     if (!slideCounter) {
