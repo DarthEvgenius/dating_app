@@ -348,7 +348,7 @@ a {
   transition: background-color 0.3s;
 }
 .btn:hover {
-  background-color: var(--olive-dark-color);
+  background-color: var(--plan-color, var(--olive-dark-color));
 }
 
 .plan-btn {
@@ -651,6 +651,10 @@ a {
   width: 18px;
   height: 18px;
   background-image: url("../img/arrow-down.png");
+  -webkit-transition: -webkit-transform 0.1s;
+  transition: -webkit-transform 0.1s;
+  transition: transform 0.1s;
+  transition: transform 0.1s, -webkit-transform 0.1s;
 }
 .lang-menu__list {
   position: absolute;
@@ -668,10 +672,6 @@ a {
   -webkit-transition: opacity 0.3s, visibility 0.3s;
   transition: opacity 0.3s, visibility 0.3s;
 }
-.lang-menu__btn:hover + .lang-menu__list, .lang-menu__list:hover {
-  opacity: 1;
-  visibility: visible;
-}
 .lang-menu__option {
   border-radius: 2px;
   overflow: hidden;
@@ -688,6 +688,15 @@ a {
 .lang-menu__img {
   width: 28px;
   height: 19px;
+}
+.lang-menu.opened .lang-menu__btn::after {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.lang-menu.opened .lang-menu__list {
+  opacity: 1;
+  visibility: visible;
 }
 
 .header {

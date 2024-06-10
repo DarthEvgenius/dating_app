@@ -340,22 +340,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_API_mock_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/API-mock.js */ "./src/js/components/API-mock.js");
 /* harmony import */ var _components_loader_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/loader.js */ "./src/js/components/loader.js");
 /* harmony import */ var _components_userObject_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/userObject.js */ "./src/js/components/userObject.js");
-/* harmony import */ var _components_lang_menu_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/lang-menu.js */ "./src/js/components/lang-menu.js");
-/* harmony import */ var _components_sign_in_modal_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/sign-in-modal.js */ "./src/js/components/sign-in-modal.js");
-/* harmony import */ var _components_avatar_swiper_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/avatar-swiper.js */ "./src/js/components/avatar-swiper.js");
-/* harmony import */ var _components_tabs_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/tabs.js */ "./src/js/components/tabs.js");
-/* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
-/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
-/* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
-/* harmony import */ var _components_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
-/* harmony import */ var _components_mainApp_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/mainApp.js */ "./src/js/components/mainApp.js");
-/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
-/* harmony import */ var _components_plansSection_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/plansSection.js */ "./src/js/components/plansSection.js");
-/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
-/* harmony import */ var _components_findSection_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/findSection.js */ "./src/js/components/findSection.js");
-/* harmony import */ var _components_find_section_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/find-section/findSwiperHideToggle.js */ "./src/js/components/find-section/findSwiperHideToggle.js");
-var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_11__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_12__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_13__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_15__]);
-([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_11__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_12__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_13__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_15__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+/* harmony import */ var _components_avatar_swiper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/avatar-swiper.js */ "./src/js/components/avatar-swiper.js");
+/* harmony import */ var _components_tabs_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/tabs.js */ "./src/js/components/tabs.js");
+/* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/textarea-resize.js */ "./src/js/components/textarea-resize.js");
+/* harmony import */ var _components_getCookie_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/getCookie.js */ "./src/js/components/getCookie.js");
+/* harmony import */ var _components_handleError_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/handleError.js */ "./src/js/components/handleError.js");
+/* harmony import */ var _components_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/formDataToJSON.js */ "./src/js/components/formDataToJSON.js");
+/* harmony import */ var _components_mainApp_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/mainApp.js */ "./src/js/components/mainApp.js");
+/* harmony import */ var _components_landing_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/landing.js */ "./src/js/components/landing.js");
+/* harmony import */ var _components_profileSection_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/profileSection.js */ "./src/js/components/profileSection.js");
+/* harmony import */ var _components_plansSection_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/plansSection.js */ "./src/js/components/plansSection.js");
+/* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
+/* harmony import */ var _components_findSection_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/findSection.js */ "./src/js/components/findSection.js");
+/* harmony import */ var _components_find_section_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/find-section/findSwiperHideToggle.js */ "./src/js/components/find-section/findSwiperHideToggle.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_9__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_11__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_12__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_14__]);
+([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_9__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_11__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_12__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_14__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
 
 
@@ -367,6 +366,7 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_com
 
 
 
+// landing page
 
 
 // import profile scripts here
@@ -1738,25 +1738,59 @@ function handleError(error) {
 
 /***/ }),
 
-/***/ "./src/js/components/lang-menu.js":
-/*!****************************************!*\
-  !*** ./src/js/components/lang-menu.js ***!
-  \****************************************/
+/***/ "./src/js/components/landing.js":
+/*!**************************************!*\
+  !*** ./src/js/components/landing.js ***!
+  \**************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-// all language options
-const options = document.querySelectorAll('.lang-menu__option');
-// selected language image
-let btnImg = document.querySelector('.lang-menu__img');
-options.forEach(e => {
-  e.addEventListener('click', changeLanguage);
-});
+/* harmony import */ var _landing_lang_menu_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./landing/lang-menu.js */ "./src/js/components/landing/lang-menu.js");
+/* harmony import */ var _landing_sign_in_modal_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./landing/sign-in-modal.js */ "./src/js/components/landing/sign-in-modal.js");
 
-// change selected language flag
-function changeLanguage(e) {
-  btnImg.src = `./img/flag-${this.dataset.lang}.png`;
+
+
+/***/ }),
+
+/***/ "./src/js/components/landing/lang-menu.js":
+/*!************************************************!*\
+  !*** ./src/js/components/landing/lang-menu.js ***!
+  \************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+const langMenu = document.querySelector('.lang-menu');
+const languageList = document.querySelector('.lang-menu__list');
+const options = document.querySelectorAll('.lang-menu__option');
+const btnImg = document.querySelector('.lang-menu__img');
+if (langMenu) {
+  const languageButton = document.querySelector('.lang-menu__btn');
+  languageButton.addEventListener('click', e => {
+    langMenu.classList.toggle('opened');
+  });
+  options.forEach(e => {
+    e.addEventListener('click', changeLanguage);
+  });
+
+  // change selected language flag
+  function changeLanguage(e) {
+    btnImg.src = `./img/flag-${this.dataset.lang}.png`;
+    langMenu.classList.remove('opened');
+  }
 }
+
+/***/ }),
+
+/***/ "./src/js/components/landing/sign-in-modal.js":
+/*!****************************************************!*\
+  !*** ./src/js/components/landing/sign-in-modal.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var graph_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! graph-modal */ "./node_modules/graph-modal/src/graph-modal.js");
+
+const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]();
 
 /***/ }),
 
@@ -2290,19 +2324,6 @@ function renderProfileSection() {
 }
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
-
-/***/ }),
-
-/***/ "./src/js/components/sign-in-modal.js":
-/*!********************************************!*\
-  !*** ./src/js/components/sign-in-modal.js ***!
-  \********************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var graph_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! graph-modal */ "./node_modules/graph-modal/src/graph-modal.js");
-
-const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]();
 
 /***/ }),
 
