@@ -790,6 +790,23 @@ a {
 }
 .hero__btns-try {
   position: relative;
+  background-image: -webkit-gradient(linear, left top, right bottom, from(var(--love-color-dark)), to(var(--work-color)));
+  background-image: linear-gradient(to right bottom, var(--love-color-dark), var(--work-color));
+}
+.hero__btns-try span {
+  position: relative;
+  z-index: 5;
+}
+.hero__btns-try::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+.hero__btns-try:hover::after {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .sign-in-modal {

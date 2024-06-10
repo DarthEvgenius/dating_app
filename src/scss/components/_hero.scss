@@ -60,27 +60,28 @@
 
       // styles for gradient button
 
-      // background-image:
-      //   linear-gradient(to right,
-      //     hsl(338, 78%, 51%),
-      //       hsl(205, 94%, 53%));
+      background-image:
 
-      // & span {
-      //   position: relative;
-      //   z-index: 5;
-      // }
+        linear-gradient(to right bottom,
+          var(--love-color-dark),
+          var(--work-color));
 
-      // &::after {
-      //   content: '';
-      //   position: absolute;
-      //   inset: 0;
-      //   background-color: rgba(0, 0, 0, 0);
-      //   transition: background-color 0.3s;
-      // }
+      & span {
+        position: relative;
+        z-index: 5;
+      }
 
-      // &:hover::after{
-      //     background-color: rgba(0, 0, 0, 0.2);
-      // }
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0);
+        transition: background-color 0.3s;
+      }
+
+      &:hover::after{
+          background-color: rgba(0, 0, 0, 0.2);
+      }
     }
   }
 }
