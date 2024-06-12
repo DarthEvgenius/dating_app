@@ -1,85 +1,132 @@
 <div class="content-section selected-plan--work" data-selected-plan="work">
 
-  <h2 class="content__plans-title selected-plan__title">
+  <p class="content__plans-title selected-plan__title">
     Find a job or a Business Partner
-  </h2>
-
-  <div class="content__plans-header content__plans-header--work">
-    <button class="plan-btn btn selected-plan__change">Change Plan</button>
-    <h3 class="content__plans-header__title">
-      Work
-    </h3>
-    <button type="submit" form="work-form" class="plan-btn btn form-submit" >Confirm</button>
-  </div>
-
-  <p class="content__plans-description selected-plan__description">
-    Please provide us more information, so we’ll be able to provide you the best matches.
-    <br>
-    Fill in the field “My relationship goals” and choose your preferable gender.
   </p>
 
-  <form action="#" name="work-form" id="work-form" class="selected-plan__form">
+  <div class="profile__plan-container">
 
-    <fieldset class="work-fieldset">
-      <h4 class="profile__info-subtitle selected-plan__form-title">
-        Occupation:
-      </h4>
+    <div class="profile__plan-row">
+      <p class="profile__plan-subtitle">
+        Your subscription is:
+      </p>
 
-      <input
-        type="text"
-        name="occupation"
-        id="work-occupation"
-        class="edit-field__input"
-        placeholder="House furniture and accessories">
-    </fieldset>
+    </div>
 
-    <fieldset class="input--streched">
-      <h4 class="profile__info-subtitle selected-plan__form-title">
-        Income:
-      </h4>
+    <div class="profile__plan-row">
+      <h2 class="profile__plan-title">
+        <svg class="plan-svg">
+          <use xlink:href="img/sprite.svg#work"></use>
+        </svg>
+        Work
+      </h2>
 
-      <input
-        type="text"
-        name="income"
-        id="work-income"
-        class="edit-field__input"
-        placeholder="$21,000">
-    </fieldset>
+      <button class="selected-plan__edit" aria-label="Edit plan details">
+        <svg class="edit-svg">
+            <use xlink:href="img/sprite.svg#edit-pen"></use>
+          </svg>
+      </button>
 
-    <fieldset>
-      <h4 class="profile__info-subtitle selected-plan__form-title">
-        Looking for:
-      </h4>
+      <button type="submit" form="work-form" class="plan-btn btn form-submit hidden">Confirm</button>
+    </div>
 
-      <div class="radio-input work-form__strategy">
-        <input
-          type="radio"
-          name="work_strategy"
-          id="strategy-employment"
-          value="employment">
-        <label for="strategy-employment" class="edit-field__input">Employment</label>
+    <div class="profile__plan-row">
+      <p class="content__plans-description selected-plan__description">
+        Please provide us some information, so we'll be able to provide you the best matches.
+        <br>
+        Fill in the field “My relationship goals” and choose your preferable gender.
+      </p>
+    </div>
 
-        <input type="radio"
-          name="work_strategy"
-          id="strategy-partner"
-          value="business_partner">
-        <label for="strategy-partner" class="edit-field__input"> Business partner</label>
+    <div class="selected-plan__details">
+
+      <div class="profile__plan-row">
+        <dt class="profile__info-subtitle">Occupation:</dt>
+        <dd class="profile__info-content" data-field="occupation"></dd>
       </div>
-    </fieldset>
 
-    <fieldset>
-      <h4 class="profile__info-subtitle selected-plan__form-title">
-        Skills:
-      </h4>
+      <div class="profile__plan-row">
+        <dt class="profile__info-subtitle">Income:</dt>
+        <dd class="profile__info-content" data-field="income"></dd>
+      </div>
 
-      <select
-        name="skills"
-        id="work-skills"
-        class="edit-field__input">
-          <option value="" disabled selected>Choose your skills</option>
-          <option value="skill">skill</option>
-      </select>
+      <div class="profile__plan-row">
+        <dt class="profile__info-subtitle">Looking for:</dt>
+        <dd class="profile__info-content" data-field="work_strategy"></dd>
+      </div>
 
-  </form>
+      <div class="profile__plan-row">
+        <dt class="profile__info-subtitle">Skills:</dt>
+        <dd class="profile__info-content" data-field="skills"></dd>
+      </div>
+    </div>
+
+    <form action="#" name="work-form" id="work-form" class="selected-plan__form hidden">
+
+      <fieldset class="work-fieldset">
+        <h4 class="profile__info-subtitle selected-plan__form-title">
+          Occupation:
+        </h4>
+
+        <input
+          type="text"
+          name="occupation"
+          id="work-occupation"
+          class="edit-field__input"
+          placeholder="House furniture and accessories">
+      </fieldset>
+
+      <fieldset class="input--streched">
+        <h4 class="profile__info-subtitle selected-plan__form-title">
+          Income:
+        </h4>
+
+        <input
+          type="text"
+          name="income"
+          id="work-income"
+          class="edit-field__input"
+          placeholder="$21,000">
+      </fieldset>
+
+      <fieldset>
+        <h4 class="profile__info-subtitle selected-plan__form-title">
+          Looking for:
+        </h4>
+
+        <div class="radio-input work-form__strategy">
+          <input
+            type="radio"
+            name="work_strategy"
+            id="strategy-employment"
+            value="employment">
+          <label for="strategy-employment" class="edit-field__input">Employment</label>
+
+          <input type="radio"
+            name="work_strategy"
+            id="strategy-partner"
+            value="business_partner">
+          <label for="strategy-partner" class="edit-field__input"> Business partner</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <h4 class="profile__info-subtitle selected-plan__form-title">
+          Skills:
+        </h4>
+
+        <select
+          name="skills"
+          id="work-skills"
+          class="edit-field__input">
+            <option value="" disabled selected>Choose your skills</option>
+            <option value="skill">skill</option>
+        </select>
+      </fieldset>
+    </form>
+
+  </div>
+
+  <button class="profile__info-btn btn selected-plan__change">Change Plan</button>
 
 </div>

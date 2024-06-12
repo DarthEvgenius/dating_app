@@ -69,9 +69,7 @@ async function getUserInfo(userId) {
   }
 }
 
-export async function updateUser(data) {
-  // user is taken from above: User instance
-
+export function updateUser(data) {
   // for submitted profile form
   if(data instanceof FormData) {
     for(let [name, value] of data) {
@@ -80,7 +78,7 @@ export async function updateUser(data) {
       }
     }
     console.log('user updated:\n', user);
-  } else if(data instanceof User) {
+  } else if(data instanceof User || data.username) {
     user = new User(data)
     console.log('user update:\n', data);
   } else {

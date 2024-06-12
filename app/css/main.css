@@ -1246,7 +1246,6 @@ a {
 }
 .profile__plan-container {
   width: 100%;
-  max-width: 360px;
   padding-inline: 31px;
   padding-block: 18px;
   border-radius: 10px;
@@ -1263,9 +1262,10 @@ a {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  font-family: var(--font-nebulous);
+  gap: 13px;
 }
 .profile__plan-subtitle {
+  font-family: var(--font-nebulous);
   font-weight: 400;
   font-size: var(--fs-profile-subtitle);
   line-height: 1.75;
@@ -1288,6 +1288,7 @@ a {
   align-items: center;
   gap: 8px;
   font-weight: 400;
+  font-family: var(--font-nebulous);
   font-size: var(--fs-profile-title);
   line-height: 1.14;
 }
@@ -1463,6 +1464,9 @@ a {
   padding-block: 27px;
   width: 100%;
   max-width: 600px;
+  display: -ms-grid;
+  display: grid;
+  gap: 25px;
   background-color: var(--light-color);
   border: 1px solid var(--bd-profile-edit);
   border-radius: 10px;
@@ -1488,11 +1492,11 @@ a {
   text-align: center;
 }
 .content__plans-header {
-  margin-bottom: 25px;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  gap: 11px;
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
@@ -1510,6 +1514,7 @@ a {
   --plan-color: var(--work-color);
 }
 .content__plans-header__title {
+  margin-right: auto;
   position: relative;
   font-family: var(--font-nebulous);
   font-weight: 400;
@@ -1642,8 +1647,7 @@ a {
   text-transform: uppercase;
 }
 .selected-plan__description {
-  margin-bottom: 32px;
-  padding-bottom: 32px;
+  padding-bottom: 16px;
   color: var(--grey-color);
   border-bottom: 1px solid var(--bd-plans-separator);
 }
@@ -1687,6 +1691,10 @@ a {
 }
 .selected-plan .love-form__age {
   gap: 6px;
+}
+.selected-plan__details {
+  width: 100%;
+  max-width: 600px;
 }
 
 .find {

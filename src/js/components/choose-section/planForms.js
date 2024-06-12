@@ -1,5 +1,6 @@
 import { user } from "../userObject.js";
 import { updateUser } from "../userObject.js";
+import { selectedPlanEditHandler, populatePlanDetails } from "./renderPlansSection.js";
 
 // get form
 // add listener
@@ -14,6 +15,9 @@ export function planFormHandler(planSection) {
   submitButton.addEventListener('click', (event) => {
     event.preventDefault()
     updateUser(new FormData(planForm))
-    window.location.href = './app-matches.html'
+    const showSelectedPlanDetails = selectedPlanEditHandler('submit')
+    showSelectedPlanDetails(event)
   })
 }
+
+

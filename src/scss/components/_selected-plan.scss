@@ -15,8 +15,7 @@
   }
 
   &__description {
-    margin-bottom: 32px;
-    padding-bottom: 32px;
+    padding-bottom: 16px;
     color: var(--grey-color);
     border-bottom: 1px solid var(--bd-plans-separator);
   }
@@ -68,5 +67,10 @@
 
   .love-form__age {
     gap: 6px;
+  }
+
+  &__details {
+    width: 100%;
+    max-width: 600px;
   }
 }

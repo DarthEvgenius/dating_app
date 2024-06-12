@@ -1321,8 +1321,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   planFormHandler: () => (/* binding */ planFormHandler)
 /* harmony export */ });
 /* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
-var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_0__]);
-_userObject_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+/* harmony import */ var _renderPlansSection_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./renderPlansSection.js */ "./src/js/components/choose-section/renderPlansSection.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_userObject_js__WEBPACK_IMPORTED_MODULE_0__, _renderPlansSection_js__WEBPACK_IMPORTED_MODULE_1__]);
+([_userObject_js__WEBPACK_IMPORTED_MODULE_0__, _renderPlansSection_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
 
 
 
@@ -1338,7 +1340,8 @@ function planFormHandler(planSection) {
   submitButton.addEventListener('click', event => {
     event.preventDefault();
     (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(new FormData(planForm));
-    window.location.href = './app-matches.html';
+    const showSelectedPlanDetails = (0,_renderPlansSection_js__WEBPACK_IMPORTED_MODULE_1__.selectedPlanEditHandler)('submit');
+    showSelectedPlanDetails(event);
   });
 }
 __webpack_async_result__();
@@ -1355,7 +1358,8 @@ __webpack_async_result__();
 __webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   renderPlansSection: () => (/* binding */ renderPlansSection)
+/* harmony export */   renderPlansSection: () => (/* binding */ renderPlansSection),
+/* harmony export */   selectedPlanEditHandler: () => (/* binding */ selectedPlanEditHandler)
 /* harmony export */ });
 /* harmony import */ var _userObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userObject.js */ "./src/js/components/userObject.js");
 /* harmony import */ var _mainApp_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mainApp.js */ "./src/js/components/mainApp.js");
@@ -1377,6 +1381,12 @@ function renderPlansSection(planSectionComponents) {
       _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title = '';
       (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
       window.location.href = './app-profile.html';
+    });
+  });
+  planSectionComponents.editPlanBtns.forEach(btn => {
+    btn.addEventListener('click', event => {
+      const showSelectedPlanDetails = selectedPlanEditHandler('edit');
+      showSelectedPlanDetails(event);
     });
   });
   if (!_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user?.subscription?.title) {
@@ -1405,6 +1415,7 @@ function showSelectedPlan(components) {
       planSection.classList.add('hidden');
     }
   }
+  populatePlanDetails(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
 }
 function planChooseBtnsHandler(button) {
   // const user = JSON.parse(localStorage.getItem('userInfo'))
@@ -1412,6 +1423,41 @@ function planChooseBtnsHandler(button) {
   _userObject_js__WEBPACK_IMPORTED_MODULE_0__.user.subscription.title = plan;
   (0,_userObject_js__WEBPACK_IMPORTED_MODULE_0__.updateUser)(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
   (0,_mainApp_js__WEBPACK_IMPORTED_MODULE_1__.setAppPlan)(plan);
+}
+
+// provide 'goal' argument with 'edit' or 'submit' value
+function selectedPlanEditHandler(goal) {
+  return function (event) {
+    const selectedPlanContainer = event.target.closest('.profile__plan-container');
+    const planDetailsElem = selectedPlanContainer.querySelector('.selected-plan__details');
+    const selectedPlanForm = selectedPlanContainer.querySelector('.selected-plan__form');
+    const formSubmitBtn = selectedPlanContainer.querySelector('.form-submit');
+    const editPlanBtn = selectedPlanContainer.querySelector('.selected-plan__edit');
+    if (goal == 'edit') {
+      planDetailsElem.classList.add('hidden');
+      editPlanBtn.classList.add('hidden');
+      selectedPlanForm.classList.remove('hidden');
+      formSubmitBtn.classList.remove('hidden');
+    } else if (goal == 'submit') {
+      planDetailsElem.classList.remove('hidden');
+      editPlanBtn.classList.remove('hidden');
+      selectedPlanForm.classList.add('hidden');
+      formSubmitBtn.classList.add('hidden');
+      populatePlanDetails(_userObject_js__WEBPACK_IMPORTED_MODULE_0__.user);
+    }
+  };
+}
+function populatePlanDetails(user) {
+  for (const key in user.subscription.subscription_info) {
+    const field = document.querySelector(`[data-field=${key}]`);
+    if (field) {
+      if (user.subscription.subscription_info[key]) {
+        field.textContent = user.subscription.subscription_info[key];
+      } else {
+        field.textContent = 'No information';
+      }
+    }
+  }
 }
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
@@ -1892,6 +1938,7 @@ const planSectionComponents = {
   selectedPlan: document.querySelector('.selected-plan'),
   choosePlanBtns: document.querySelectorAll('[data-choose-plan'),
   changePlanBtn: document.querySelectorAll('.selected-plan__change'),
+  editPlanBtns: document.querySelectorAll('.selected-plan__edit'),
   planInfoSections: [document.querySelector('.selected-plan--love'), document.querySelector('.selected-plan--friends'), document.querySelector('.selected-plan--work')]
 };
 if (planSectionComponents.choosePlan || planSectionComponents.selectedPlan) {
@@ -2449,9 +2496,7 @@ async function getUserInfo(userId) {
     console.log(e);
   }
 }
-async function updateUser(data) {
-  // user is taken from above: User instance
-
+function updateUser(data) {
   // for submitted profile form
   if (data instanceof FormData) {
     for (let [name, value] of data) {
@@ -2460,7 +2505,7 @@ async function updateUser(data) {
       }
     }
     console.log('user updated:\n', user);
-  } else if (data instanceof User) {
+  } else if (data instanceof User || data.username) {
     user = new User(data);
     console.log('user update:\n', data);
   } else {

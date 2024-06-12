@@ -3,7 +3,6 @@
 
   &-container {
     width: 100%;
-    max-width: 360px;
     padding-inline: 31px;
     padding-block: 18px;
     border-radius: 10px;
@@ -15,10 +14,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: var(--font-nebulous);
+    gap: 13px;
   }
 
   &-subtitle {
+    font-family: var(--font-nebulous);
     font-weight: 400;
     font-size: var(--fs-profile-subtitle);
     line-height: 1.75;
@@ -40,6 +40,7 @@
     align-items: center;
     gap: 8px;
     font-weight: 400;
+    font-family: var(--font-nebulous);
     font-size: var(--fs-profile-title);
     line-height: 1.14;
 

@@ -19,13 +19,19 @@ export function renderPlansSection(planSectionComponents) {
     })
   })
 
+  planSectionComponents.editPlanBtns.forEach(btn => {
+    btn.addEventListener('click', (event) => {
+      const showSelectedPlanDetails = selectedPlanEditHandler('edit')
+      showSelectedPlanDetails(event)
+    })
+  })
+
   if(!user?.subscription?.title) {
     // if user has no subscription
     showChoosePlans(planSectionComponents)
   } else {
     // if user has subscription
     showSelectedPlan(planSectionComponents)
-
   }
 }
 
@@ -50,7 +56,7 @@ function showSelectedPlan(components) {
     }
   }
 
-
+  populatePlanDetails(user)
 }
 
 function planChooseBtnsHandler(button) {
@@ -60,6 +66,44 @@ function planChooseBtnsHandler(button) {
   user.subscription.title = plan
   updateUser(user)
   setAppPlan(plan)
-
 }
 
+// provide 'goal' argument with 'edit' or 'submit' value
+export function selectedPlanEditHandler(goal) {
+  return function(event) {
+    const selectedPlanContainer = event.target.closest('.profile__plan-container')
+    const planDetailsElem = selectedPlanContainer.querySelector('.selected-plan__details')
+    const selectedPlanForm = selectedPlanContainer.querySelector('.selected-plan__form')
+    const formSubmitBtn = selectedPlanContainer.querySelector('.form-submit')
+    const editPlanBtn = selectedPlanContainer.querySelector('.selected-plan__edit')
+
+    if (goal == 'edit') {
+      planDetailsElem.classList.add('hidden')
+      editPlanBtn.classList.add('hidden')
+      selectedPlanForm.classList.remove('hidden')
+      formSubmitBtn.classList.remove('hidden')
+    }
+    else if (goal == 'submit') {
+      planDetailsElem.classList.remove('hidden')
+      editPlanBtn.classList.remove('hidden')
+      selectedPlanForm.classList.add('hidden')
+      formSubmitBtn.classList.add('hidden')
+
+      populatePlanDetails(user)
+    }
+  }
+}
+
+function populatePlanDetails(user) {
+  for(const key in user.subscription.subscription_info) {
+    const field = document.querySelector(`[data-field=${key}]`)
+
+    if (field) {
+      if (user.subscription.subscription_info[key]) {
+        field.textContent = user.subscription.subscription_info[key]
+      } else {
+        field.textContent = 'No information'
+      }
+    }
+  }
+}
