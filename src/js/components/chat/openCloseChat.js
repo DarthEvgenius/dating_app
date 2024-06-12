@@ -6,7 +6,7 @@ import { renderGuestProfile } from './chatViewScripts/renderGuestProfile.js'
 
 export async function openChat(chatInfo, userId) {
   const senderId = userId
-  const recipientId = handleRecipient(chatInfo, senderId)
+  const recipientId = renderChatHeader(chatInfo, senderId)
   chatInfo.recipient = recipientId
 
   const chatElem = document.querySelector(`.chat`)
@@ -42,18 +42,23 @@ export function closeChat(id) {
   console.log('close chat id:', id);
 }
 
-function handleRecipient(chatObj, senderId) {
-  console.log(chatObj);
-
+function getRecipientId(chatObj, senderId) {
   for (let user of chatObj.users) {
     if (user.id != senderId) {
-      // fullfill chat header info
-      const chat__name = document.querySelector('.chat__name')
-      chat__name.textContent = user.username
-
       return user.id
     }
   }
 }
+
+function renderChatHeader(chatObj, senderId) {
+  for (let user of chatObj.users) {
+    if (user.id != senderId) {
+      const chat__name = document.querySelector('.chat__name')
+      chat__name.textContent = user.username
+      return user.id
+    }
+  }
+}
+
 
 

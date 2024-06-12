@@ -13,8 +13,6 @@ import { handleSocketMessage } from './chat/chatViewScripts/handleSocketMessage.
 
 window.addEventListener('resize', setChatElementSizes)
 
-
-
 const userId = getCookie("userID")
 let chatId = null
 
@@ -30,7 +28,7 @@ document.addEventListener('click', async function (e)  {
     // remove old chat
     deleteChat()
     // create new chat
-    renderNewChat()
+    renderNewChat(chatId)
 
     // get chat info
     // expected object:
@@ -46,7 +44,7 @@ document.addEventListener('click', async function (e)  {
 
     // mock chatInfo obj
     let chatInfo = {
-      id: 1,
+      id: chatId,
       users: [
         {
           id: 2,

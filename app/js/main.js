@@ -571,7 +571,7 @@ document.addEventListener('click', async function (e) {
     // remove old chat
     (0,_chat_chatViewScripts_deleteChat_js__WEBPACK_IMPORTED_MODULE_1__.deleteChat)();
     // create new chat
-    (0,_chat_chatViewScripts_renderNewChat_js__WEBPACK_IMPORTED_MODULE_5__.renderNewChat)();
+    (0,_chat_chatViewScripts_renderNewChat_js__WEBPACK_IMPORTED_MODULE_5__.renderNewChat)(chatId);
 
     // get chat info
     // expected object:
@@ -587,7 +587,7 @@ document.addEventListener('click', async function (e) {
 
     // mock chatInfo obj
     let chatInfo = {
-      id: 1,
+      id: chatId,
       users: [{
         id: 2,
         'first_name': 'id-2',
@@ -1045,13 +1045,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   renderNewChat: () => (/* binding */ renderNewChat)
 /* harmony export */ });
 // build and render chat container and DOM structure
-function renderNewChat() {
+function renderNewChat(chatId) {
   // const chat = createChatContainers()
   const chat = document.createElement('div');
   chat.classList.add('chat');
+  chat.setAttribute('id', `chat-${chatId}`);
   const chat__container = document.createElement('div');
   chat__container.classList.add('chat__container');
-  chat__container.appendChild(createChatHeader());
+  chat__container.appendChild(createChatHeader(chatId));
   chat__container.appendChild(createChatbox());
   chat__container.appendChild(createChatForm());
   chat.appendChild(chat__container);
@@ -1066,14 +1067,14 @@ function createChatContainers() {
   chat.appendChild(chat__container);
   return chat__container;
 }
-function createChatHeader() {
+function createChatHeader(chatId) {
   const chatHeader = document.createElement('div');
   chatHeader.classList.add('chat-header', 'offset-container');
   chatHeader.innerHTML = `
-    <button class="nav-btn chat-header__close" id="chat-0-close" aria-label="Close chat">
-    <svg class="nav-svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-      <path d="M6.64137 16.2753C6.41948 16.0534 6.39931 15.7062 6.58086 15.4615L6.64137 15.3914L12.0325 9.99999L6.64137 4.6086C6.41948 4.38671 6.39931 4.03949 6.58086 3.79482L6.64137 3.72472C6.86326 3.50283 7.21048 3.48266 7.45516 3.6642L7.52525 3.72472L13.3586 9.55805C13.5805 9.77994 13.6006 10.1272 13.4191 10.3718L13.3586 10.4419L7.52525 16.2753C7.28118 16.5193 6.88545 16.5193 6.64137 16.2753Z" />
-    </svg>
+    <button class="nav-btn chat-header__close" id="chat-${chatId}-close" aria-label="Close chat">
+      <svg class="nav-svg">
+        <use xlink:href="img/sprite.svg#arrow-right"></use>
+      </svg>
     </button>
 
     <p class="chat-header__info">
@@ -1232,7 +1233,7 @@ __webpack_require__.r(__webpack_exports__);
 
 async function openChat(chatInfo, userId) {
   const senderId = userId;
-  const recipientId = handleRecipient(chatInfo, senderId);
+  const recipientId = renderChatHeader(chatInfo, senderId);
   chatInfo.recipient = recipientId;
   const chatElem = document.querySelector(`.chat`);
   if (chatElem) {
@@ -1259,11 +1260,16 @@ function closeChat(id) {
   chatElem.classList.add('hidden');
   console.log('close chat id:', id);
 }
-function handleRecipient(chatObj, senderId) {
-  console.log(chatObj);
+function getRecipientId(chatObj, senderId) {
   for (let user of chatObj.users) {
     if (user.id != senderId) {
-      // fullfill chat header info
+      return user.id;
+    }
+  }
+}
+function renderChatHeader(chatObj, senderId) {
+  for (let user of chatObj.users) {
+    if (user.id != senderId) {
       const chat__name = document.querySelector('.chat__name');
       chat__name.textContent = user.username;
       return user.id;

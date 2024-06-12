@@ -1319,7 +1319,6 @@ a {
   overflow: hidden;
 }
 .matches-tab__btn {
-  position: relative;
   opacity: 1;
 }
 .matches-tab__btn::after {
@@ -1335,6 +1334,8 @@ a {
 }
 .matches-tab__image {
   position: relative;
+  width: 100%;
+  height: 100%;
   z-index: 1;
 }
 .matches-tab__name {
@@ -1637,12 +1638,6 @@ a {
   align-items: start;
 }
 .selected-plan__title {
-  position: absolute;
-  top: calc((1lh + var(--container-offset)) * -1);
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
   text-align: center;
   text-transform: uppercase;
 }

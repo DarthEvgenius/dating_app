@@ -6,10 +6,6 @@
   align-items: start;
 
   &__title {
-    position: absolute;
-    top: calc((1lh + var(--container-offset)) * -1);
-    left: 50%;
-    transform: translateX(-50%);
     text-align: center;
     text-transform: uppercase;
   }
