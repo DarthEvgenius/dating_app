@@ -2,6 +2,2895 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@popperjs/core/lib/createPopper.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/createPopper.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createPopper: () => (/* binding */ createPopper),
+/* harmony export */   detectOverflow: () => (/* reexport safe */ _utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_8__["default"]),
+/* harmony export */   popperGenerator: () => (/* binding */ popperGenerator)
+/* harmony export */ });
+/* harmony import */ var _dom_utils_getCompositeRect_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dom-utils/getCompositeRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getCompositeRect.js");
+/* harmony import */ var _dom_utils_getLayoutRect_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./dom-utils/getLayoutRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getLayoutRect.js");
+/* harmony import */ var _dom_utils_listScrollParents_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dom-utils/listScrollParents.js */ "./node_modules/@popperjs/core/lib/dom-utils/listScrollParents.js");
+/* harmony import */ var _dom_utils_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dom-utils/getOffsetParent.js */ "./node_modules/@popperjs/core/lib/dom-utils/getOffsetParent.js");
+/* harmony import */ var _utils_orderModifiers_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/orderModifiers.js */ "./node_modules/@popperjs/core/lib/utils/orderModifiers.js");
+/* harmony import */ var _utils_debounce_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/debounce.js */ "./node_modules/@popperjs/core/lib/utils/debounce.js");
+/* harmony import */ var _utils_mergeByName_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/mergeByName.js */ "./node_modules/@popperjs/core/lib/utils/mergeByName.js");
+/* harmony import */ var _utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utils/detectOverflow.js */ "./node_modules/@popperjs/core/lib/utils/detectOverflow.js");
+/* harmony import */ var _dom_utils_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dom-utils/instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+
+
+
+
+
+
+
+
+
+var DEFAULT_OPTIONS = {
+  placement: 'bottom',
+  modifiers: [],
+  strategy: 'absolute'
+};
+
+function areValidElements() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  return !args.some(function (element) {
+    return !(element && typeof element.getBoundingClientRect === 'function');
+  });
+}
+
+function popperGenerator(generatorOptions) {
+  if (generatorOptions === void 0) {
+    generatorOptions = {};
+  }
+
+  var _generatorOptions = generatorOptions,
+      _generatorOptions$def = _generatorOptions.defaultModifiers,
+      defaultModifiers = _generatorOptions$def === void 0 ? [] : _generatorOptions$def,
+      _generatorOptions$def2 = _generatorOptions.defaultOptions,
+      defaultOptions = _generatorOptions$def2 === void 0 ? DEFAULT_OPTIONS : _generatorOptions$def2;
+  return function createPopper(reference, popper, options) {
+    if (options === void 0) {
+      options = defaultOptions;
+    }
+
+    var state = {
+      placement: 'bottom',
+      orderedModifiers: [],
+      options: Object.assign({}, DEFAULT_OPTIONS, defaultOptions),
+      modifiersData: {},
+      elements: {
+        reference: reference,
+        popper: popper
+      },
+      attributes: {},
+      styles: {}
+    };
+    var effectCleanupFns = [];
+    var isDestroyed = false;
+    var instance = {
+      state: state,
+      setOptions: function setOptions(setOptionsAction) {
+        var options = typeof setOptionsAction === 'function' ? setOptionsAction(state.options) : setOptionsAction;
+        cleanupModifierEffects();
+        state.options = Object.assign({}, defaultOptions, state.options, options);
+        state.scrollParents = {
+          reference: (0,_dom_utils_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isElement)(reference) ? (0,_dom_utils_listScrollParents_js__WEBPACK_IMPORTED_MODULE_1__["default"])(reference) : reference.contextElement ? (0,_dom_utils_listScrollParents_js__WEBPACK_IMPORTED_MODULE_1__["default"])(reference.contextElement) : [],
+          popper: (0,_dom_utils_listScrollParents_js__WEBPACK_IMPORTED_MODULE_1__["default"])(popper)
+        }; // Orders the modifiers based on their dependencies and `phase`
+        // properties
+
+        var orderedModifiers = (0,_utils_orderModifiers_js__WEBPACK_IMPORTED_MODULE_2__["default"])((0,_utils_mergeByName_js__WEBPACK_IMPORTED_MODULE_3__["default"])([].concat(defaultModifiers, state.options.modifiers))); // Strip out disabled modifiers
+
+        state.orderedModifiers = orderedModifiers.filter(function (m) {
+          return m.enabled;
+        });
+        runModifierEffects();
+        return instance.update();
+      },
+      // Sync update – it will always be executed, even if not necessary. This
+      // is useful for low frequency updates where sync behavior simplifies the
+      // logic.
+      // For high frequency updates (e.g. `resize` and `scroll` events), always
+      // prefer the async Popper#update method
+      forceUpdate: function forceUpdate() {
+        if (isDestroyed) {
+          return;
+        }
+
+        var _state$elements = state.elements,
+            reference = _state$elements.reference,
+            popper = _state$elements.popper; // Don't proceed if `reference` or `popper` are not valid elements
+        // anymore
+
+        if (!areValidElements(reference, popper)) {
+          return;
+        } // Store the reference and popper rects to be read by modifiers
+
+
+        state.rects = {
+          reference: (0,_dom_utils_getCompositeRect_js__WEBPACK_IMPORTED_MODULE_4__["default"])(reference, (0,_dom_utils_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_5__["default"])(popper), state.options.strategy === 'fixed'),
+          popper: (0,_dom_utils_getLayoutRect_js__WEBPACK_IMPORTED_MODULE_6__["default"])(popper)
+        }; // Modifiers have the ability to reset the current update cycle. The
+        // most common use case for this is the `flip` modifier changing the
+        // placement, which then needs to re-run all the modifiers, because the
+        // logic was previously ran for the previous placement and is therefore
+        // stale/incorrect
+
+        state.reset = false;
+        state.placement = state.options.placement; // On each update cycle, the `modifiersData` property for each modifier
+        // is filled with the initial data specified by the modifier. This means
+        // it doesn't persist and is fresh on each update.
+        // To ensure persistent data, use `${name}#persistent`
+
+        state.orderedModifiers.forEach(function (modifier) {
+          return state.modifiersData[modifier.name] = Object.assign({}, modifier.data);
+        });
+
+        for (var index = 0; index < state.orderedModifiers.length; index++) {
+          if (state.reset === true) {
+            state.reset = false;
+            index = -1;
+            continue;
+          }
+
+          var _state$orderedModifie = state.orderedModifiers[index],
+              fn = _state$orderedModifie.fn,
+              _state$orderedModifie2 = _state$orderedModifie.options,
+              _options = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2,
+              name = _state$orderedModifie.name;
+
+          if (typeof fn === 'function') {
+            state = fn({
+              state: state,
+              options: _options,
+              name: name,
+              instance: instance
+            }) || state;
+          }
+        }
+      },
+      // Async and optimistically optimized update – it will not be executed if
+      // not necessary (debounced to run at most once-per-tick)
+      update: (0,_utils_debounce_js__WEBPACK_IMPORTED_MODULE_7__["default"])(function () {
+        return new Promise(function (resolve) {
+          instance.forceUpdate();
+          resolve(state);
+        });
+      }),
+      destroy: function destroy() {
+        cleanupModifierEffects();
+        isDestroyed = true;
+      }
+    };
+
+    if (!areValidElements(reference, popper)) {
+      return instance;
+    }
+
+    instance.setOptions(options).then(function (state) {
+      if (!isDestroyed && options.onFirstUpdate) {
+        options.onFirstUpdate(state);
+      }
+    }); // Modifiers have the ability to execute arbitrary code before the first
+    // update cycle runs. They will be executed in the same order as the update
+    // cycle. This is useful when a modifier adds some persistent data that
+    // other modifiers need to use, but the modifier is run after the dependent
+    // one.
+
+    function runModifierEffects() {
+      state.orderedModifiers.forEach(function (_ref) {
+        var name = _ref.name,
+            _ref$options = _ref.options,
+            options = _ref$options === void 0 ? {} : _ref$options,
+            effect = _ref.effect;
+
+        if (typeof effect === 'function') {
+          var cleanupFn = effect({
+            state: state,
+            name: name,
+            instance: instance,
+            options: options
+          });
+
+          var noopFn = function noopFn() {};
+
+          effectCleanupFns.push(cleanupFn || noopFn);
+        }
+      });
+    }
+
+    function cleanupModifierEffects() {
+      effectCleanupFns.forEach(function (fn) {
+        return fn();
+      });
+      effectCleanupFns = [];
+    }
+
+    return instance;
+  };
+}
+var createPopper = /*#__PURE__*/popperGenerator(); // eslint-disable-next-line import/no-unused-modules
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/contains.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/contains.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ contains)
+/* harmony export */ });
+/* harmony import */ var _instanceOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+
+function contains(parent, child) {
+  var rootNode = child.getRootNode && child.getRootNode(); // First, attempt with faster native method
+
+  if (parent.contains(child)) {
+    return true;
+  } // then fallback to custom implementation with Shadow DOM support
+  else if (rootNode && (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isShadowRoot)(rootNode)) {
+      var next = child;
+
+      do {
+        if (next && parent.isSameNode(next)) {
+          return true;
+        } // $FlowFixMe[prop-missing]: need a better way to handle this...
+
+
+        next = next.parentNode || next.host;
+      } while (next);
+    } // Give up, the result is false
+
+
+  return false;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getBoundingClientRect.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getBoundingClientRect.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getBoundingClientRect)
+/* harmony export */ });
+/* harmony import */ var _instanceOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/@popperjs/core/lib/utils/math.js");
+/* harmony import */ var _getWindow_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getWindow.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js");
+/* harmony import */ var _isLayoutViewport_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./isLayoutViewport.js */ "./node_modules/@popperjs/core/lib/dom-utils/isLayoutViewport.js");
+
+
+
+
+function getBoundingClientRect(element, includeScale, isFixedStrategy) {
+  if (includeScale === void 0) {
+    includeScale = false;
+  }
+
+  if (isFixedStrategy === void 0) {
+    isFixedStrategy = false;
+  }
+
+  var clientRect = element.getBoundingClientRect();
+  var scaleX = 1;
+  var scaleY = 1;
+
+  if (includeScale && (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element)) {
+    scaleX = element.offsetWidth > 0 ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.round)(clientRect.width) / element.offsetWidth || 1 : 1;
+    scaleY = element.offsetHeight > 0 ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.round)(clientRect.height) / element.offsetHeight || 1 : 1;
+  }
+
+  var _ref = (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isElement)(element) ? (0,_getWindow_js__WEBPACK_IMPORTED_MODULE_2__["default"])(element) : window,
+      visualViewport = _ref.visualViewport;
+
+  var addVisualOffsets = !(0,_isLayoutViewport_js__WEBPACK_IMPORTED_MODULE_3__["default"])() && isFixedStrategy;
+  var x = (clientRect.left + (addVisualOffsets && visualViewport ? visualViewport.offsetLeft : 0)) / scaleX;
+  var y = (clientRect.top + (addVisualOffsets && visualViewport ? visualViewport.offsetTop : 0)) / scaleY;
+  var width = clientRect.width / scaleX;
+  var height = clientRect.height / scaleY;
+  return {
+    width: width,
+    height: height,
+    top: y,
+    right: x + width,
+    bottom: y + height,
+    left: x,
+    x: x,
+    y: y
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getClippingRect.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getClippingRect.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getClippingRect)
+/* harmony export */ });
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+/* harmony import */ var _getViewportRect_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getViewportRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getViewportRect.js");
+/* harmony import */ var _getDocumentRect_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./getDocumentRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentRect.js");
+/* harmony import */ var _listScrollParents_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./listScrollParents.js */ "./node_modules/@popperjs/core/lib/dom-utils/listScrollParents.js");
+/* harmony import */ var _getOffsetParent_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./getOffsetParent.js */ "./node_modules/@popperjs/core/lib/dom-utils/getOffsetParent.js");
+/* harmony import */ var _getDocumentElement_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./getDocumentElement.js */ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentElement.js");
+/* harmony import */ var _getComputedStyle_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./getComputedStyle.js */ "./node_modules/@popperjs/core/lib/dom-utils/getComputedStyle.js");
+/* harmony import */ var _instanceOf_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+/* harmony import */ var _getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getBoundingClientRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getBoundingClientRect.js");
+/* harmony import */ var _getParentNode_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./getParentNode.js */ "./node_modules/@popperjs/core/lib/dom-utils/getParentNode.js");
+/* harmony import */ var _contains_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./contains.js */ "./node_modules/@popperjs/core/lib/dom-utils/contains.js");
+/* harmony import */ var _getNodeName_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./getNodeName.js */ "./node_modules/@popperjs/core/lib/dom-utils/getNodeName.js");
+/* harmony import */ var _utils_rectToClientRect_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/rectToClientRect.js */ "./node_modules/@popperjs/core/lib/utils/rectToClientRect.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/@popperjs/core/lib/utils/math.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getInnerBoundingClientRect(element, strategy) {
+  var rect = (0,_getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_0__["default"])(element, false, strategy === 'fixed');
+  rect.top = rect.top + element.clientTop;
+  rect.left = rect.left + element.clientLeft;
+  rect.bottom = rect.top + element.clientHeight;
+  rect.right = rect.left + element.clientWidth;
+  rect.width = element.clientWidth;
+  rect.height = element.clientHeight;
+  rect.x = rect.left;
+  rect.y = rect.top;
+  return rect;
+}
+
+function getClientRectFromMixedType(element, clippingParent, strategy) {
+  return clippingParent === _enums_js__WEBPACK_IMPORTED_MODULE_1__.viewport ? (0,_utils_rectToClientRect_js__WEBPACK_IMPORTED_MODULE_2__["default"])((0,_getViewportRect_js__WEBPACK_IMPORTED_MODULE_3__["default"])(element, strategy)) : (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_4__.isElement)(clippingParent) ? getInnerBoundingClientRect(clippingParent, strategy) : (0,_utils_rectToClientRect_js__WEBPACK_IMPORTED_MODULE_2__["default"])((0,_getDocumentRect_js__WEBPACK_IMPORTED_MODULE_5__["default"])((0,_getDocumentElement_js__WEBPACK_IMPORTED_MODULE_6__["default"])(element)));
+} // A "clipping parent" is an overflowable container with the characteristic of
+// clipping (or hiding) overflowing elements with a position different from
+// `initial`
+
+
+function getClippingParents(element) {
+  var clippingParents = (0,_listScrollParents_js__WEBPACK_IMPORTED_MODULE_7__["default"])((0,_getParentNode_js__WEBPACK_IMPORTED_MODULE_8__["default"])(element));
+  var canEscapeClipping = ['absolute', 'fixed'].indexOf((0,_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_9__["default"])(element).position) >= 0;
+  var clipperElement = canEscapeClipping && (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_4__.isHTMLElement)(element) ? (0,_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_10__["default"])(element) : element;
+
+  if (!(0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_4__.isElement)(clipperElement)) {
+    return [];
+  } // $FlowFixMe[incompatible-return]: https://github.com/facebook/flow/issues/1414
+
+
+  return clippingParents.filter(function (clippingParent) {
+    return (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_4__.isElement)(clippingParent) && (0,_contains_js__WEBPACK_IMPORTED_MODULE_11__["default"])(clippingParent, clipperElement) && (0,_getNodeName_js__WEBPACK_IMPORTED_MODULE_12__["default"])(clippingParent) !== 'body';
+  });
+} // Gets the maximum area that the element is visible in due to any number of
+// clipping parents
+
+
+function getClippingRect(element, boundary, rootBoundary, strategy) {
+  var mainClippingParents = boundary === 'clippingParents' ? getClippingParents(element) : [].concat(boundary);
+  var clippingParents = [].concat(mainClippingParents, [rootBoundary]);
+  var firstClippingParent = clippingParents[0];
+  var clippingRect = clippingParents.reduce(function (accRect, clippingParent) {
+    var rect = getClientRectFromMixedType(element, clippingParent, strategy);
+    accRect.top = (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_13__.max)(rect.top, accRect.top);
+    accRect.right = (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_13__.min)(rect.right, accRect.right);
+    accRect.bottom = (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_13__.min)(rect.bottom, accRect.bottom);
+    accRect.left = (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_13__.max)(rect.left, accRect.left);
+    return accRect;
+  }, getClientRectFromMixedType(element, firstClippingParent, strategy));
+  clippingRect.width = clippingRect.right - clippingRect.left;
+  clippingRect.height = clippingRect.bottom - clippingRect.top;
+  clippingRect.x = clippingRect.left;
+  clippingRect.y = clippingRect.top;
+  return clippingRect;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getCompositeRect.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getCompositeRect.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getCompositeRect)
+/* harmony export */ });
+/* harmony import */ var _getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getBoundingClientRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getBoundingClientRect.js");
+/* harmony import */ var _getNodeScroll_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./getNodeScroll.js */ "./node_modules/@popperjs/core/lib/dom-utils/getNodeScroll.js");
+/* harmony import */ var _getNodeName_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getNodeName.js */ "./node_modules/@popperjs/core/lib/dom-utils/getNodeName.js");
+/* harmony import */ var _instanceOf_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+/* harmony import */ var _getWindowScrollBarX_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./getWindowScrollBarX.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindowScrollBarX.js");
+/* harmony import */ var _getDocumentElement_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getDocumentElement.js */ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentElement.js");
+/* harmony import */ var _isScrollParent_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./isScrollParent.js */ "./node_modules/@popperjs/core/lib/dom-utils/isScrollParent.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/@popperjs/core/lib/utils/math.js");
+
+
+
+
+
+
+
+
+
+function isElementScaled(element) {
+  var rect = element.getBoundingClientRect();
+  var scaleX = (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(rect.width) / element.offsetWidth || 1;
+  var scaleY = (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(rect.height) / element.offsetHeight || 1;
+  return scaleX !== 1 || scaleY !== 1;
+} // Returns the composite rect of an element relative to its offsetParent.
+// Composite means it takes into account transforms as well as layout.
+
+
+function getCompositeRect(elementOrVirtualElement, offsetParent, isFixed) {
+  if (isFixed === void 0) {
+    isFixed = false;
+  }
+
+  var isOffsetParentAnElement = (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(offsetParent);
+  var offsetParentIsScaled = (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(offsetParent) && isElementScaled(offsetParent);
+  var documentElement = (0,_getDocumentElement_js__WEBPACK_IMPORTED_MODULE_2__["default"])(offsetParent);
+  var rect = (0,_getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_3__["default"])(elementOrVirtualElement, offsetParentIsScaled, isFixed);
+  var scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  var offsets = {
+    x: 0,
+    y: 0
+  };
+
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+    if ((0,_getNodeName_js__WEBPACK_IMPORTED_MODULE_4__["default"])(offsetParent) !== 'body' || // https://github.com/popperjs/popper-core/issues/1078
+    (0,_isScrollParent_js__WEBPACK_IMPORTED_MODULE_5__["default"])(documentElement)) {
+      scroll = (0,_getNodeScroll_js__WEBPACK_IMPORTED_MODULE_6__["default"])(offsetParent);
+    }
+
+    if ((0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(offsetParent)) {
+      offsets = (0,_getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_3__["default"])(offsetParent, true);
+      offsets.x += offsetParent.clientLeft;
+      offsets.y += offsetParent.clientTop;
+    } else if (documentElement) {
+      offsets.x = (0,_getWindowScrollBarX_js__WEBPACK_IMPORTED_MODULE_7__["default"])(documentElement);
+    }
+  }
+
+  return {
+    x: rect.left + scroll.scrollLeft - offsets.x,
+    y: rect.top + scroll.scrollTop - offsets.y,
+    width: rect.width,
+    height: rect.height
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getComputedStyle.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getComputedStyle.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getComputedStyle)
+/* harmony export */ });
+/* harmony import */ var _getWindow_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWindow.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js");
+
+function getComputedStyle(element) {
+  return (0,_getWindow_js__WEBPACK_IMPORTED_MODULE_0__["default"])(element).getComputedStyle(element);
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentElement.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getDocumentElement.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getDocumentElement)
+/* harmony export */ });
+/* harmony import */ var _instanceOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+
+function getDocumentElement(element) {
+  // $FlowFixMe[incompatible-return]: assume body is always available
+  return (((0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isElement)(element) ? element.ownerDocument : // $FlowFixMe[prop-missing]
+  element.document) || window.document).documentElement;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentRect.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getDocumentRect.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getDocumentRect)
+/* harmony export */ });
+/* harmony import */ var _getDocumentElement_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getDocumentElement.js */ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentElement.js");
+/* harmony import */ var _getComputedStyle_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getComputedStyle.js */ "./node_modules/@popperjs/core/lib/dom-utils/getComputedStyle.js");
+/* harmony import */ var _getWindowScrollBarX_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getWindowScrollBarX.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindowScrollBarX.js");
+/* harmony import */ var _getWindowScroll_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getWindowScroll.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindowScroll.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/@popperjs/core/lib/utils/math.js");
+
+
+
+
+ // Gets the entire size of the scrollable document area, even extending outside
+// of the `<html>` and `<body>` rect bounds if horizontally scrollable
+
+function getDocumentRect(element) {
+  var _element$ownerDocumen;
+
+  var html = (0,_getDocumentElement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(element);
+  var winScroll = (0,_getWindowScroll_js__WEBPACK_IMPORTED_MODULE_1__["default"])(element);
+  var body = (_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body;
+  var width = (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.max)(html.scrollWidth, html.clientWidth, body ? body.scrollWidth : 0, body ? body.clientWidth : 0);
+  var height = (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.max)(html.scrollHeight, html.clientHeight, body ? body.scrollHeight : 0, body ? body.clientHeight : 0);
+  var x = -winScroll.scrollLeft + (0,_getWindowScrollBarX_js__WEBPACK_IMPORTED_MODULE_3__["default"])(element);
+  var y = -winScroll.scrollTop;
+
+  if ((0,_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_4__["default"])(body || html).direction === 'rtl') {
+    x += (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.max)(html.clientWidth, body ? body.clientWidth : 0) - width;
+  }
+
+  return {
+    width: width,
+    height: height,
+    x: x,
+    y: y
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getHTMLElementScroll.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getHTMLElementScroll.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getHTMLElementScroll)
+/* harmony export */ });
+function getHTMLElementScroll(element) {
+  return {
+    scrollLeft: element.scrollLeft,
+    scrollTop: element.scrollTop
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getLayoutRect.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getLayoutRect.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getLayoutRect)
+/* harmony export */ });
+/* harmony import */ var _getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getBoundingClientRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getBoundingClientRect.js");
+ // Returns the layout rect of an element relative to its offsetParent. Layout
+// means it doesn't take into account transforms.
+
+function getLayoutRect(element) {
+  var clientRect = (0,_getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_0__["default"])(element); // Use the clientRect sizes if it's not been transformed.
+  // Fixes https://github.com/popperjs/popper-core/issues/1223
+
+  var width = element.offsetWidth;
+  var height = element.offsetHeight;
+
+  if (Math.abs(clientRect.width - width) <= 1) {
+    width = clientRect.width;
+  }
+
+  if (Math.abs(clientRect.height - height) <= 1) {
+    height = clientRect.height;
+  }
+
+  return {
+    x: element.offsetLeft,
+    y: element.offsetTop,
+    width: width,
+    height: height
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getNodeName.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getNodeName.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getNodeName)
+/* harmony export */ });
+function getNodeName(element) {
+  return element ? (element.nodeName || '').toLowerCase() : null;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getNodeScroll.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getNodeScroll.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getNodeScroll)
+/* harmony export */ });
+/* harmony import */ var _getWindowScroll_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getWindowScroll.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindowScroll.js");
+/* harmony import */ var _getWindow_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWindow.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js");
+/* harmony import */ var _instanceOf_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+/* harmony import */ var _getHTMLElementScroll_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getHTMLElementScroll.js */ "./node_modules/@popperjs/core/lib/dom-utils/getHTMLElementScroll.js");
+
+
+
+
+function getNodeScroll(node) {
+  if (node === (0,_getWindow_js__WEBPACK_IMPORTED_MODULE_0__["default"])(node) || !(0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(node)) {
+    return (0,_getWindowScroll_js__WEBPACK_IMPORTED_MODULE_2__["default"])(node);
+  } else {
+    return (0,_getHTMLElementScroll_js__WEBPACK_IMPORTED_MODULE_3__["default"])(node);
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getOffsetParent.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getOffsetParent.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getOffsetParent)
+/* harmony export */ });
+/* harmony import */ var _getWindow_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./getWindow.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js");
+/* harmony import */ var _getNodeName_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getNodeName.js */ "./node_modules/@popperjs/core/lib/dom-utils/getNodeName.js");
+/* harmony import */ var _getComputedStyle_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getComputedStyle.js */ "./node_modules/@popperjs/core/lib/dom-utils/getComputedStyle.js");
+/* harmony import */ var _instanceOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+/* harmony import */ var _isTableElement_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./isTableElement.js */ "./node_modules/@popperjs/core/lib/dom-utils/isTableElement.js");
+/* harmony import */ var _getParentNode_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getParentNode.js */ "./node_modules/@popperjs/core/lib/dom-utils/getParentNode.js");
+/* harmony import */ var _utils_userAgent_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/userAgent.js */ "./node_modules/@popperjs/core/lib/utils/userAgent.js");
+
+
+
+
+
+
+
+
+function getTrueOffsetParent(element) {
+  if (!(0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) || // https://github.com/popperjs/popper-core/issues/837
+  (0,_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_1__["default"])(element).position === 'fixed') {
+    return null;
+  }
+
+  return element.offsetParent;
+} // `.offsetParent` reports `null` for fixed elements, while absolute elements
+// return the containing block
+
+
+function getContainingBlock(element) {
+  var isFirefox = /firefox/i.test((0,_utils_userAgent_js__WEBPACK_IMPORTED_MODULE_2__["default"])());
+  var isIE = /Trident/i.test((0,_utils_userAgent_js__WEBPACK_IMPORTED_MODULE_2__["default"])());
+
+  if (isIE && (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element)) {
+    // In IE 9, 10 and 11 fixed elements containing block is always established by the viewport
+    var elementCss = (0,_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_1__["default"])(element);
+
+    if (elementCss.position === 'fixed') {
+      return null;
+    }
+  }
+
+  var currentNode = (0,_getParentNode_js__WEBPACK_IMPORTED_MODULE_3__["default"])(element);
+
+  if ((0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isShadowRoot)(currentNode)) {
+    currentNode = currentNode.host;
+  }
+
+  while ((0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(currentNode) && ['html', 'body'].indexOf((0,_getNodeName_js__WEBPACK_IMPORTED_MODULE_4__["default"])(currentNode)) < 0) {
+    var css = (0,_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_1__["default"])(currentNode); // This is non-exhaustive but covers the most common CSS properties that
+    // create a containing block.
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+
+    if (css.transform !== 'none' || css.perspective !== 'none' || css.contain === 'paint' || ['transform', 'perspective'].indexOf(css.willChange) !== -1 || isFirefox && css.willChange === 'filter' || isFirefox && css.filter && css.filter !== 'none') {
+      return currentNode;
+    } else {
+      currentNode = currentNode.parentNode;
+    }
+  }
+
+  return null;
+} // Gets the closest ancestor positioned element. Handles some edge cases,
+// such as table ancestors and cross browser bugs.
+
+
+function getOffsetParent(element) {
+  var window = (0,_getWindow_js__WEBPACK_IMPORTED_MODULE_5__["default"])(element);
+  var offsetParent = getTrueOffsetParent(element);
+
+  while (offsetParent && (0,_isTableElement_js__WEBPACK_IMPORTED_MODULE_6__["default"])(offsetParent) && (0,_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_1__["default"])(offsetParent).position === 'static') {
+    offsetParent = getTrueOffsetParent(offsetParent);
+  }
+
+  if (offsetParent && ((0,_getNodeName_js__WEBPACK_IMPORTED_MODULE_4__["default"])(offsetParent) === 'html' || (0,_getNodeName_js__WEBPACK_IMPORTED_MODULE_4__["default"])(offsetParent) === 'body' && (0,_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_1__["default"])(offsetParent).position === 'static')) {
+    return window;
+  }
+
+  return offsetParent || getContainingBlock(element) || window;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getParentNode.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getParentNode.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getParentNode)
+/* harmony export */ });
+/* harmony import */ var _getNodeName_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getNodeName.js */ "./node_modules/@popperjs/core/lib/dom-utils/getNodeName.js");
+/* harmony import */ var _getDocumentElement_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getDocumentElement.js */ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentElement.js");
+/* harmony import */ var _instanceOf_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+
+
+
+function getParentNode(element) {
+  if ((0,_getNodeName_js__WEBPACK_IMPORTED_MODULE_0__["default"])(element) === 'html') {
+    return element;
+  }
+
+  return (// this is a quicker (but less type safe) way to save quite some bytes from the bundle
+    // $FlowFixMe[incompatible-return]
+    // $FlowFixMe[prop-missing]
+    element.assignedSlot || // step into the shadow DOM of the parent of a slotted node
+    element.parentNode || ( // DOM Element detected
+    (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_1__.isShadowRoot)(element) ? element.host : null) || // ShadowRoot detected
+    // $FlowFixMe[incompatible-call]: HTMLElement is a Node
+    (0,_getDocumentElement_js__WEBPACK_IMPORTED_MODULE_2__["default"])(element) // fallback
+
+  );
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getScrollParent.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getScrollParent.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getScrollParent)
+/* harmony export */ });
+/* harmony import */ var _getParentNode_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getParentNode.js */ "./node_modules/@popperjs/core/lib/dom-utils/getParentNode.js");
+/* harmony import */ var _isScrollParent_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./isScrollParent.js */ "./node_modules/@popperjs/core/lib/dom-utils/isScrollParent.js");
+/* harmony import */ var _getNodeName_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getNodeName.js */ "./node_modules/@popperjs/core/lib/dom-utils/getNodeName.js");
+/* harmony import */ var _instanceOf_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+
+
+
+
+function getScrollParent(node) {
+  if (['html', 'body', '#document'].indexOf((0,_getNodeName_js__WEBPACK_IMPORTED_MODULE_0__["default"])(node)) >= 0) {
+    // $FlowFixMe[incompatible-return]: assume body is always available
+    return node.ownerDocument.body;
+  }
+
+  if ((0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(node) && (0,_isScrollParent_js__WEBPACK_IMPORTED_MODULE_2__["default"])(node)) {
+    return node;
+  }
+
+  return getScrollParent((0,_getParentNode_js__WEBPACK_IMPORTED_MODULE_3__["default"])(node));
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getViewportRect.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getViewportRect.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getViewportRect)
+/* harmony export */ });
+/* harmony import */ var _getWindow_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWindow.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js");
+/* harmony import */ var _getDocumentElement_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getDocumentElement.js */ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentElement.js");
+/* harmony import */ var _getWindowScrollBarX_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getWindowScrollBarX.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindowScrollBarX.js");
+/* harmony import */ var _isLayoutViewport_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./isLayoutViewport.js */ "./node_modules/@popperjs/core/lib/dom-utils/isLayoutViewport.js");
+
+
+
+
+function getViewportRect(element, strategy) {
+  var win = (0,_getWindow_js__WEBPACK_IMPORTED_MODULE_0__["default"])(element);
+  var html = (0,_getDocumentElement_js__WEBPACK_IMPORTED_MODULE_1__["default"])(element);
+  var visualViewport = win.visualViewport;
+  var width = html.clientWidth;
+  var height = html.clientHeight;
+  var x = 0;
+  var y = 0;
+
+  if (visualViewport) {
+    width = visualViewport.width;
+    height = visualViewport.height;
+    var layoutViewport = (0,_isLayoutViewport_js__WEBPACK_IMPORTED_MODULE_2__["default"])();
+
+    if (layoutViewport || !layoutViewport && strategy === 'fixed') {
+      x = visualViewport.offsetLeft;
+      y = visualViewport.offsetTop;
+    }
+  }
+
+  return {
+    width: width,
+    height: height,
+    x: x + (0,_getWindowScrollBarX_js__WEBPACK_IMPORTED_MODULE_3__["default"])(element),
+    y: y
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getWindow.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getWindow)
+/* harmony export */ });
+function getWindow(node) {
+  if (node == null) {
+    return window;
+  }
+
+  if (node.toString() !== '[object Window]') {
+    var ownerDocument = node.ownerDocument;
+    return ownerDocument ? ownerDocument.defaultView || window : window;
+  }
+
+  return node;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getWindowScroll.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getWindowScroll.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getWindowScroll)
+/* harmony export */ });
+/* harmony import */ var _getWindow_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWindow.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js");
+
+function getWindowScroll(node) {
+  var win = (0,_getWindow_js__WEBPACK_IMPORTED_MODULE_0__["default"])(node);
+  var scrollLeft = win.pageXOffset;
+  var scrollTop = win.pageYOffset;
+  return {
+    scrollLeft: scrollLeft,
+    scrollTop: scrollTop
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/getWindowScrollBarX.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/getWindowScrollBarX.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getWindowScrollBarX)
+/* harmony export */ });
+/* harmony import */ var _getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getBoundingClientRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getBoundingClientRect.js");
+/* harmony import */ var _getDocumentElement_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getDocumentElement.js */ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentElement.js");
+/* harmony import */ var _getWindowScroll_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getWindowScroll.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindowScroll.js");
+
+
+
+function getWindowScrollBarX(element) {
+  // If <html> has a CSS width greater than the viewport, then this will be
+  // incorrect for RTL.
+  // Popper 1 is broken in this case and never had a bug report so let's assume
+  // it's not an issue. I don't think anyone ever specifies width on <html>
+  // anyway.
+  // Browsers where the left scrollbar doesn't cause an issue report `0` for
+  // this (e.g. Edge 2019, IE11, Safari)
+  return (0,_getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_0__["default"])((0,_getDocumentElement_js__WEBPACK_IMPORTED_MODULE_1__["default"])(element)).left + (0,_getWindowScroll_js__WEBPACK_IMPORTED_MODULE_2__["default"])(element).scrollLeft;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   isElement: () => (/* binding */ isElement),
+/* harmony export */   isHTMLElement: () => (/* binding */ isHTMLElement),
+/* harmony export */   isShadowRoot: () => (/* binding */ isShadowRoot)
+/* harmony export */ });
+/* harmony import */ var _getWindow_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getWindow.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js");
+
+
+function isElement(node) {
+  var OwnElement = (0,_getWindow_js__WEBPACK_IMPORTED_MODULE_0__["default"])(node).Element;
+  return node instanceof OwnElement || node instanceof Element;
+}
+
+function isHTMLElement(node) {
+  var OwnElement = (0,_getWindow_js__WEBPACK_IMPORTED_MODULE_0__["default"])(node).HTMLElement;
+  return node instanceof OwnElement || node instanceof HTMLElement;
+}
+
+function isShadowRoot(node) {
+  // IE 11 has no ShadowRoot
+  if (typeof ShadowRoot === 'undefined') {
+    return false;
+  }
+
+  var OwnElement = (0,_getWindow_js__WEBPACK_IMPORTED_MODULE_0__["default"])(node).ShadowRoot;
+  return node instanceof OwnElement || node instanceof ShadowRoot;
+}
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/isLayoutViewport.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/isLayoutViewport.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ isLayoutViewport)
+/* harmony export */ });
+/* harmony import */ var _utils_userAgent_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/userAgent.js */ "./node_modules/@popperjs/core/lib/utils/userAgent.js");
+
+function isLayoutViewport() {
+  return !/^((?!chrome|android).)*safari/i.test((0,_utils_userAgent_js__WEBPACK_IMPORTED_MODULE_0__["default"])());
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/isScrollParent.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/isScrollParent.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ isScrollParent)
+/* harmony export */ });
+/* harmony import */ var _getComputedStyle_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getComputedStyle.js */ "./node_modules/@popperjs/core/lib/dom-utils/getComputedStyle.js");
+
+function isScrollParent(element) {
+  // Firefox wants us to check `-x` and `-y` variations as well
+  var _getComputedStyle = (0,_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_0__["default"])(element),
+      overflow = _getComputedStyle.overflow,
+      overflowX = _getComputedStyle.overflowX,
+      overflowY = _getComputedStyle.overflowY;
+
+  return /auto|scroll|overlay|hidden/.test(overflow + overflowY + overflowX);
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/isTableElement.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/isTableElement.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ isTableElement)
+/* harmony export */ });
+/* harmony import */ var _getNodeName_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getNodeName.js */ "./node_modules/@popperjs/core/lib/dom-utils/getNodeName.js");
+
+function isTableElement(element) {
+  return ['table', 'td', 'th'].indexOf((0,_getNodeName_js__WEBPACK_IMPORTED_MODULE_0__["default"])(element)) >= 0;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/dom-utils/listScrollParents.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/dom-utils/listScrollParents.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ listScrollParents)
+/* harmony export */ });
+/* harmony import */ var _getScrollParent_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getScrollParent.js */ "./node_modules/@popperjs/core/lib/dom-utils/getScrollParent.js");
+/* harmony import */ var _getParentNode_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getParentNode.js */ "./node_modules/@popperjs/core/lib/dom-utils/getParentNode.js");
+/* harmony import */ var _getWindow_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getWindow.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js");
+/* harmony import */ var _isScrollParent_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./isScrollParent.js */ "./node_modules/@popperjs/core/lib/dom-utils/isScrollParent.js");
+
+
+
+
+/*
+given a DOM element, return the list of all scroll parents, up the list of ancesors
+until we get to the top window object. This list is what we attach scroll listeners
+to, because if any of these parent elements scroll, we'll need to re-calculate the
+reference element's position.
+*/
+
+function listScrollParents(element, list) {
+  var _element$ownerDocumen;
+
+  if (list === void 0) {
+    list = [];
+  }
+
+  var scrollParent = (0,_getScrollParent_js__WEBPACK_IMPORTED_MODULE_0__["default"])(element);
+  var isBody = scrollParent === ((_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body);
+  var win = (0,_getWindow_js__WEBPACK_IMPORTED_MODULE_1__["default"])(scrollParent);
+  var target = isBody ? [win].concat(win.visualViewport || [], (0,_isScrollParent_js__WEBPACK_IMPORTED_MODULE_2__["default"])(scrollParent) ? scrollParent : []) : scrollParent;
+  var updatedList = list.concat(target);
+  return isBody ? updatedList : // $FlowFixMe[incompatible-call]: isBody tells us target will be an HTMLElement here
+  updatedList.concat(listScrollParents((0,_getParentNode_js__WEBPACK_IMPORTED_MODULE_3__["default"])(target)));
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/enums.js":
+/*!**************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/enums.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   afterMain: () => (/* binding */ afterMain),
+/* harmony export */   afterRead: () => (/* binding */ afterRead),
+/* harmony export */   afterWrite: () => (/* binding */ afterWrite),
+/* harmony export */   auto: () => (/* binding */ auto),
+/* harmony export */   basePlacements: () => (/* binding */ basePlacements),
+/* harmony export */   beforeMain: () => (/* binding */ beforeMain),
+/* harmony export */   beforeRead: () => (/* binding */ beforeRead),
+/* harmony export */   beforeWrite: () => (/* binding */ beforeWrite),
+/* harmony export */   bottom: () => (/* binding */ bottom),
+/* harmony export */   clippingParents: () => (/* binding */ clippingParents),
+/* harmony export */   end: () => (/* binding */ end),
+/* harmony export */   left: () => (/* binding */ left),
+/* harmony export */   main: () => (/* binding */ main),
+/* harmony export */   modifierPhases: () => (/* binding */ modifierPhases),
+/* harmony export */   placements: () => (/* binding */ placements),
+/* harmony export */   popper: () => (/* binding */ popper),
+/* harmony export */   read: () => (/* binding */ read),
+/* harmony export */   reference: () => (/* binding */ reference),
+/* harmony export */   right: () => (/* binding */ right),
+/* harmony export */   start: () => (/* binding */ start),
+/* harmony export */   top: () => (/* binding */ top),
+/* harmony export */   variationPlacements: () => (/* binding */ variationPlacements),
+/* harmony export */   viewport: () => (/* binding */ viewport),
+/* harmony export */   write: () => (/* binding */ write)
+/* harmony export */ });
+var top = 'top';
+var bottom = 'bottom';
+var right = 'right';
+var left = 'left';
+var auto = 'auto';
+var basePlacements = [top, bottom, right, left];
+var start = 'start';
+var end = 'end';
+var clippingParents = 'clippingParents';
+var viewport = 'viewport';
+var popper = 'popper';
+var reference = 'reference';
+var variationPlacements = /*#__PURE__*/basePlacements.reduce(function (acc, placement) {
+  return acc.concat([placement + "-" + start, placement + "-" + end]);
+}, []);
+var placements = /*#__PURE__*/[].concat(basePlacements, [auto]).reduce(function (acc, placement) {
+  return acc.concat([placement, placement + "-" + start, placement + "-" + end]);
+}, []); // modifiers that need to read the DOM
+
+var beforeRead = 'beforeRead';
+var read = 'read';
+var afterRead = 'afterRead'; // pure-logic modifiers
+
+var beforeMain = 'beforeMain';
+var main = 'main';
+var afterMain = 'afterMain'; // modifier with the purpose to write to the DOM (or write into a framework state)
+
+var beforeWrite = 'beforeWrite';
+var write = 'write';
+var afterWrite = 'afterWrite';
+var modifierPhases = [beforeRead, read, afterRead, beforeMain, main, afterMain, beforeWrite, write, afterWrite];
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/modifiers/applyStyles.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/modifiers/applyStyles.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _dom_utils_getNodeName_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../dom-utils/getNodeName.js */ "./node_modules/@popperjs/core/lib/dom-utils/getNodeName.js");
+/* harmony import */ var _dom_utils_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../dom-utils/instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+
+ // This modifier takes the styles prepared by the `computeStyles` modifier
+// and applies them to the HTMLElements such as popper and arrow
+
+function applyStyles(_ref) {
+  var state = _ref.state;
+  Object.keys(state.elements).forEach(function (name) {
+    var style = state.styles[name] || {};
+    var attributes = state.attributes[name] || {};
+    var element = state.elements[name]; // arrow is optional + virtual elements
+
+    if (!(0,_dom_utils_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) || !(0,_dom_utils_getNodeName_js__WEBPACK_IMPORTED_MODULE_1__["default"])(element)) {
+      return;
+    } // Flow doesn't support to extend this property, but it's the most
+    // effective way to apply styles to an HTMLElement
+    // $FlowFixMe[cannot-write]
+
+
+    Object.assign(element.style, style);
+    Object.keys(attributes).forEach(function (name) {
+      var value = attributes[name];
+
+      if (value === false) {
+        element.removeAttribute(name);
+      } else {
+        element.setAttribute(name, value === true ? '' : value);
+      }
+    });
+  });
+}
+
+function effect(_ref2) {
+  var state = _ref2.state;
+  var initialStyles = {
+    popper: {
+      position: state.options.strategy,
+      left: '0',
+      top: '0',
+      margin: '0'
+    },
+    arrow: {
+      position: 'absolute'
+    },
+    reference: {}
+  };
+  Object.assign(state.elements.popper.style, initialStyles.popper);
+  state.styles = initialStyles;
+
+  if (state.elements.arrow) {
+    Object.assign(state.elements.arrow.style, initialStyles.arrow);
+  }
+
+  return function () {
+    Object.keys(state.elements).forEach(function (name) {
+      var element = state.elements[name];
+      var attributes = state.attributes[name] || {};
+      var styleProperties = Object.keys(state.styles.hasOwnProperty(name) ? state.styles[name] : initialStyles[name]); // Set all values to an empty string to unset them
+
+      var style = styleProperties.reduce(function (style, property) {
+        style[property] = '';
+        return style;
+      }, {}); // arrow is optional + virtual elements
+
+      if (!(0,_dom_utils_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) || !(0,_dom_utils_getNodeName_js__WEBPACK_IMPORTED_MODULE_1__["default"])(element)) {
+        return;
+      }
+
+      Object.assign(element.style, style);
+      Object.keys(attributes).forEach(function (attribute) {
+        element.removeAttribute(attribute);
+      });
+    });
+  };
+} // eslint-disable-next-line import/no-unused-modules
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'applyStyles',
+  enabled: true,
+  phase: 'write',
+  fn: applyStyles,
+  effect: effect,
+  requires: ['computeStyles']
+});
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/modifiers/arrow.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/modifiers/arrow.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/getBasePlacement.js */ "./node_modules/@popperjs/core/lib/utils/getBasePlacement.js");
+/* harmony import */ var _dom_utils_getLayoutRect_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../dom-utils/getLayoutRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getLayoutRect.js");
+/* harmony import */ var _dom_utils_contains_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../dom-utils/contains.js */ "./node_modules/@popperjs/core/lib/dom-utils/contains.js");
+/* harmony import */ var _dom_utils_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../dom-utils/getOffsetParent.js */ "./node_modules/@popperjs/core/lib/dom-utils/getOffsetParent.js");
+/* harmony import */ var _utils_getMainAxisFromPlacement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/getMainAxisFromPlacement.js */ "./node_modules/@popperjs/core/lib/utils/getMainAxisFromPlacement.js");
+/* harmony import */ var _utils_within_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/within.js */ "./node_modules/@popperjs/core/lib/utils/within.js");
+/* harmony import */ var _utils_mergePaddingObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/mergePaddingObject.js */ "./node_modules/@popperjs/core/lib/utils/mergePaddingObject.js");
+/* harmony import */ var _utils_expandToHashMap_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/expandToHashMap.js */ "./node_modules/@popperjs/core/lib/utils/expandToHashMap.js");
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+
+
+
+
+
+
+
+
+ // eslint-disable-next-line import/no-unused-modules
+
+var toPaddingObject = function toPaddingObject(padding, state) {
+  padding = typeof padding === 'function' ? padding(Object.assign({}, state.rects, {
+    placement: state.placement
+  })) : padding;
+  return (0,_utils_mergePaddingObject_js__WEBPACK_IMPORTED_MODULE_0__["default"])(typeof padding !== 'number' ? padding : (0,_utils_expandToHashMap_js__WEBPACK_IMPORTED_MODULE_1__["default"])(padding, _enums_js__WEBPACK_IMPORTED_MODULE_2__.basePlacements));
+};
+
+function arrow(_ref) {
+  var _state$modifiersData$;
+
+  var state = _ref.state,
+      name = _ref.name,
+      options = _ref.options;
+  var arrowElement = state.elements.arrow;
+  var popperOffsets = state.modifiersData.popperOffsets;
+  var basePlacement = (0,_utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_3__["default"])(state.placement);
+  var axis = (0,_utils_getMainAxisFromPlacement_js__WEBPACK_IMPORTED_MODULE_4__["default"])(basePlacement);
+  var isVertical = [_enums_js__WEBPACK_IMPORTED_MODULE_2__.left, _enums_js__WEBPACK_IMPORTED_MODULE_2__.right].indexOf(basePlacement) >= 0;
+  var len = isVertical ? 'height' : 'width';
+
+  if (!arrowElement || !popperOffsets) {
+    return;
+  }
+
+  var paddingObject = toPaddingObject(options.padding, state);
+  var arrowRect = (0,_dom_utils_getLayoutRect_js__WEBPACK_IMPORTED_MODULE_5__["default"])(arrowElement);
+  var minProp = axis === 'y' ? _enums_js__WEBPACK_IMPORTED_MODULE_2__.top : _enums_js__WEBPACK_IMPORTED_MODULE_2__.left;
+  var maxProp = axis === 'y' ? _enums_js__WEBPACK_IMPORTED_MODULE_2__.bottom : _enums_js__WEBPACK_IMPORTED_MODULE_2__.right;
+  var endDiff = state.rects.reference[len] + state.rects.reference[axis] - popperOffsets[axis] - state.rects.popper[len];
+  var startDiff = popperOffsets[axis] - state.rects.reference[axis];
+  var arrowOffsetParent = (0,_dom_utils_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_6__["default"])(arrowElement);
+  var clientSize = arrowOffsetParent ? axis === 'y' ? arrowOffsetParent.clientHeight || 0 : arrowOffsetParent.clientWidth || 0 : 0;
+  var centerToReference = endDiff / 2 - startDiff / 2; // Make sure the arrow doesn't overflow the popper if the center point is
+  // outside of the popper bounds
+
+  var min = paddingObject[minProp];
+  var max = clientSize - arrowRect[len] - paddingObject[maxProp];
+  var center = clientSize / 2 - arrowRect[len] / 2 + centerToReference;
+  var offset = (0,_utils_within_js__WEBPACK_IMPORTED_MODULE_7__.within)(min, center, max); // Prevents breaking syntax highlighting...
+
+  var axisProp = axis;
+  state.modifiersData[name] = (_state$modifiersData$ = {}, _state$modifiersData$[axisProp] = offset, _state$modifiersData$.centerOffset = offset - center, _state$modifiersData$);
+}
+
+function effect(_ref2) {
+  var state = _ref2.state,
+      options = _ref2.options;
+  var _options$element = options.element,
+      arrowElement = _options$element === void 0 ? '[data-popper-arrow]' : _options$element;
+
+  if (arrowElement == null) {
+    return;
+  } // CSS selector
+
+
+  if (typeof arrowElement === 'string') {
+    arrowElement = state.elements.popper.querySelector(arrowElement);
+
+    if (!arrowElement) {
+      return;
+    }
+  }
+
+  if (!(0,_dom_utils_contains_js__WEBPACK_IMPORTED_MODULE_8__["default"])(state.elements.popper, arrowElement)) {
+    return;
+  }
+
+  state.elements.arrow = arrowElement;
+} // eslint-disable-next-line import/no-unused-modules
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'arrow',
+  enabled: true,
+  phase: 'main',
+  fn: arrow,
+  effect: effect,
+  requires: ['popperOffsets'],
+  requiresIfExists: ['preventOverflow']
+});
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/modifiers/computeStyles.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/modifiers/computeStyles.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   mapToStyles: () => (/* binding */ mapToStyles)
+/* harmony export */ });
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+/* harmony import */ var _dom_utils_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../dom-utils/getOffsetParent.js */ "./node_modules/@popperjs/core/lib/dom-utils/getOffsetParent.js");
+/* harmony import */ var _dom_utils_getWindow_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../dom-utils/getWindow.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js");
+/* harmony import */ var _dom_utils_getDocumentElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../dom-utils/getDocumentElement.js */ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentElement.js");
+/* harmony import */ var _dom_utils_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../dom-utils/getComputedStyle.js */ "./node_modules/@popperjs/core/lib/dom-utils/getComputedStyle.js");
+/* harmony import */ var _utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/getBasePlacement.js */ "./node_modules/@popperjs/core/lib/utils/getBasePlacement.js");
+/* harmony import */ var _utils_getVariation_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/getVariation.js */ "./node_modules/@popperjs/core/lib/utils/getVariation.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/@popperjs/core/lib/utils/math.js");
+
+
+
+
+
+
+
+ // eslint-disable-next-line import/no-unused-modules
+
+var unsetSides = {
+  top: 'auto',
+  right: 'auto',
+  bottom: 'auto',
+  left: 'auto'
+}; // Round the offsets to the nearest suitable subpixel based on the DPR.
+// Zooming can change the DPR, but it seems to report a value that will
+// cleanly divide the values into the appropriate subpixels.
+
+function roundOffsetsByDPR(_ref, win) {
+  var x = _ref.x,
+      y = _ref.y;
+  var dpr = win.devicePixelRatio || 1;
+  return {
+    x: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(x * dpr) / dpr || 0,
+    y: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(y * dpr) / dpr || 0
+  };
+}
+
+function mapToStyles(_ref2) {
+  var _Object$assign2;
+
+  var popper = _ref2.popper,
+      popperRect = _ref2.popperRect,
+      placement = _ref2.placement,
+      variation = _ref2.variation,
+      offsets = _ref2.offsets,
+      position = _ref2.position,
+      gpuAcceleration = _ref2.gpuAcceleration,
+      adaptive = _ref2.adaptive,
+      roundOffsets = _ref2.roundOffsets,
+      isFixed = _ref2.isFixed;
+  var _offsets$x = offsets.x,
+      x = _offsets$x === void 0 ? 0 : _offsets$x,
+      _offsets$y = offsets.y,
+      y = _offsets$y === void 0 ? 0 : _offsets$y;
+
+  var _ref3 = typeof roundOffsets === 'function' ? roundOffsets({
+    x: x,
+    y: y
+  }) : {
+    x: x,
+    y: y
+  };
+
+  x = _ref3.x;
+  y = _ref3.y;
+  var hasX = offsets.hasOwnProperty('x');
+  var hasY = offsets.hasOwnProperty('y');
+  var sideX = _enums_js__WEBPACK_IMPORTED_MODULE_1__.left;
+  var sideY = _enums_js__WEBPACK_IMPORTED_MODULE_1__.top;
+  var win = window;
+
+  if (adaptive) {
+    var offsetParent = (0,_dom_utils_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_2__["default"])(popper);
+    var heightProp = 'clientHeight';
+    var widthProp = 'clientWidth';
+
+    if (offsetParent === (0,_dom_utils_getWindow_js__WEBPACK_IMPORTED_MODULE_3__["default"])(popper)) {
+      offsetParent = (0,_dom_utils_getDocumentElement_js__WEBPACK_IMPORTED_MODULE_4__["default"])(popper);
+
+      if ((0,_dom_utils_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_5__["default"])(offsetParent).position !== 'static' && position === 'absolute') {
+        heightProp = 'scrollHeight';
+        widthProp = 'scrollWidth';
+      }
+    } // $FlowFixMe[incompatible-cast]: force type refinement, we compare offsetParent with window above, but Flow doesn't detect it
+
+
+    offsetParent = offsetParent;
+
+    if (placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.top || (placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.left || placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.right) && variation === _enums_js__WEBPACK_IMPORTED_MODULE_1__.end) {
+      sideY = _enums_js__WEBPACK_IMPORTED_MODULE_1__.bottom;
+      var offsetY = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.height : // $FlowFixMe[prop-missing]
+      offsetParent[heightProp];
+      y -= offsetY - popperRect.height;
+      y *= gpuAcceleration ? 1 : -1;
+    }
+
+    if (placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.left || (placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.top || placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.bottom) && variation === _enums_js__WEBPACK_IMPORTED_MODULE_1__.end) {
+      sideX = _enums_js__WEBPACK_IMPORTED_MODULE_1__.right;
+      var offsetX = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.width : // $FlowFixMe[prop-missing]
+      offsetParent[widthProp];
+      x -= offsetX - popperRect.width;
+      x *= gpuAcceleration ? 1 : -1;
+    }
+  }
+
+  var commonStyles = Object.assign({
+    position: position
+  }, adaptive && unsetSides);
+
+  var _ref4 = roundOffsets === true ? roundOffsetsByDPR({
+    x: x,
+    y: y
+  }, (0,_dom_utils_getWindow_js__WEBPACK_IMPORTED_MODULE_3__["default"])(popper)) : {
+    x: x,
+    y: y
+  };
+
+  x = _ref4.x;
+  y = _ref4.y;
+
+  if (gpuAcceleration) {
+    var _Object$assign;
+
+    return Object.assign({}, commonStyles, (_Object$assign = {}, _Object$assign[sideY] = hasY ? '0' : '', _Object$assign[sideX] = hasX ? '0' : '', _Object$assign.transform = (win.devicePixelRatio || 1) <= 1 ? "translate(" + x + "px, " + y + "px)" : "translate3d(" + x + "px, " + y + "px, 0)", _Object$assign));
+  }
+
+  return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
+}
+
+function computeStyles(_ref5) {
+  var state = _ref5.state,
+      options = _ref5.options;
+  var _options$gpuAccelerat = options.gpuAcceleration,
+      gpuAcceleration = _options$gpuAccelerat === void 0 ? true : _options$gpuAccelerat,
+      _options$adaptive = options.adaptive,
+      adaptive = _options$adaptive === void 0 ? true : _options$adaptive,
+      _options$roundOffsets = options.roundOffsets,
+      roundOffsets = _options$roundOffsets === void 0 ? true : _options$roundOffsets;
+  var commonStyles = {
+    placement: (0,_utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_6__["default"])(state.placement),
+    variation: (0,_utils_getVariation_js__WEBPACK_IMPORTED_MODULE_7__["default"])(state.placement),
+    popper: state.elements.popper,
+    popperRect: state.rects.popper,
+    gpuAcceleration: gpuAcceleration,
+    isFixed: state.options.strategy === 'fixed'
+  };
+
+  if (state.modifiersData.popperOffsets != null) {
+    state.styles.popper = Object.assign({}, state.styles.popper, mapToStyles(Object.assign({}, commonStyles, {
+      offsets: state.modifiersData.popperOffsets,
+      position: state.options.strategy,
+      adaptive: adaptive,
+      roundOffsets: roundOffsets
+    })));
+  }
+
+  if (state.modifiersData.arrow != null) {
+    state.styles.arrow = Object.assign({}, state.styles.arrow, mapToStyles(Object.assign({}, commonStyles, {
+      offsets: state.modifiersData.arrow,
+      position: 'absolute',
+      adaptive: false,
+      roundOffsets: roundOffsets
+    })));
+  }
+
+  state.attributes.popper = Object.assign({}, state.attributes.popper, {
+    'data-popper-placement': state.placement
+  });
+} // eslint-disable-next-line import/no-unused-modules
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'computeStyles',
+  enabled: true,
+  phase: 'beforeWrite',
+  fn: computeStyles,
+  data: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/modifiers/eventListeners.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/modifiers/eventListeners.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _dom_utils_getWindow_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../dom-utils/getWindow.js */ "./node_modules/@popperjs/core/lib/dom-utils/getWindow.js");
+ // eslint-disable-next-line import/no-unused-modules
+
+var passive = {
+  passive: true
+};
+
+function effect(_ref) {
+  var state = _ref.state,
+      instance = _ref.instance,
+      options = _ref.options;
+  var _options$scroll = options.scroll,
+      scroll = _options$scroll === void 0 ? true : _options$scroll,
+      _options$resize = options.resize,
+      resize = _options$resize === void 0 ? true : _options$resize;
+  var window = (0,_dom_utils_getWindow_js__WEBPACK_IMPORTED_MODULE_0__["default"])(state.elements.popper);
+  var scrollParents = [].concat(state.scrollParents.reference, state.scrollParents.popper);
+
+  if (scroll) {
+    scrollParents.forEach(function (scrollParent) {
+      scrollParent.addEventListener('scroll', instance.update, passive);
+    });
+  }
+
+  if (resize) {
+    window.addEventListener('resize', instance.update, passive);
+  }
+
+  return function () {
+    if (scroll) {
+      scrollParents.forEach(function (scrollParent) {
+        scrollParent.removeEventListener('scroll', instance.update, passive);
+      });
+    }
+
+    if (resize) {
+      window.removeEventListener('resize', instance.update, passive);
+    }
+  };
+} // eslint-disable-next-line import/no-unused-modules
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'eventListeners',
+  enabled: true,
+  phase: 'write',
+  fn: function fn() {},
+  effect: effect,
+  data: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/modifiers/flip.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/modifiers/flip.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_getOppositePlacement_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/getOppositePlacement.js */ "./node_modules/@popperjs/core/lib/utils/getOppositePlacement.js");
+/* harmony import */ var _utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/getBasePlacement.js */ "./node_modules/@popperjs/core/lib/utils/getBasePlacement.js");
+/* harmony import */ var _utils_getOppositeVariationPlacement_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/getOppositeVariationPlacement.js */ "./node_modules/@popperjs/core/lib/utils/getOppositeVariationPlacement.js");
+/* harmony import */ var _utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/detectOverflow.js */ "./node_modules/@popperjs/core/lib/utils/detectOverflow.js");
+/* harmony import */ var _utils_computeAutoPlacement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/computeAutoPlacement.js */ "./node_modules/@popperjs/core/lib/utils/computeAutoPlacement.js");
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+/* harmony import */ var _utils_getVariation_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/getVariation.js */ "./node_modules/@popperjs/core/lib/utils/getVariation.js");
+
+
+
+
+
+
+ // eslint-disable-next-line import/no-unused-modules
+
+function getExpandedFallbackPlacements(placement) {
+  if ((0,_utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(placement) === _enums_js__WEBPACK_IMPORTED_MODULE_1__.auto) {
+    return [];
+  }
+
+  var oppositePlacement = (0,_utils_getOppositePlacement_js__WEBPACK_IMPORTED_MODULE_2__["default"])(placement);
+  return [(0,_utils_getOppositeVariationPlacement_js__WEBPACK_IMPORTED_MODULE_3__["default"])(placement), oppositePlacement, (0,_utils_getOppositeVariationPlacement_js__WEBPACK_IMPORTED_MODULE_3__["default"])(oppositePlacement)];
+}
+
+function flip(_ref) {
+  var state = _ref.state,
+      options = _ref.options,
+      name = _ref.name;
+
+  if (state.modifiersData[name]._skip) {
+    return;
+  }
+
+  var _options$mainAxis = options.mainAxis,
+      checkMainAxis = _options$mainAxis === void 0 ? true : _options$mainAxis,
+      _options$altAxis = options.altAxis,
+      checkAltAxis = _options$altAxis === void 0 ? true : _options$altAxis,
+      specifiedFallbackPlacements = options.fallbackPlacements,
+      padding = options.padding,
+      boundary = options.boundary,
+      rootBoundary = options.rootBoundary,
+      altBoundary = options.altBoundary,
+      _options$flipVariatio = options.flipVariations,
+      flipVariations = _options$flipVariatio === void 0 ? true : _options$flipVariatio,
+      allowedAutoPlacements = options.allowedAutoPlacements;
+  var preferredPlacement = state.options.placement;
+  var basePlacement = (0,_utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(preferredPlacement);
+  var isBasePlacement = basePlacement === preferredPlacement;
+  var fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipVariations ? [(0,_utils_getOppositePlacement_js__WEBPACK_IMPORTED_MODULE_2__["default"])(preferredPlacement)] : getExpandedFallbackPlacements(preferredPlacement));
+  var placements = [preferredPlacement].concat(fallbackPlacements).reduce(function (acc, placement) {
+    return acc.concat((0,_utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(placement) === _enums_js__WEBPACK_IMPORTED_MODULE_1__.auto ? (0,_utils_computeAutoPlacement_js__WEBPACK_IMPORTED_MODULE_4__["default"])(state, {
+      placement: placement,
+      boundary: boundary,
+      rootBoundary: rootBoundary,
+      padding: padding,
+      flipVariations: flipVariations,
+      allowedAutoPlacements: allowedAutoPlacements
+    }) : placement);
+  }, []);
+  var referenceRect = state.rects.reference;
+  var popperRect = state.rects.popper;
+  var checksMap = new Map();
+  var makeFallbackChecks = true;
+  var firstFittingPlacement = placements[0];
+
+  for (var i = 0; i < placements.length; i++) {
+    var placement = placements[i];
+
+    var _basePlacement = (0,_utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(placement);
+
+    var isStartVariation = (0,_utils_getVariation_js__WEBPACK_IMPORTED_MODULE_5__["default"])(placement) === _enums_js__WEBPACK_IMPORTED_MODULE_1__.start;
+    var isVertical = [_enums_js__WEBPACK_IMPORTED_MODULE_1__.top, _enums_js__WEBPACK_IMPORTED_MODULE_1__.bottom].indexOf(_basePlacement) >= 0;
+    var len = isVertical ? 'width' : 'height';
+    var overflow = (0,_utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_6__["default"])(state, {
+      placement: placement,
+      boundary: boundary,
+      rootBoundary: rootBoundary,
+      altBoundary: altBoundary,
+      padding: padding
+    });
+    var mainVariationSide = isVertical ? isStartVariation ? _enums_js__WEBPACK_IMPORTED_MODULE_1__.right : _enums_js__WEBPACK_IMPORTED_MODULE_1__.left : isStartVariation ? _enums_js__WEBPACK_IMPORTED_MODULE_1__.bottom : _enums_js__WEBPACK_IMPORTED_MODULE_1__.top;
+
+    if (referenceRect[len] > popperRect[len]) {
+      mainVariationSide = (0,_utils_getOppositePlacement_js__WEBPACK_IMPORTED_MODULE_2__["default"])(mainVariationSide);
+    }
+
+    var altVariationSide = (0,_utils_getOppositePlacement_js__WEBPACK_IMPORTED_MODULE_2__["default"])(mainVariationSide);
+    var checks = [];
+
+    if (checkMainAxis) {
+      checks.push(overflow[_basePlacement] <= 0);
+    }
+
+    if (checkAltAxis) {
+      checks.push(overflow[mainVariationSide] <= 0, overflow[altVariationSide] <= 0);
+    }
+
+    if (checks.every(function (check) {
+      return check;
+    })) {
+      firstFittingPlacement = placement;
+      makeFallbackChecks = false;
+      break;
+    }
+
+    checksMap.set(placement, checks);
+  }
+
+  if (makeFallbackChecks) {
+    // `2` may be desired in some cases – research later
+    var numberOfChecks = flipVariations ? 3 : 1;
+
+    var _loop = function _loop(_i) {
+      var fittingPlacement = placements.find(function (placement) {
+        var checks = checksMap.get(placement);
+
+        if (checks) {
+          return checks.slice(0, _i).every(function (check) {
+            return check;
+          });
+        }
+      });
+
+      if (fittingPlacement) {
+        firstFittingPlacement = fittingPlacement;
+        return "break";
+      }
+    };
+
+    for (var _i = numberOfChecks; _i > 0; _i--) {
+      var _ret = _loop(_i);
+
+      if (_ret === "break") break;
+    }
+  }
+
+  if (state.placement !== firstFittingPlacement) {
+    state.modifiersData[name]._skip = true;
+    state.placement = firstFittingPlacement;
+    state.reset = true;
+  }
+} // eslint-disable-next-line import/no-unused-modules
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'flip',
+  enabled: true,
+  phase: 'main',
+  fn: flip,
+  requiresIfExists: ['offset'],
+  data: {
+    _skip: false
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/modifiers/hide.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/modifiers/hide.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+/* harmony import */ var _utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/detectOverflow.js */ "./node_modules/@popperjs/core/lib/utils/detectOverflow.js");
+
+
+
+function getSideOffsets(overflow, rect, preventedOffsets) {
+  if (preventedOffsets === void 0) {
+    preventedOffsets = {
+      x: 0,
+      y: 0
+    };
+  }
+
+  return {
+    top: overflow.top - rect.height - preventedOffsets.y,
+    right: overflow.right - rect.width + preventedOffsets.x,
+    bottom: overflow.bottom - rect.height + preventedOffsets.y,
+    left: overflow.left - rect.width - preventedOffsets.x
+  };
+}
+
+function isAnySideFullyClipped(overflow) {
+  return [_enums_js__WEBPACK_IMPORTED_MODULE_0__.top, _enums_js__WEBPACK_IMPORTED_MODULE_0__.right, _enums_js__WEBPACK_IMPORTED_MODULE_0__.bottom, _enums_js__WEBPACK_IMPORTED_MODULE_0__.left].some(function (side) {
+    return overflow[side] >= 0;
+  });
+}
+
+function hide(_ref) {
+  var state = _ref.state,
+      name = _ref.name;
+  var referenceRect = state.rects.reference;
+  var popperRect = state.rects.popper;
+  var preventedOffsets = state.modifiersData.preventOverflow;
+  var referenceOverflow = (0,_utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_1__["default"])(state, {
+    elementContext: 'reference'
+  });
+  var popperAltOverflow = (0,_utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_1__["default"])(state, {
+    altBoundary: true
+  });
+  var referenceClippingOffsets = getSideOffsets(referenceOverflow, referenceRect);
+  var popperEscapeOffsets = getSideOffsets(popperAltOverflow, popperRect, preventedOffsets);
+  var isReferenceHidden = isAnySideFullyClipped(referenceClippingOffsets);
+  var hasPopperEscaped = isAnySideFullyClipped(popperEscapeOffsets);
+  state.modifiersData[name] = {
+    referenceClippingOffsets: referenceClippingOffsets,
+    popperEscapeOffsets: popperEscapeOffsets,
+    isReferenceHidden: isReferenceHidden,
+    hasPopperEscaped: hasPopperEscaped
+  };
+  state.attributes.popper = Object.assign({}, state.attributes.popper, {
+    'data-popper-reference-hidden': isReferenceHidden,
+    'data-popper-escaped': hasPopperEscaped
+  });
+} // eslint-disable-next-line import/no-unused-modules
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'hide',
+  enabled: true,
+  phase: 'main',
+  requiresIfExists: ['preventOverflow'],
+  fn: hide
+});
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/modifiers/index.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/modifiers/index.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   applyStyles: () => (/* reexport safe */ _applyStyles_js__WEBPACK_IMPORTED_MODULE_0__["default"]),
+/* harmony export */   arrow: () => (/* reexport safe */ _arrow_js__WEBPACK_IMPORTED_MODULE_1__["default"]),
+/* harmony export */   computeStyles: () => (/* reexport safe */ _computeStyles_js__WEBPACK_IMPORTED_MODULE_2__["default"]),
+/* harmony export */   eventListeners: () => (/* reexport safe */ _eventListeners_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
+/* harmony export */   flip: () => (/* reexport safe */ _flip_js__WEBPACK_IMPORTED_MODULE_4__["default"]),
+/* harmony export */   hide: () => (/* reexport safe */ _hide_js__WEBPACK_IMPORTED_MODULE_5__["default"]),
+/* harmony export */   offset: () => (/* reexport safe */ _offset_js__WEBPACK_IMPORTED_MODULE_6__["default"]),
+/* harmony export */   popperOffsets: () => (/* reexport safe */ _popperOffsets_js__WEBPACK_IMPORTED_MODULE_7__["default"]),
+/* harmony export */   preventOverflow: () => (/* reexport safe */ _preventOverflow_js__WEBPACK_IMPORTED_MODULE_8__["default"])
+/* harmony export */ });
+/* harmony import */ var _applyStyles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./applyStyles.js */ "./node_modules/@popperjs/core/lib/modifiers/applyStyles.js");
+/* harmony import */ var _arrow_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./arrow.js */ "./node_modules/@popperjs/core/lib/modifiers/arrow.js");
+/* harmony import */ var _computeStyles_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./computeStyles.js */ "./node_modules/@popperjs/core/lib/modifiers/computeStyles.js");
+/* harmony import */ var _eventListeners_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./eventListeners.js */ "./node_modules/@popperjs/core/lib/modifiers/eventListeners.js");
+/* harmony import */ var _flip_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./flip.js */ "./node_modules/@popperjs/core/lib/modifiers/flip.js");
+/* harmony import */ var _hide_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./hide.js */ "./node_modules/@popperjs/core/lib/modifiers/hide.js");
+/* harmony import */ var _offset_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./offset.js */ "./node_modules/@popperjs/core/lib/modifiers/offset.js");
+/* harmony import */ var _popperOffsets_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./popperOffsets.js */ "./node_modules/@popperjs/core/lib/modifiers/popperOffsets.js");
+/* harmony import */ var _preventOverflow_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./preventOverflow.js */ "./node_modules/@popperjs/core/lib/modifiers/preventOverflow.js");
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/modifiers/offset.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/modifiers/offset.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   distanceAndSkiddingToXY: () => (/* binding */ distanceAndSkiddingToXY)
+/* harmony export */ });
+/* harmony import */ var _utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/getBasePlacement.js */ "./node_modules/@popperjs/core/lib/utils/getBasePlacement.js");
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+
+ // eslint-disable-next-line import/no-unused-modules
+
+function distanceAndSkiddingToXY(placement, rects, offset) {
+  var basePlacement = (0,_utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(placement);
+  var invertDistance = [_enums_js__WEBPACK_IMPORTED_MODULE_1__.left, _enums_js__WEBPACK_IMPORTED_MODULE_1__.top].indexOf(basePlacement) >= 0 ? -1 : 1;
+
+  var _ref = typeof offset === 'function' ? offset(Object.assign({}, rects, {
+    placement: placement
+  })) : offset,
+      skidding = _ref[0],
+      distance = _ref[1];
+
+  skidding = skidding || 0;
+  distance = (distance || 0) * invertDistance;
+  return [_enums_js__WEBPACK_IMPORTED_MODULE_1__.left, _enums_js__WEBPACK_IMPORTED_MODULE_1__.right].indexOf(basePlacement) >= 0 ? {
+    x: distance,
+    y: skidding
+  } : {
+    x: skidding,
+    y: distance
+  };
+}
+
+function offset(_ref2) {
+  var state = _ref2.state,
+      options = _ref2.options,
+      name = _ref2.name;
+  var _options$offset = options.offset,
+      offset = _options$offset === void 0 ? [0, 0] : _options$offset;
+  var data = _enums_js__WEBPACK_IMPORTED_MODULE_1__.placements.reduce(function (acc, placement) {
+    acc[placement] = distanceAndSkiddingToXY(placement, state.rects, offset);
+    return acc;
+  }, {});
+  var _data$state$placement = data[state.placement],
+      x = _data$state$placement.x,
+      y = _data$state$placement.y;
+
+  if (state.modifiersData.popperOffsets != null) {
+    state.modifiersData.popperOffsets.x += x;
+    state.modifiersData.popperOffsets.y += y;
+  }
+
+  state.modifiersData[name] = data;
+} // eslint-disable-next-line import/no-unused-modules
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'offset',
+  enabled: true,
+  phase: 'main',
+  requires: ['popperOffsets'],
+  fn: offset
+});
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/modifiers/popperOffsets.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/modifiers/popperOffsets.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_computeOffsets_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/computeOffsets.js */ "./node_modules/@popperjs/core/lib/utils/computeOffsets.js");
+
+
+function popperOffsets(_ref) {
+  var state = _ref.state,
+      name = _ref.name;
+  // Offsets are the actual position the popper needs to have to be
+  // properly positioned near its reference element
+  // This is the most basic placement, and will be adjusted by
+  // the modifiers in the next step
+  state.modifiersData[name] = (0,_utils_computeOffsets_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    reference: state.rects.reference,
+    element: state.rects.popper,
+    strategy: 'absolute',
+    placement: state.placement
+  });
+} // eslint-disable-next-line import/no-unused-modules
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'popperOffsets',
+  enabled: true,
+  phase: 'read',
+  fn: popperOffsets,
+  data: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/modifiers/preventOverflow.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/modifiers/preventOverflow.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+/* harmony import */ var _utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/getBasePlacement.js */ "./node_modules/@popperjs/core/lib/utils/getBasePlacement.js");
+/* harmony import */ var _utils_getMainAxisFromPlacement_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/getMainAxisFromPlacement.js */ "./node_modules/@popperjs/core/lib/utils/getMainAxisFromPlacement.js");
+/* harmony import */ var _utils_getAltAxis_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/getAltAxis.js */ "./node_modules/@popperjs/core/lib/utils/getAltAxis.js");
+/* harmony import */ var _utils_within_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/within.js */ "./node_modules/@popperjs/core/lib/utils/within.js");
+/* harmony import */ var _dom_utils_getLayoutRect_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../dom-utils/getLayoutRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getLayoutRect.js");
+/* harmony import */ var _dom_utils_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../dom-utils/getOffsetParent.js */ "./node_modules/@popperjs/core/lib/dom-utils/getOffsetParent.js");
+/* harmony import */ var _utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/detectOverflow.js */ "./node_modules/@popperjs/core/lib/utils/detectOverflow.js");
+/* harmony import */ var _utils_getVariation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/getVariation.js */ "./node_modules/@popperjs/core/lib/utils/getVariation.js");
+/* harmony import */ var _utils_getFreshSideObject_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/getFreshSideObject.js */ "./node_modules/@popperjs/core/lib/utils/getFreshSideObject.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/@popperjs/core/lib/utils/math.js");
+
+
+
+
+
+
+
+
+
+
+
+
+function preventOverflow(_ref) {
+  var state = _ref.state,
+      options = _ref.options,
+      name = _ref.name;
+  var _options$mainAxis = options.mainAxis,
+      checkMainAxis = _options$mainAxis === void 0 ? true : _options$mainAxis,
+      _options$altAxis = options.altAxis,
+      checkAltAxis = _options$altAxis === void 0 ? false : _options$altAxis,
+      boundary = options.boundary,
+      rootBoundary = options.rootBoundary,
+      altBoundary = options.altBoundary,
+      padding = options.padding,
+      _options$tether = options.tether,
+      tether = _options$tether === void 0 ? true : _options$tether,
+      _options$tetherOffset = options.tetherOffset,
+      tetherOffset = _options$tetherOffset === void 0 ? 0 : _options$tetherOffset;
+  var overflow = (0,_utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_0__["default"])(state, {
+    boundary: boundary,
+    rootBoundary: rootBoundary,
+    padding: padding,
+    altBoundary: altBoundary
+  });
+  var basePlacement = (0,_utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_1__["default"])(state.placement);
+  var variation = (0,_utils_getVariation_js__WEBPACK_IMPORTED_MODULE_2__["default"])(state.placement);
+  var isBasePlacement = !variation;
+  var mainAxis = (0,_utils_getMainAxisFromPlacement_js__WEBPACK_IMPORTED_MODULE_3__["default"])(basePlacement);
+  var altAxis = (0,_utils_getAltAxis_js__WEBPACK_IMPORTED_MODULE_4__["default"])(mainAxis);
+  var popperOffsets = state.modifiersData.popperOffsets;
+  var referenceRect = state.rects.reference;
+  var popperRect = state.rects.popper;
+  var tetherOffsetValue = typeof tetherOffset === 'function' ? tetherOffset(Object.assign({}, state.rects, {
+    placement: state.placement
+  })) : tetherOffset;
+  var normalizedTetherOffsetValue = typeof tetherOffsetValue === 'number' ? {
+    mainAxis: tetherOffsetValue,
+    altAxis: tetherOffsetValue
+  } : Object.assign({
+    mainAxis: 0,
+    altAxis: 0
+  }, tetherOffsetValue);
+  var offsetModifierState = state.modifiersData.offset ? state.modifiersData.offset[state.placement] : null;
+  var data = {
+    x: 0,
+    y: 0
+  };
+
+  if (!popperOffsets) {
+    return;
+  }
+
+  if (checkMainAxis) {
+    var _offsetModifierState$;
+
+    var mainSide = mainAxis === 'y' ? _enums_js__WEBPACK_IMPORTED_MODULE_5__.top : _enums_js__WEBPACK_IMPORTED_MODULE_5__.left;
+    var altSide = mainAxis === 'y' ? _enums_js__WEBPACK_IMPORTED_MODULE_5__.bottom : _enums_js__WEBPACK_IMPORTED_MODULE_5__.right;
+    var len = mainAxis === 'y' ? 'height' : 'width';
+    var offset = popperOffsets[mainAxis];
+    var min = offset + overflow[mainSide];
+    var max = offset - overflow[altSide];
+    var additive = tether ? -popperRect[len] / 2 : 0;
+    var minLen = variation === _enums_js__WEBPACK_IMPORTED_MODULE_5__.start ? referenceRect[len] : popperRect[len];
+    var maxLen = variation === _enums_js__WEBPACK_IMPORTED_MODULE_5__.start ? -popperRect[len] : -referenceRect[len]; // We need to include the arrow in the calculation so the arrow doesn't go
+    // outside the reference bounds
+
+    var arrowElement = state.elements.arrow;
+    var arrowRect = tether && arrowElement ? (0,_dom_utils_getLayoutRect_js__WEBPACK_IMPORTED_MODULE_6__["default"])(arrowElement) : {
+      width: 0,
+      height: 0
+    };
+    var arrowPaddingObject = state.modifiersData['arrow#persistent'] ? state.modifiersData['arrow#persistent'].padding : (0,_utils_getFreshSideObject_js__WEBPACK_IMPORTED_MODULE_7__["default"])();
+    var arrowPaddingMin = arrowPaddingObject[mainSide];
+    var arrowPaddingMax = arrowPaddingObject[altSide]; // If the reference length is smaller than the arrow length, we don't want
+    // to include its full size in the calculation. If the reference is small
+    // and near the edge of a boundary, the popper can overflow even if the
+    // reference is not overflowing as well (e.g. virtual elements with no
+    // width or height)
+
+    var arrowLen = (0,_utils_within_js__WEBPACK_IMPORTED_MODULE_8__.within)(0, referenceRect[len], arrowRect[len]);
+    var minOffset = isBasePlacement ? referenceRect[len] / 2 - additive - arrowLen - arrowPaddingMin - normalizedTetherOffsetValue.mainAxis : minLen - arrowLen - arrowPaddingMin - normalizedTetherOffsetValue.mainAxis;
+    var maxOffset = isBasePlacement ? -referenceRect[len] / 2 + additive + arrowLen + arrowPaddingMax + normalizedTetherOffsetValue.mainAxis : maxLen + arrowLen + arrowPaddingMax + normalizedTetherOffsetValue.mainAxis;
+    var arrowOffsetParent = state.elements.arrow && (0,_dom_utils_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_9__["default"])(state.elements.arrow);
+    var clientOffset = arrowOffsetParent ? mainAxis === 'y' ? arrowOffsetParent.clientTop || 0 : arrowOffsetParent.clientLeft || 0 : 0;
+    var offsetModifierValue = (_offsetModifierState$ = offsetModifierState == null ? void 0 : offsetModifierState[mainAxis]) != null ? _offsetModifierState$ : 0;
+    var tetherMin = offset + minOffset - offsetModifierValue - clientOffset;
+    var tetherMax = offset + maxOffset - offsetModifierValue;
+    var preventedOffset = (0,_utils_within_js__WEBPACK_IMPORTED_MODULE_8__.within)(tether ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_10__.min)(min, tetherMin) : min, offset, tether ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_10__.max)(max, tetherMax) : max);
+    popperOffsets[mainAxis] = preventedOffset;
+    data[mainAxis] = preventedOffset - offset;
+  }
+
+  if (checkAltAxis) {
+    var _offsetModifierState$2;
+
+    var _mainSide = mainAxis === 'x' ? _enums_js__WEBPACK_IMPORTED_MODULE_5__.top : _enums_js__WEBPACK_IMPORTED_MODULE_5__.left;
+
+    var _altSide = mainAxis === 'x' ? _enums_js__WEBPACK_IMPORTED_MODULE_5__.bottom : _enums_js__WEBPACK_IMPORTED_MODULE_5__.right;
+
+    var _offset = popperOffsets[altAxis];
+
+    var _len = altAxis === 'y' ? 'height' : 'width';
+
+    var _min = _offset + overflow[_mainSide];
+
+    var _max = _offset - overflow[_altSide];
+
+    var isOriginSide = [_enums_js__WEBPACK_IMPORTED_MODULE_5__.top, _enums_js__WEBPACK_IMPORTED_MODULE_5__.left].indexOf(basePlacement) !== -1;
+
+    var _offsetModifierValue = (_offsetModifierState$2 = offsetModifierState == null ? void 0 : offsetModifierState[altAxis]) != null ? _offsetModifierState$2 : 0;
+
+    var _tetherMin = isOriginSide ? _min : _offset - referenceRect[_len] - popperRect[_len] - _offsetModifierValue + normalizedTetherOffsetValue.altAxis;
+
+    var _tetherMax = isOriginSide ? _offset + referenceRect[_len] + popperRect[_len] - _offsetModifierValue - normalizedTetherOffsetValue.altAxis : _max;
+
+    var _preventedOffset = tether && isOriginSide ? (0,_utils_within_js__WEBPACK_IMPORTED_MODULE_8__.withinMaxClamp)(_tetherMin, _offset, _tetherMax) : (0,_utils_within_js__WEBPACK_IMPORTED_MODULE_8__.within)(tether ? _tetherMin : _min, _offset, tether ? _tetherMax : _max);
+
+    popperOffsets[altAxis] = _preventedOffset;
+    data[altAxis] = _preventedOffset - _offset;
+  }
+
+  state.modifiersData[name] = data;
+} // eslint-disable-next-line import/no-unused-modules
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'preventOverflow',
+  enabled: true,
+  phase: 'main',
+  fn: preventOverflow,
+  requiresIfExists: ['offset']
+});
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/popper-lite.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/popper-lite.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createPopper: () => (/* binding */ createPopper),
+/* harmony export */   defaultModifiers: () => (/* binding */ defaultModifiers),
+/* harmony export */   detectOverflow: () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_5__["default"]),
+/* harmony export */   popperGenerator: () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_4__.popperGenerator)
+/* harmony export */ });
+/* harmony import */ var _createPopper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./createPopper.js */ "./node_modules/@popperjs/core/lib/createPopper.js");
+/* harmony import */ var _createPopper_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./createPopper.js */ "./node_modules/@popperjs/core/lib/utils/detectOverflow.js");
+/* harmony import */ var _modifiers_eventListeners_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modifiers/eventListeners.js */ "./node_modules/@popperjs/core/lib/modifiers/eventListeners.js");
+/* harmony import */ var _modifiers_popperOffsets_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifiers/popperOffsets.js */ "./node_modules/@popperjs/core/lib/modifiers/popperOffsets.js");
+/* harmony import */ var _modifiers_computeStyles_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifiers/computeStyles.js */ "./node_modules/@popperjs/core/lib/modifiers/computeStyles.js");
+/* harmony import */ var _modifiers_applyStyles_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modifiers/applyStyles.js */ "./node_modules/@popperjs/core/lib/modifiers/applyStyles.js");
+
+
+
+
+
+var defaultModifiers = [_modifiers_eventListeners_js__WEBPACK_IMPORTED_MODULE_0__["default"], _modifiers_popperOffsets_js__WEBPACK_IMPORTED_MODULE_1__["default"], _modifiers_computeStyles_js__WEBPACK_IMPORTED_MODULE_2__["default"], _modifiers_applyStyles_js__WEBPACK_IMPORTED_MODULE_3__["default"]];
+var createPopper = /*#__PURE__*/(0,_createPopper_js__WEBPACK_IMPORTED_MODULE_4__.popperGenerator)({
+  defaultModifiers: defaultModifiers
+}); // eslint-disable-next-line import/no-unused-modules
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/popper.js":
+/*!***************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/popper.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   applyStyles: () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.applyStyles),
+/* harmony export */   arrow: () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.arrow),
+/* harmony export */   computeStyles: () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.computeStyles),
+/* harmony export */   createPopper: () => (/* binding */ createPopper),
+/* harmony export */   createPopperLite: () => (/* reexport safe */ _popper_lite_js__WEBPACK_IMPORTED_MODULE_11__.createPopper),
+/* harmony export */   defaultModifiers: () => (/* binding */ defaultModifiers),
+/* harmony export */   detectOverflow: () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_10__["default"]),
+/* harmony export */   eventListeners: () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.eventListeners),
+/* harmony export */   flip: () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.flip),
+/* harmony export */   hide: () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.hide),
+/* harmony export */   offset: () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.offset),
+/* harmony export */   popperGenerator: () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_9__.popperGenerator),
+/* harmony export */   popperOffsets: () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.popperOffsets),
+/* harmony export */   preventOverflow: () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.preventOverflow)
+/* harmony export */ });
+/* harmony import */ var _createPopper_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./createPopper.js */ "./node_modules/@popperjs/core/lib/createPopper.js");
+/* harmony import */ var _createPopper_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./createPopper.js */ "./node_modules/@popperjs/core/lib/utils/detectOverflow.js");
+/* harmony import */ var _modifiers_eventListeners_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modifiers/eventListeners.js */ "./node_modules/@popperjs/core/lib/modifiers/eventListeners.js");
+/* harmony import */ var _modifiers_popperOffsets_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifiers/popperOffsets.js */ "./node_modules/@popperjs/core/lib/modifiers/popperOffsets.js");
+/* harmony import */ var _modifiers_computeStyles_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifiers/computeStyles.js */ "./node_modules/@popperjs/core/lib/modifiers/computeStyles.js");
+/* harmony import */ var _modifiers_applyStyles_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modifiers/applyStyles.js */ "./node_modules/@popperjs/core/lib/modifiers/applyStyles.js");
+/* harmony import */ var _modifiers_offset_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modifiers/offset.js */ "./node_modules/@popperjs/core/lib/modifiers/offset.js");
+/* harmony import */ var _modifiers_flip_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modifiers/flip.js */ "./node_modules/@popperjs/core/lib/modifiers/flip.js");
+/* harmony import */ var _modifiers_preventOverflow_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modifiers/preventOverflow.js */ "./node_modules/@popperjs/core/lib/modifiers/preventOverflow.js");
+/* harmony import */ var _modifiers_arrow_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modifiers/arrow.js */ "./node_modules/@popperjs/core/lib/modifiers/arrow.js");
+/* harmony import */ var _modifiers_hide_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modifiers/hide.js */ "./node_modules/@popperjs/core/lib/modifiers/hide.js");
+/* harmony import */ var _popper_lite_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./popper-lite.js */ "./node_modules/@popperjs/core/lib/popper-lite.js");
+/* harmony import */ var _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modifiers/index.js */ "./node_modules/@popperjs/core/lib/modifiers/index.js");
+
+
+
+
+
+
+
+
+
+
+var defaultModifiers = [_modifiers_eventListeners_js__WEBPACK_IMPORTED_MODULE_0__["default"], _modifiers_popperOffsets_js__WEBPACK_IMPORTED_MODULE_1__["default"], _modifiers_computeStyles_js__WEBPACK_IMPORTED_MODULE_2__["default"], _modifiers_applyStyles_js__WEBPACK_IMPORTED_MODULE_3__["default"], _modifiers_offset_js__WEBPACK_IMPORTED_MODULE_4__["default"], _modifiers_flip_js__WEBPACK_IMPORTED_MODULE_5__["default"], _modifiers_preventOverflow_js__WEBPACK_IMPORTED_MODULE_6__["default"], _modifiers_arrow_js__WEBPACK_IMPORTED_MODULE_7__["default"], _modifiers_hide_js__WEBPACK_IMPORTED_MODULE_8__["default"]];
+var createPopper = /*#__PURE__*/(0,_createPopper_js__WEBPACK_IMPORTED_MODULE_9__.popperGenerator)({
+  defaultModifiers: defaultModifiers
+}); // eslint-disable-next-line import/no-unused-modules
+
+ // eslint-disable-next-line import/no-unused-modules
+
+ // eslint-disable-next-line import/no-unused-modules
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/computeAutoPlacement.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/computeAutoPlacement.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ computeAutoPlacement)
+/* harmony export */ });
+/* harmony import */ var _getVariation_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getVariation.js */ "./node_modules/@popperjs/core/lib/utils/getVariation.js");
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+/* harmony import */ var _detectOverflow_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./detectOverflow.js */ "./node_modules/@popperjs/core/lib/utils/detectOverflow.js");
+/* harmony import */ var _getBasePlacement_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getBasePlacement.js */ "./node_modules/@popperjs/core/lib/utils/getBasePlacement.js");
+
+
+
+
+function computeAutoPlacement(state, options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  var _options = options,
+      placement = _options.placement,
+      boundary = _options.boundary,
+      rootBoundary = _options.rootBoundary,
+      padding = _options.padding,
+      flipVariations = _options.flipVariations,
+      _options$allowedAutoP = _options.allowedAutoPlacements,
+      allowedAutoPlacements = _options$allowedAutoP === void 0 ? _enums_js__WEBPACK_IMPORTED_MODULE_0__.placements : _options$allowedAutoP;
+  var variation = (0,_getVariation_js__WEBPACK_IMPORTED_MODULE_1__["default"])(placement);
+  var placements = variation ? flipVariations ? _enums_js__WEBPACK_IMPORTED_MODULE_0__.variationPlacements : _enums_js__WEBPACK_IMPORTED_MODULE_0__.variationPlacements.filter(function (placement) {
+    return (0,_getVariation_js__WEBPACK_IMPORTED_MODULE_1__["default"])(placement) === variation;
+  }) : _enums_js__WEBPACK_IMPORTED_MODULE_0__.basePlacements;
+  var allowedPlacements = placements.filter(function (placement) {
+    return allowedAutoPlacements.indexOf(placement) >= 0;
+  });
+
+  if (allowedPlacements.length === 0) {
+    allowedPlacements = placements;
+  } // $FlowFixMe[incompatible-type]: Flow seems to have problems with two array unions...
+
+
+  var overflows = allowedPlacements.reduce(function (acc, placement) {
+    acc[placement] = (0,_detectOverflow_js__WEBPACK_IMPORTED_MODULE_2__["default"])(state, {
+      placement: placement,
+      boundary: boundary,
+      rootBoundary: rootBoundary,
+      padding: padding
+    })[(0,_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_3__["default"])(placement)];
+    return acc;
+  }, {});
+  return Object.keys(overflows).sort(function (a, b) {
+    return overflows[a] - overflows[b];
+  });
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/computeOffsets.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/computeOffsets.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ computeOffsets)
+/* harmony export */ });
+/* harmony import */ var _getBasePlacement_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getBasePlacement.js */ "./node_modules/@popperjs/core/lib/utils/getBasePlacement.js");
+/* harmony import */ var _getVariation_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getVariation.js */ "./node_modules/@popperjs/core/lib/utils/getVariation.js");
+/* harmony import */ var _getMainAxisFromPlacement_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getMainAxisFromPlacement.js */ "./node_modules/@popperjs/core/lib/utils/getMainAxisFromPlacement.js");
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+
+
+
+
+function computeOffsets(_ref) {
+  var reference = _ref.reference,
+      element = _ref.element,
+      placement = _ref.placement;
+  var basePlacement = placement ? (0,_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_0__["default"])(placement) : null;
+  var variation = placement ? (0,_getVariation_js__WEBPACK_IMPORTED_MODULE_1__["default"])(placement) : null;
+  var commonX = reference.x + reference.width / 2 - element.width / 2;
+  var commonY = reference.y + reference.height / 2 - element.height / 2;
+  var offsets;
+
+  switch (basePlacement) {
+    case _enums_js__WEBPACK_IMPORTED_MODULE_2__.top:
+      offsets = {
+        x: commonX,
+        y: reference.y - element.height
+      };
+      break;
+
+    case _enums_js__WEBPACK_IMPORTED_MODULE_2__.bottom:
+      offsets = {
+        x: commonX,
+        y: reference.y + reference.height
+      };
+      break;
+
+    case _enums_js__WEBPACK_IMPORTED_MODULE_2__.right:
+      offsets = {
+        x: reference.x + reference.width,
+        y: commonY
+      };
+      break;
+
+    case _enums_js__WEBPACK_IMPORTED_MODULE_2__.left:
+      offsets = {
+        x: reference.x - element.width,
+        y: commonY
+      };
+      break;
+
+    default:
+      offsets = {
+        x: reference.x,
+        y: reference.y
+      };
+  }
+
+  var mainAxis = basePlacement ? (0,_getMainAxisFromPlacement_js__WEBPACK_IMPORTED_MODULE_3__["default"])(basePlacement) : null;
+
+  if (mainAxis != null) {
+    var len = mainAxis === 'y' ? 'height' : 'width';
+
+    switch (variation) {
+      case _enums_js__WEBPACK_IMPORTED_MODULE_2__.start:
+        offsets[mainAxis] = offsets[mainAxis] - (reference[len] / 2 - element[len] / 2);
+        break;
+
+      case _enums_js__WEBPACK_IMPORTED_MODULE_2__.end:
+        offsets[mainAxis] = offsets[mainAxis] + (reference[len] / 2 - element[len] / 2);
+        break;
+
+      default:
+    }
+  }
+
+  return offsets;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/debounce.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/debounce.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ debounce)
+/* harmony export */ });
+function debounce(fn) {
+  var pending;
+  return function () {
+    if (!pending) {
+      pending = new Promise(function (resolve) {
+        Promise.resolve().then(function () {
+          pending = undefined;
+          resolve(fn());
+        });
+      });
+    }
+
+    return pending;
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/detectOverflow.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/detectOverflow.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ detectOverflow)
+/* harmony export */ });
+/* harmony import */ var _dom_utils_getClippingRect_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../dom-utils/getClippingRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getClippingRect.js");
+/* harmony import */ var _dom_utils_getDocumentElement_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../dom-utils/getDocumentElement.js */ "./node_modules/@popperjs/core/lib/dom-utils/getDocumentElement.js");
+/* harmony import */ var _dom_utils_getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../dom-utils/getBoundingClientRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getBoundingClientRect.js");
+/* harmony import */ var _computeOffsets_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./computeOffsets.js */ "./node_modules/@popperjs/core/lib/utils/computeOffsets.js");
+/* harmony import */ var _rectToClientRect_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./rectToClientRect.js */ "./node_modules/@popperjs/core/lib/utils/rectToClientRect.js");
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+/* harmony import */ var _dom_utils_instanceOf_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../dom-utils/instanceOf.js */ "./node_modules/@popperjs/core/lib/dom-utils/instanceOf.js");
+/* harmony import */ var _mergePaddingObject_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mergePaddingObject.js */ "./node_modules/@popperjs/core/lib/utils/mergePaddingObject.js");
+/* harmony import */ var _expandToHashMap_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./expandToHashMap.js */ "./node_modules/@popperjs/core/lib/utils/expandToHashMap.js");
+
+
+
+
+
+
+
+
+ // eslint-disable-next-line import/no-unused-modules
+
+function detectOverflow(state, options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  var _options = options,
+      _options$placement = _options.placement,
+      placement = _options$placement === void 0 ? state.placement : _options$placement,
+      _options$strategy = _options.strategy,
+      strategy = _options$strategy === void 0 ? state.strategy : _options$strategy,
+      _options$boundary = _options.boundary,
+      boundary = _options$boundary === void 0 ? _enums_js__WEBPACK_IMPORTED_MODULE_0__.clippingParents : _options$boundary,
+      _options$rootBoundary = _options.rootBoundary,
+      rootBoundary = _options$rootBoundary === void 0 ? _enums_js__WEBPACK_IMPORTED_MODULE_0__.viewport : _options$rootBoundary,
+      _options$elementConte = _options.elementContext,
+      elementContext = _options$elementConte === void 0 ? _enums_js__WEBPACK_IMPORTED_MODULE_0__.popper : _options$elementConte,
+      _options$altBoundary = _options.altBoundary,
+      altBoundary = _options$altBoundary === void 0 ? false : _options$altBoundary,
+      _options$padding = _options.padding,
+      padding = _options$padding === void 0 ? 0 : _options$padding;
+  var paddingObject = (0,_mergePaddingObject_js__WEBPACK_IMPORTED_MODULE_1__["default"])(typeof padding !== 'number' ? padding : (0,_expandToHashMap_js__WEBPACK_IMPORTED_MODULE_2__["default"])(padding, _enums_js__WEBPACK_IMPORTED_MODULE_0__.basePlacements));
+  var altContext = elementContext === _enums_js__WEBPACK_IMPORTED_MODULE_0__.popper ? _enums_js__WEBPACK_IMPORTED_MODULE_0__.reference : _enums_js__WEBPACK_IMPORTED_MODULE_0__.popper;
+  var popperRect = state.rects.popper;
+  var element = state.elements[altBoundary ? altContext : elementContext];
+  var clippingClientRect = (0,_dom_utils_getClippingRect_js__WEBPACK_IMPORTED_MODULE_3__["default"])((0,_dom_utils_instanceOf_js__WEBPACK_IMPORTED_MODULE_4__.isElement)(element) ? element : element.contextElement || (0,_dom_utils_getDocumentElement_js__WEBPACK_IMPORTED_MODULE_5__["default"])(state.elements.popper), boundary, rootBoundary, strategy);
+  var referenceClientRect = (0,_dom_utils_getBoundingClientRect_js__WEBPACK_IMPORTED_MODULE_6__["default"])(state.elements.reference);
+  var popperOffsets = (0,_computeOffsets_js__WEBPACK_IMPORTED_MODULE_7__["default"])({
+    reference: referenceClientRect,
+    element: popperRect,
+    strategy: 'absolute',
+    placement: placement
+  });
+  var popperClientRect = (0,_rectToClientRect_js__WEBPACK_IMPORTED_MODULE_8__["default"])(Object.assign({}, popperRect, popperOffsets));
+  var elementClientRect = elementContext === _enums_js__WEBPACK_IMPORTED_MODULE_0__.popper ? popperClientRect : referenceClientRect; // positive = overflowing the clipping rect
+  // 0 or negative = within the clipping rect
+
+  var overflowOffsets = {
+    top: clippingClientRect.top - elementClientRect.top + paddingObject.top,
+    bottom: elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom,
+    left: clippingClientRect.left - elementClientRect.left + paddingObject.left,
+    right: elementClientRect.right - clippingClientRect.right + paddingObject.right
+  };
+  var offsetData = state.modifiersData.offset; // Offsets can be applied only to the popper element
+
+  if (elementContext === _enums_js__WEBPACK_IMPORTED_MODULE_0__.popper && offsetData) {
+    var offset = offsetData[placement];
+    Object.keys(overflowOffsets).forEach(function (key) {
+      var multiply = [_enums_js__WEBPACK_IMPORTED_MODULE_0__.right, _enums_js__WEBPACK_IMPORTED_MODULE_0__.bottom].indexOf(key) >= 0 ? 1 : -1;
+      var axis = [_enums_js__WEBPACK_IMPORTED_MODULE_0__.top, _enums_js__WEBPACK_IMPORTED_MODULE_0__.bottom].indexOf(key) >= 0 ? 'y' : 'x';
+      overflowOffsets[key] += offset[axis] * multiply;
+    });
+  }
+
+  return overflowOffsets;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/expandToHashMap.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/expandToHashMap.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ expandToHashMap)
+/* harmony export */ });
+function expandToHashMap(value, keys) {
+  return keys.reduce(function (hashMap, key) {
+    hashMap[key] = value;
+    return hashMap;
+  }, {});
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/getAltAxis.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/getAltAxis.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getAltAxis)
+/* harmony export */ });
+function getAltAxis(axis) {
+  return axis === 'x' ? 'y' : 'x';
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/getBasePlacement.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/getBasePlacement.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getBasePlacement)
+/* harmony export */ });
+
+function getBasePlacement(placement) {
+  return placement.split('-')[0];
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/getFreshSideObject.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/getFreshSideObject.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getFreshSideObject)
+/* harmony export */ });
+function getFreshSideObject() {
+  return {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/getMainAxisFromPlacement.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/getMainAxisFromPlacement.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getMainAxisFromPlacement)
+/* harmony export */ });
+function getMainAxisFromPlacement(placement) {
+  return ['top', 'bottom'].indexOf(placement) >= 0 ? 'x' : 'y';
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/getOppositePlacement.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/getOppositePlacement.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getOppositePlacement)
+/* harmony export */ });
+var hash = {
+  left: 'right',
+  right: 'left',
+  bottom: 'top',
+  top: 'bottom'
+};
+function getOppositePlacement(placement) {
+  return placement.replace(/left|right|bottom|top/g, function (matched) {
+    return hash[matched];
+  });
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/getOppositeVariationPlacement.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/getOppositeVariationPlacement.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getOppositeVariationPlacement)
+/* harmony export */ });
+var hash = {
+  start: 'end',
+  end: 'start'
+};
+function getOppositeVariationPlacement(placement) {
+  return placement.replace(/start|end/g, function (matched) {
+    return hash[matched];
+  });
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/getVariation.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/getVariation.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getVariation)
+/* harmony export */ });
+function getVariation(placement) {
+  return placement.split('-')[1];
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/math.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/math.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   max: () => (/* binding */ max),
+/* harmony export */   min: () => (/* binding */ min),
+/* harmony export */   round: () => (/* binding */ round)
+/* harmony export */ });
+var max = Math.max;
+var min = Math.min;
+var round = Math.round;
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/mergeByName.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/mergeByName.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ mergeByName)
+/* harmony export */ });
+function mergeByName(modifiers) {
+  var merged = modifiers.reduce(function (merged, current) {
+    var existing = merged[current.name];
+    merged[current.name] = existing ? Object.assign({}, existing, current, {
+      options: Object.assign({}, existing.options, current.options),
+      data: Object.assign({}, existing.data, current.data)
+    }) : current;
+    return merged;
+  }, {}); // IE11 does not support Object.values
+
+  return Object.keys(merged).map(function (key) {
+    return merged[key];
+  });
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/mergePaddingObject.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/mergePaddingObject.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ mergePaddingObject)
+/* harmony export */ });
+/* harmony import */ var _getFreshSideObject_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getFreshSideObject.js */ "./node_modules/@popperjs/core/lib/utils/getFreshSideObject.js");
+
+function mergePaddingObject(paddingObject) {
+  return Object.assign({}, (0,_getFreshSideObject_js__WEBPACK_IMPORTED_MODULE_0__["default"])(), paddingObject);
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/orderModifiers.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/orderModifiers.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ orderModifiers)
+/* harmony export */ });
+/* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
+ // source: https://stackoverflow.com/questions/49875255
+
+function order(modifiers) {
+  var map = new Map();
+  var visited = new Set();
+  var result = [];
+  modifiers.forEach(function (modifier) {
+    map.set(modifier.name, modifier);
+  }); // On visiting object, check for its dependencies and visit them recursively
+
+  function sort(modifier) {
+    visited.add(modifier.name);
+    var requires = [].concat(modifier.requires || [], modifier.requiresIfExists || []);
+    requires.forEach(function (dep) {
+      if (!visited.has(dep)) {
+        var depModifier = map.get(dep);
+
+        if (depModifier) {
+          sort(depModifier);
+        }
+      }
+    });
+    result.push(modifier);
+  }
+
+  modifiers.forEach(function (modifier) {
+    if (!visited.has(modifier.name)) {
+      // check for visited object
+      sort(modifier);
+    }
+  });
+  return result;
+}
+
+function orderModifiers(modifiers) {
+  // order based on dependencies
+  var orderedModifiers = order(modifiers); // order based on phase
+
+  return _enums_js__WEBPACK_IMPORTED_MODULE_0__.modifierPhases.reduce(function (acc, phase) {
+    return acc.concat(orderedModifiers.filter(function (modifier) {
+      return modifier.phase === phase;
+    }));
+  }, []);
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/rectToClientRect.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/rectToClientRect.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ rectToClientRect)
+/* harmony export */ });
+function rectToClientRect(rect) {
+  return Object.assign({}, rect, {
+    left: rect.x,
+    top: rect.y,
+    right: rect.x + rect.width,
+    bottom: rect.y + rect.height
+  });
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/userAgent.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/userAgent.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getUAString)
+/* harmony export */ });
+function getUAString() {
+  var uaData = navigator.userAgentData;
+
+  if (uaData != null && uaData.brands && Array.isArray(uaData.brands)) {
+    return uaData.brands.map(function (item) {
+      return item.brand + "/" + item.version;
+    }).join(' ');
+  }
+
+  return navigator.userAgent;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@popperjs/core/lib/utils/within.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@popperjs/core/lib/utils/within.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   within: () => (/* binding */ within),
+/* harmony export */   withinMaxClamp: () => (/* binding */ withinMaxClamp)
+/* harmony export */ });
+/* harmony import */ var _math_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./math.js */ "./node_modules/@popperjs/core/lib/utils/math.js");
+
+function within(min, value, max) {
+  return (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.max)(min, (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.min)(value, max));
+}
+function withinMaxClamp(min, value, max) {
+  var v = within(min, value, max);
+  return v > max ? max : v;
+}
+
+/***/ }),
+
 /***/ "./node_modules/graph-modal/src/graph-modal.js":
 /*!*****************************************************!*\
   !*** ./node_modules/graph-modal/src/graph-modal.js ***!
@@ -544,6 +3433,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _chat_fetchChatInfo_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./chat/fetchChatInfo.js */ "./src/js/components/chat/fetchChatInfo.js");
 /* harmony import */ var _chat_socketConnect_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./chat/socketConnect.js */ "./src/js/components/chat/socketConnect.js");
 /* harmony import */ var _chat_chatViewScripts_handleSocketMessage_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./chat/chatViewScripts/handleSocketMessage.js */ "./src/js/components/chat/chatViewScripts/handleSocketMessage.js");
+/* harmony import */ var _chat_emoji_picker_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./chat/emoji-picker.js */ "./src/js/components/chat/emoji-picker.js");
+
 
 
 
@@ -1044,9 +3935,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   renderNewChat: () => (/* binding */ renderNewChat)
 /* harmony export */ });
+/* harmony import */ var emoji_picker_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! emoji-picker-element */ "./node_modules/emoji-picker-element/index.js");
+/* harmony import */ var _chatSizes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./chatSizes.js */ "./src/js/components/chat/chatViewScripts/chatSizes.js");
+/* harmony import */ var _popperjs_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @popperjs/core */ "./node_modules/@popperjs/core/lib/popper.js");
+// import { picker } from "../emoji-picker.js"
+
+
+
+
 // build and render chat container and DOM structure
 function renderNewChat(chatId) {
-  // const chat = createChatContainers()
   const chat = document.createElement('div');
   chat.classList.add('chat');
   chat.setAttribute('id', `chat-${chatId}`);
@@ -1058,14 +3956,10 @@ function renderNewChat(chatId) {
   chat.appendChild(chat__container);
   const contentSection = document.querySelector('.content');
   contentSection.appendChild(chat);
-}
-function createChatContainers() {
-  const chat = document.createElement('div');
-  chat.classList.add('chat');
-  const chat__container = document.createElement('div');
-  chat__container.classList.add('chat__container');
-  chat.appendChild(chat__container);
-  return chat__container;
+  const emojiButton = document.querySelector('.chat-form__smiles');
+  emojiButton.addEventListener('click', () => {
+    emojiPickerLaunch(emojiButton);
+  });
 }
 function createChatHeader(chatId) {
   const chatHeader = document.createElement('div');
@@ -1109,16 +4003,40 @@ function createChatForm() {
     rows="1"
     placeholder="Write your message here..."></textarea>
 
-    <button class="chat-form__smiles">
-      <svg class="chat-form__svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M8.44 14.3a.9.9 0 0 1 1.26.13c.01.02.2.22.53.43.38.24.97.49 1.77.49a3.3 3.3 0 0 0 1.77-.49c.2-.12.39-.26.53-.43a.9.9 0 0 1 1.4 1.13 4.04 4.04 0 0 1-.97.83 5.1 5.1 0 0 1-2.73.76 5.1 5.1 0 0 1-2.73-.76 3.99 3.99 0 0 1-.97-.83.9.9 0 0 1 .14-1.26Zm1.81-4.05a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0ZM15 11.5A1.25 1.25 0 1 0 15 9a1.25 1.25 0 0 0 0 2.5Zm-3-9.4a9.9 9.9 0 1 0 0 19.8 9.9 9.9 0 0 0 0-19.8ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd">
-        </path>
-      </svg>
-    </button>
+    <div class="chat-form__smiles-container">
+      <button type="button" class="chat-form__smiles" aria-describedby="emoji-tooltip">
+        <svg class="chat-form__svg">
+          <use xlink:href="img/sprite.svg#smile-emoji"></use>
+        </svg>
+      </button>
+
+      <div class="emoji-tooltip hidden" role="tooltip" id="emoji-tooltip">
+        <emoji-picker></emoji-picker>
+      </div>
+    </div>
 
     <button type="submit" class="chat-form__submit plan-btn btn" id="chat-submit">Send</button>
   `;
   return chatForm;
+}
+
+// also launch popper.js
+function emojiPickerLaunch(emojiButton) {
+  const pickerTooltipWrapper = document.querySelector('.emoji-tooltip');
+  if (pickerTooltipWrapper.classList.contains('hidden')) {
+    pickerTooltipWrapper.classList.remove('hidden');
+    _popperjs_core__WEBPACK_IMPORTED_MODULE_2__.createPopper(emojiButton, pickerTooltipWrapper, {
+      placement: 'top-end'
+    });
+    document.querySelector('emoji-picker').addEventListener('emoji-click', insertEmoji);
+  } else {
+    pickerTooltipWrapper.classList.add('hidden');
+  }
+}
+function insertEmoji(e) {
+  const emoji = e.detail.unicode;
+  const chatInputElement = document.querySelector('#chat-form__input');
+  chatInputElement.value += emoji;
 }
 
 /***/ }),
@@ -1140,6 +4058,23 @@ function viewMessages(chatInfo, senderId) {
     message.from_user.id == senderId ? (0,_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('outgoing', message.text) : (0,_addMessage_js__WEBPACK_IMPORTED_MODULE_0__.addMessage)('incoming', message.text);
   });
 }
+
+/***/ }),
+
+/***/ "./src/js/components/chat/emoji-picker.js":
+/*!************************************************!*\
+  !*** ./src/js/components/chat/emoji-picker.js ***!
+  \************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   picker: () => (/* binding */ picker)
+/* harmony export */ });
+/* harmony import */ var emoji_picker_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! emoji-picker-element */ "./node_modules/emoji-picker-element/index.js");
+
+
+const picker = new emoji_picker_element__WEBPACK_IMPORTED_MODULE_0__.Picker();
 
 /***/ }),
 
@@ -2628,6 +5563,2705 @@ _components_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.th
 
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
+
+/***/ }),
+
+/***/ "./node_modules/emoji-picker-element/database.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/emoji-picker-element/database.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Database)
+/* harmony export */ });
+function assertNonEmptyString (str) {
+  if (typeof str !== 'string' || !str) {
+    throw new Error('expected a non-empty string, got: ' + str)
+  }
+}
+
+function assertNumber (number) {
+  if (typeof number !== 'number') {
+    throw new Error('expected a number, got: ' + number)
+  }
+}
+
+const DB_VERSION_CURRENT = 1;
+const DB_VERSION_INITIAL = 1;
+const STORE_EMOJI = 'emoji';
+const STORE_KEYVALUE = 'keyvalue';
+const STORE_FAVORITES = 'favorites';
+const FIELD_TOKENS = 'tokens';
+const INDEX_TOKENS = 'tokens';
+const FIELD_UNICODE = 'unicode';
+const INDEX_COUNT = 'count';
+const FIELD_GROUP = 'group';
+const FIELD_ORDER = 'order';
+const INDEX_GROUP_AND_ORDER = 'group-order';
+const KEY_ETAG = 'eTag';
+const KEY_URL = 'url';
+const KEY_PREFERRED_SKINTONE = 'skinTone';
+const MODE_READONLY = 'readonly';
+const MODE_READWRITE = 'readwrite';
+const INDEX_SKIN_UNICODE = 'skinUnicodes';
+const FIELD_SKIN_UNICODE = 'skinUnicodes';
+
+const DEFAULT_DATA_SOURCE = 'https://cdn.jsdelivr.net/npm/emoji-picker-element-data@^1/en/emojibase/data.json';
+const DEFAULT_LOCALE = 'en';
+
+// like lodash's uniqBy but much smaller
+function uniqBy (arr, func) {
+  const set = new Set();
+  const res = [];
+  for (const item of arr) {
+    const key = func(item);
+    if (!set.has(key)) {
+      set.add(key);
+      res.push(item);
+    }
+  }
+  return res
+}
+
+function uniqEmoji (emojis) {
+  return uniqBy(emojis, _ => _.unicode)
+}
+
+function initialMigration (db) {
+  function createObjectStore (name, keyPath, indexes) {
+    const store = keyPath
+      ? db.createObjectStore(name, { keyPath })
+      : db.createObjectStore(name);
+    if (indexes) {
+      for (const [indexName, [keyPath, multiEntry]] of Object.entries(indexes)) {
+        store.createIndex(indexName, keyPath, { multiEntry });
+      }
+    }
+    return store
+  }
+
+  createObjectStore(STORE_KEYVALUE);
+  createObjectStore(STORE_EMOJI, /* keyPath */ FIELD_UNICODE, {
+    [INDEX_TOKENS]: [FIELD_TOKENS, /* multiEntry */ true],
+    [INDEX_GROUP_AND_ORDER]: [[FIELD_GROUP, FIELD_ORDER]],
+    [INDEX_SKIN_UNICODE]: [FIELD_SKIN_UNICODE, /* multiEntry */ true]
+  });
+  createObjectStore(STORE_FAVORITES, undefined, {
+    [INDEX_COUNT]: ['']
+  });
+}
+
+const openIndexedDBRequests = {};
+const databaseCache = {};
+const onCloseListeners = {};
+
+function handleOpenOrDeleteReq (resolve, reject, req) {
+  // These things are almost impossible to test with fakeIndexedDB sadly
+  /* istanbul ignore next */
+  req.onerror = () => reject(req.error);
+  /* istanbul ignore next */
+  req.onblocked = () => reject(new Error('IDB blocked'));
+  req.onsuccess = () => resolve(req.result);
+}
+
+async function createDatabase (dbName) {
+  const db = await new Promise((resolve, reject) => {
+    const req = indexedDB.open(dbName, DB_VERSION_CURRENT);
+    openIndexedDBRequests[dbName] = req;
+    req.onupgradeneeded = e => {
+      // Technically there is only one version, so we don't need this `if` check
+      // But if an old version of the JS is in another browser tab
+      // and it gets upgraded in the future and we have a new DB version, well...
+      // better safe than sorry.
+      /* istanbul ignore else */
+      if (e.oldVersion < DB_VERSION_INITIAL) {
+        initialMigration(req.result);
+      }
+    };
+    handleOpenOrDeleteReq(resolve, reject, req);
+  });
+  // Handle abnormal closes, e.g. "delete database" in chrome dev tools.
+  // No need for removeEventListener, because once the DB can no longer
+  // fire "close" events, it will auto-GC.
+  // Unfortunately cannot test in fakeIndexedDB: https://github.com/dumbmatter/fakeIndexedDB/issues/50
+  /* istanbul ignore next */
+  db.onclose = () => closeDatabase(dbName);
+  return db
+}
+
+function openDatabase (dbName) {
+  if (!databaseCache[dbName]) {
+    databaseCache[dbName] = createDatabase(dbName);
+  }
+  return databaseCache[dbName]
+}
+
+function dbPromise (db, storeName, readOnlyOrReadWrite, cb) {
+  return new Promise((resolve, reject) => {
+    // Use relaxed durability because neither the emoji data nor the favorites/preferred skin tone
+    // are really irreplaceable data. IndexedDB is just a cache in this case.
+    const txn = db.transaction(storeName, readOnlyOrReadWrite, { durability: 'relaxed' });
+    const store = typeof storeName === 'string'
+      ? txn.objectStore(storeName)
+      : storeName.map(name => txn.objectStore(name));
+    let res;
+    cb(store, txn, (result) => {
+      res = result;
+    });
+
+    txn.oncomplete = () => resolve(res);
+    /* istanbul ignore next */
+    txn.onerror = () => reject(txn.error);
+  })
+}
+
+function closeDatabase (dbName) {
+  // close any open requests
+  const req = openIndexedDBRequests[dbName];
+  const db = req && req.result;
+  if (db) {
+    db.close();
+    const listeners = onCloseListeners[dbName];
+    /* istanbul ignore else */
+    if (listeners) {
+      for (const listener of listeners) {
+        listener();
+      }
+    }
+  }
+  delete openIndexedDBRequests[dbName];
+  delete databaseCache[dbName];
+  delete onCloseListeners[dbName];
+}
+
+function deleteDatabase (dbName) {
+  return new Promise((resolve, reject) => {
+    // close any open requests
+    closeDatabase(dbName);
+    const req = indexedDB.deleteDatabase(dbName);
+    handleOpenOrDeleteReq(resolve, reject, req);
+  })
+}
+
+// The "close" event occurs during an abnormal shutdown, e.g. a user clearing their browser data.
+// However, it doesn't occur with the normal "close" event, so we handle that separately.
+// https://www.w3.org/TR/IndexedDB/#close-a-database-connection
+function addOnCloseListener (dbName, listener) {
+  let listeners = onCloseListeners[dbName];
+  if (!listeners) {
+    listeners = onCloseListeners[dbName] = [];
+  }
+  listeners.push(listener);
+}
+
+// list of emoticons that don't match a simple \W+ regex
+// extracted using:
+// require('emoji-picker-element-data/en/emojibase/data.json').map(_ => _.emoticon).filter(Boolean).filter(_ => !/^\W+$/.test(_))
+const irregularEmoticons = new Set([
+  ':D', 'XD', ":'D", 'O:)',
+  ':X', ':P', ';P', 'XP',
+  ':L', ':Z', ':j', '8D',
+  'XO', '8)', ':B', ':O',
+  ':S', ":'o", 'Dx', 'X(',
+  'D:', ':C', '>0)', ':3',
+  '</3', '<3', '\\M/', ':E',
+  '8#'
+]);
+
+function extractTokens (str) {
+  return str
+    .split(/[\s_]+/)
+    .map(word => {
+      if (!word.match(/\w/) || irregularEmoticons.has(word)) {
+        // for pure emoticons like :) or :-), just leave them as-is
+        return word.toLowerCase()
+      }
+
+      return word
+        .replace(/[)(:,]/g, '')
+        .replace(/’/g, "'")
+        .toLowerCase()
+    }).filter(Boolean)
+}
+
+const MIN_SEARCH_TEXT_LENGTH = 2;
+
+// This is an extra step in addition to extractTokens(). The difference here is that we expect
+// the input to have already been run through extractTokens(). This is useful for cases like
+// emoticons, where we don't want to do any tokenization (because it makes no sense to split up
+// ">:)" by the colon) but we do want to lowercase it to have consistent search results, so that
+// the user can type ':P' or ':p' and still get the same result.
+function normalizeTokens (str) {
+  return str
+    .filter(Boolean)
+    .map(_ => _.toLowerCase())
+    .filter(_ => _.length >= MIN_SEARCH_TEXT_LENGTH)
+}
+
+// Transform emoji data for storage in IDB
+function transformEmojiData (emojiData) {
+  const res = emojiData.map(({ annotation, emoticon, group, order, shortcodes, skins, tags, emoji, version }) => {
+    const tokens = [...new Set(
+      normalizeTokens([
+        ...(shortcodes || []).map(extractTokens).flat(),
+        ...tags.map(extractTokens).flat(),
+        ...extractTokens(annotation),
+        emoticon
+      ])
+    )].sort();
+    const res = {
+      annotation,
+      group,
+      order,
+      tags,
+      tokens,
+      unicode: emoji,
+      version
+    };
+    if (emoticon) {
+      res.emoticon = emoticon;
+    }
+    if (shortcodes) {
+      res.shortcodes = shortcodes;
+    }
+    if (skins) {
+      res.skinTones = [];
+      res.skinUnicodes = [];
+      res.skinVersions = [];
+      for (const { tone, emoji, version } of skins) {
+        res.skinTones.push(tone);
+        res.skinUnicodes.push(emoji);
+        res.skinVersions.push(version);
+      }
+    }
+    return res
+  });
+  return res
+}
+
+// helper functions that help compress the code better
+
+function callStore (store, method, key, cb) {
+  store[method](key).onsuccess = e => (cb && cb(e.target.result));
+}
+
+function getIDB (store, key, cb) {
+  callStore(store, 'get', key, cb);
+}
+
+function getAllIDB (store, key, cb) {
+  callStore(store, 'getAll', key, cb);
+}
+
+function commit (txn) {
+  /* istanbul ignore else */
+  if (txn.commit) {
+    txn.commit();
+  }
+}
+
+// like lodash's minBy
+function minBy (array, func) {
+  let minItem = array[0];
+  for (let i = 1; i < array.length; i++) {
+    const item = array[i];
+    if (func(minItem) > func(item)) {
+      minItem = item;
+    }
+  }
+  return minItem
+}
+
+// return an array of results representing all items that are found in each one of the arrays
+//
+
+function findCommonMembers (arrays, uniqByFunc) {
+  const shortestArray = minBy(arrays, _ => _.length);
+  const results = [];
+  for (const item of shortestArray) {
+    // if this item is included in every array in the intermediate results, add it to the final results
+    if (!arrays.some(array => array.findIndex(_ => uniqByFunc(_) === uniqByFunc(item)) === -1)) {
+      results.push(item);
+    }
+  }
+  return results
+}
+
+async function isEmpty (db) {
+  return !(await get(db, STORE_KEYVALUE, KEY_URL))
+}
+
+async function hasData (db, url, eTag) {
+  const [oldETag, oldUrl] = await Promise.all([KEY_ETAG, KEY_URL]
+    .map(key => get(db, STORE_KEYVALUE, key)));
+  return (oldETag === eTag && oldUrl === url)
+}
+
+async function doFullDatabaseScanForSingleResult (db, predicate) {
+  // This batching algorithm is just a perf improvement over a basic
+  // cursor. The BATCH_SIZE is an estimate of what would give the best
+  // perf for doing a full DB scan (worst case).
+  //
+  // Mini-benchmark for determining the best batch size:
+  //
+  // PERF=1 pnpm build:rollup && pnpm test:adhoc
+  //
+  // (async () => {
+  //   performance.mark('start')
+  //   await $('emoji-picker').database.getEmojiByShortcode('doesnotexist')
+  //   performance.measure('total', 'start')
+  //   console.log(performance.getEntriesByName('total').slice(-1)[0].duration)
+  // })()
+  const BATCH_SIZE = 50; // Typically around 150ms for 6x slowdown in Chrome for above benchmark
+  return dbPromise(db, STORE_EMOJI, MODE_READONLY, (emojiStore, txn, cb) => {
+    let lastKey;
+
+    const processNextBatch = () => {
+      emojiStore.getAll(lastKey && IDBKeyRange.lowerBound(lastKey, true), BATCH_SIZE).onsuccess = e => {
+        const results = e.target.result;
+        for (const result of results) {
+          lastKey = result.unicode;
+          if (predicate(result)) {
+            return cb(result)
+          }
+        }
+        if (results.length < BATCH_SIZE) {
+          return cb()
+        }
+        processNextBatch();
+      };
+    };
+    processNextBatch();
+  })
+}
+
+async function loadData (db, emojiData, url, eTag) {
+  try {
+    const transformedData = transformEmojiData(emojiData);
+    await dbPromise(db, [STORE_EMOJI, STORE_KEYVALUE], MODE_READWRITE, ([emojiStore, metaStore], txn) => {
+      let oldETag;
+      let oldUrl;
+      let todo = 0;
+
+      function checkFetched () {
+        if (++todo === 2) { // 2 requests made
+          onFetched();
+        }
+      }
+
+      function onFetched () {
+        if (oldETag === eTag && oldUrl === url) {
+          // check again within the transaction to guard against concurrency, e.g. multiple browser tabs
+          return
+        }
+        // delete old data
+        emojiStore.clear();
+        // insert new data
+        for (const data of transformedData) {
+          emojiStore.put(data);
+        }
+        metaStore.put(eTag, KEY_ETAG);
+        metaStore.put(url, KEY_URL);
+        commit(txn);
+      }
+
+      getIDB(metaStore, KEY_ETAG, result => {
+        oldETag = result;
+        checkFetched();
+      });
+
+      getIDB(metaStore, KEY_URL, result => {
+        oldUrl = result;
+        checkFetched();
+      });
+    });
+  } finally {
+  }
+}
+
+async function getEmojiByGroup (db, group) {
+  return dbPromise(db, STORE_EMOJI, MODE_READONLY, (emojiStore, txn, cb) => {
+    const range = IDBKeyRange.bound([group, 0], [group + 1, 0], false, true);
+    getAllIDB(emojiStore.index(INDEX_GROUP_AND_ORDER), range, cb);
+  })
+}
+
+async function getEmojiBySearchQuery (db, query) {
+  const tokens = normalizeTokens(extractTokens(query));
+
+  if (!tokens.length) {
+    return []
+  }
+
+  return dbPromise(db, STORE_EMOJI, MODE_READONLY, (emojiStore, txn, cb) => {
+    // get all results that contain all tokens (i.e. an AND query)
+    const intermediateResults = [];
+
+    const checkDone = () => {
+      if (intermediateResults.length === tokens.length) {
+        onDone();
+      }
+    };
+
+    const onDone = () => {
+      const results = findCommonMembers(intermediateResults, _ => _.unicode);
+      cb(results.sort((a, b) => a.order < b.order ? -1 : 1));
+    };
+
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i];
+      const range = i === tokens.length - 1
+        ? IDBKeyRange.bound(token, token + '\uffff', false, true) // treat last token as a prefix search
+        : IDBKeyRange.only(token); // treat all other tokens as an exact match
+      getAllIDB(emojiStore.index(INDEX_TOKENS), range, result => {
+        intermediateResults.push(result);
+        checkDone();
+      });
+    }
+  })
+}
+
+// This could have been implemented as an IDB index on shortcodes, but it seemed wasteful to do that
+// when we can already query by tokens and this will give us what we're looking for 99.9% of the time
+async function getEmojiByShortcode (db, shortcode) {
+  const emojis = await getEmojiBySearchQuery(db, shortcode);
+
+  // In very rare cases (e.g. the shortcode "v" as in "v for victory"), we cannot search because
+  // there are no usable tokens (too short in this case). In that case, we have to do an inefficient
+  // full-database scan, which I believe is an acceptable tradeoff for not having to have an extra
+  // index on shortcodes.
+
+  if (!emojis.length) {
+    const predicate = _ => ((_.shortcodes || []).includes(shortcode.toLowerCase()));
+    return (await doFullDatabaseScanForSingleResult(db, predicate)) || null
+  }
+
+  return emojis.filter(_ => {
+    const lowerShortcodes = (_.shortcodes || []).map(_ => _.toLowerCase());
+    return lowerShortcodes.includes(shortcode.toLowerCase())
+  })[0] || null
+}
+
+async function getEmojiByUnicode (db, unicode) {
+  return dbPromise(db, STORE_EMOJI, MODE_READONLY, (emojiStore, txn, cb) => (
+    getIDB(emojiStore, unicode, result => {
+      if (result) {
+        return cb(result)
+      }
+      getIDB(emojiStore.index(INDEX_SKIN_UNICODE), unicode, result => cb(result || null));
+    })
+  ))
+}
+
+function get (db, storeName, key) {
+  return dbPromise(db, storeName, MODE_READONLY, (store, txn, cb) => (
+    getIDB(store, key, cb)
+  ))
+}
+
+function set (db, storeName, key, value) {
+  return dbPromise(db, storeName, MODE_READWRITE, (store, txn) => {
+    store.put(value, key);
+    commit(txn);
+  })
+}
+
+function incrementFavoriteEmojiCount (db, unicode) {
+  return dbPromise(db, STORE_FAVORITES, MODE_READWRITE, (store, txn) => (
+    getIDB(store, unicode, result => {
+      store.put((result || 0) + 1, unicode);
+      commit(txn);
+    })
+  ))
+}
+
+function getTopFavoriteEmoji (db, customEmojiIndex, limit) {
+  if (limit === 0) {
+    return []
+  }
+  return dbPromise(db, [STORE_FAVORITES, STORE_EMOJI], MODE_READONLY, ([favoritesStore, emojiStore], txn, cb) => {
+    const results = [];
+    favoritesStore.index(INDEX_COUNT).openCursor(undefined, 'prev').onsuccess = e => {
+      const cursor = e.target.result;
+      if (!cursor) { // no more results
+        return cb(results)
+      }
+
+      function addResult (result) {
+        results.push(result);
+        if (results.length === limit) {
+          return cb(results) // done, reached the limit
+        }
+        cursor.continue();
+      }
+
+      const unicodeOrName = cursor.primaryKey;
+      const custom = customEmojiIndex.byName(unicodeOrName);
+      if (custom) {
+        return addResult(custom)
+      }
+      // This could be done in parallel (i.e. make the cursor and the get()s parallelized),
+      // but my testing suggests it's not actually faster.
+      getIDB(emojiStore, unicodeOrName, emoji => {
+        if (emoji) {
+          return addResult(emoji)
+        }
+        // emoji not found somehow, ignore (may happen if custom emoji change)
+        cursor.continue();
+      });
+    };
+  })
+}
+
+// trie data structure for prefix searches
+// loosely based on https://github.com/nolanlawson/substring-trie
+
+const CODA_MARKER = ''; // marks the end of the string
+
+function trie (arr, itemToTokens) {
+  const map = new Map();
+  for (const item of arr) {
+    const tokens = itemToTokens(item);
+    for (const token of tokens) {
+      let currentMap = map;
+      for (let i = 0; i < token.length; i++) {
+        const char = token.charAt(i);
+        let nextMap = currentMap.get(char);
+        if (!nextMap) {
+          nextMap = new Map();
+          currentMap.set(char, nextMap);
+        }
+        currentMap = nextMap;
+      }
+      let valuesAtCoda = currentMap.get(CODA_MARKER);
+      if (!valuesAtCoda) {
+        valuesAtCoda = [];
+        currentMap.set(CODA_MARKER, valuesAtCoda);
+      }
+      valuesAtCoda.push(item);
+    }
+  }
+
+  const search = (query, exact) => {
+    let currentMap = map;
+    for (let i = 0; i < query.length; i++) {
+      const char = query.charAt(i);
+      const nextMap = currentMap.get(char);
+      if (nextMap) {
+        currentMap = nextMap;
+      } else {
+        return []
+      }
+    }
+
+    if (exact) {
+      const results = currentMap.get(CODA_MARKER);
+      return results || []
+    }
+
+    const results = [];
+    // traverse
+    const queue = [currentMap];
+    while (queue.length) {
+      const currentMap = queue.shift();
+      const entriesSortedByKey = [...currentMap.entries()].sort((a, b) => a[0] < b[0] ? -1 : 1);
+      for (const [key, value] of entriesSortedByKey) {
+        if (key === CODA_MARKER) { // CODA_MARKER always comes first; it's the empty string
+          results.push(...value);
+        } else {
+          queue.push(value);
+        }
+      }
+    }
+    return results
+  };
+
+  return search
+}
+
+const requiredKeys$1 = [
+  'name',
+  'url'
+];
+
+function assertCustomEmojis (customEmojis) {
+  const isArray = customEmojis && Array.isArray(customEmojis);
+  const firstItemIsFaulty = isArray &&
+    customEmojis.length &&
+    (!customEmojis[0] || requiredKeys$1.some(key => !(key in customEmojis[0])));
+  if (!isArray || firstItemIsFaulty) {
+    throw new Error('Custom emojis are in the wrong format')
+  }
+}
+
+function customEmojiIndex (customEmojis) {
+  assertCustomEmojis(customEmojis);
+
+  const sortByName = (a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1;
+
+  //
+  // all()
+  //
+  const all = customEmojis.sort(sortByName);
+
+  //
+  // search()
+  //
+  const emojiToTokens = emoji => (
+    [...new Set((emoji.shortcodes || []).map(shortcode => extractTokens(shortcode)).flat())]
+  );
+  const searchTrie = trie(customEmojis, emojiToTokens);
+  const searchByExactMatch = _ => searchTrie(_, true);
+  const searchByPrefix = _ => searchTrie(_, false);
+
+  // Search by query for custom emoji. Similar to how we do this in IDB, the last token
+  // is treated as a prefix search, but every other one is treated as an exact match.
+  // Then we AND the results together
+  const search = query => {
+    const tokens = extractTokens(query);
+    const intermediateResults = tokens.map((token, i) => (
+      (i < tokens.length - 1 ? searchByExactMatch : searchByPrefix)(token)
+    ));
+    return findCommonMembers(intermediateResults, _ => _.name).sort(sortByName)
+  };
+
+  //
+  // byShortcode, byName
+  //
+  const shortcodeToEmoji = new Map();
+  const nameToEmoji = new Map();
+  for (const customEmoji of customEmojis) {
+    nameToEmoji.set(customEmoji.name.toLowerCase(), customEmoji);
+    for (const shortcode of (customEmoji.shortcodes || [])) {
+      shortcodeToEmoji.set(shortcode.toLowerCase(), customEmoji);
+    }
+  }
+
+  const byShortcode = shortcode => shortcodeToEmoji.get(shortcode.toLowerCase());
+  const byName = name => nameToEmoji.get(name.toLowerCase());
+
+  return {
+    all,
+    search,
+    byShortcode,
+    byName
+  }
+}
+
+const isFirefoxContentScript = typeof wrappedJSObject !== 'undefined';
+
+// remove some internal implementation details, i.e. the "tokens" array on the emoji object
+// essentially, convert the emoji from the version stored in IDB to the version used in-memory
+function cleanEmoji (emoji) {
+  if (!emoji) {
+    return emoji
+  }
+  // if inside a Firefox content script, need to clone the emoji object to prevent Firefox from complaining about
+  // cross-origin object. See: https://github.com/nolanlawson/emoji-picker-element/issues/356
+  /* istanbul ignore if */
+  if (isFirefoxContentScript) {
+    emoji = structuredClone(emoji);
+  }
+  delete emoji.tokens;
+  if (emoji.skinTones) {
+    const len = emoji.skinTones.length;
+    emoji.skins = Array(len);
+    for (let i = 0; i < len; i++) {
+      emoji.skins[i] = {
+        tone: emoji.skinTones[i],
+        unicode: emoji.skinUnicodes[i],
+        version: emoji.skinVersions[i]
+      };
+    }
+    delete emoji.skinTones;
+    delete emoji.skinUnicodes;
+    delete emoji.skinVersions;
+  }
+  return emoji
+}
+
+function warnETag (eTag) {
+  if (!eTag) {
+    console.warn('emoji-picker-element is more efficient if the dataSource server exposes an ETag header.');
+  }
+}
+
+const requiredKeys = [
+  'annotation',
+  'emoji',
+  'group',
+  'order',
+  'tags',
+  'version'
+];
+
+function assertEmojiData (emojiData) {
+  if (!emojiData ||
+    !Array.isArray(emojiData) ||
+    !emojiData[0] ||
+    (typeof emojiData[0] !== 'object') ||
+    requiredKeys.some(key => (!(key in emojiData[0])))) {
+    throw new Error('Emoji data is in the wrong format')
+  }
+}
+
+function assertStatus (response, dataSource) {
+  if (Math.floor(response.status / 100) !== 2) {
+    throw new Error('Failed to fetch: ' + dataSource + ':  ' + response.status)
+  }
+}
+
+async function getETag (dataSource) {
+  const response = await fetch(dataSource, { method: 'HEAD' });
+  assertStatus(response, dataSource);
+  const eTag = response.headers.get('etag');
+  warnETag(eTag);
+  return eTag
+}
+
+async function getETagAndData (dataSource) {
+  const response = await fetch(dataSource);
+  assertStatus(response, dataSource);
+  const eTag = response.headers.get('etag');
+  warnETag(eTag);
+  const emojiData = await response.json();
+  assertEmojiData(emojiData);
+  return [eTag, emojiData]
+}
+
+// TODO: including these in blob-util.ts causes typedoc to generate docs for them,
+// even with --excludePrivate ¯\_(ツ)_/¯
+/** @private */
+/**
+ * Convert an `ArrayBuffer` to a binary string.
+ *
+ * Example:
+ *
+ * ```js
+ * var myString = blobUtil.arrayBufferToBinaryString(arrayBuff)
+ * ```
+ *
+ * @param buffer - array buffer
+ * @returns binary string
+ */
+function arrayBufferToBinaryString(buffer) {
+    var binary = '';
+    var bytes = new Uint8Array(buffer);
+    var length = bytes.byteLength;
+    var i = -1;
+    while (++i < length) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    return binary;
+}
+/**
+ * Convert a binary string to an `ArrayBuffer`.
+ *
+ * ```js
+ * var myBuffer = blobUtil.binaryStringToArrayBuffer(binaryString)
+ * ```
+ *
+ * @param binary - binary string
+ * @returns array buffer
+ */
+function binaryStringToArrayBuffer(binary) {
+    var length = binary.length;
+    var buf = new ArrayBuffer(length);
+    var arr = new Uint8Array(buf);
+    var i = -1;
+    while (++i < length) {
+        arr[i] = binary.charCodeAt(i);
+    }
+    return buf;
+}
+
+// generate a checksum based on the stringified JSON
+async function jsonChecksum (object) {
+  const inString = JSON.stringify(object);
+  let inBuffer = binaryStringToArrayBuffer(inString);
+
+  // this does not need to be cryptographically secure, SHA-1 is fine
+  const outBuffer = await crypto.subtle.digest('SHA-1', inBuffer);
+  const outBinString = arrayBufferToBinaryString(outBuffer);
+  const res = btoa(outBinString);
+  return res
+}
+
+async function checkForUpdates (db, dataSource) {
+  // just do a simple HEAD request first to see if the eTags match
+  let emojiData;
+  let eTag = await getETag(dataSource);
+  if (!eTag) { // work around lack of ETag/Access-Control-Expose-Headers
+    const eTagAndData = await getETagAndData(dataSource);
+    eTag = eTagAndData[0];
+    emojiData = eTagAndData[1];
+    if (!eTag) {
+      eTag = await jsonChecksum(emojiData);
+    }
+  }
+  if (await hasData(db, dataSource, eTag)) ; else {
+    if (!emojiData) {
+      const eTagAndData = await getETagAndData(dataSource);
+      emojiData = eTagAndData[1];
+    }
+    await loadData(db, emojiData, dataSource, eTag);
+  }
+}
+
+async function loadDataForFirstTime (db, dataSource) {
+  let [eTag, emojiData] = await getETagAndData(dataSource);
+  if (!eTag) {
+    // Handle lack of support for ETag or Access-Control-Expose-Headers
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers#Browser_compatibility
+    eTag = await jsonChecksum(emojiData);
+  }
+
+  await loadData(db, emojiData, dataSource, eTag);
+}
+
+class Database {
+  constructor ({ dataSource = DEFAULT_DATA_SOURCE, locale = DEFAULT_LOCALE, customEmoji = [] } = {}) {
+    this.dataSource = dataSource;
+    this.locale = locale;
+    this._dbName = `emoji-picker-element-${this.locale}`;
+    this._db = undefined;
+    this._lazyUpdate = undefined;
+    this._custom = customEmojiIndex(customEmoji);
+
+    this._clear = this._clear.bind(this);
+    this._ready = this._init();
+  }
+
+  async _init () {
+    const db = this._db = await openDatabase(this._dbName);
+
+    addOnCloseListener(this._dbName, this._clear);
+    const dataSource = this.dataSource;
+    const empty = await isEmpty(db);
+
+    if (empty) {
+      await loadDataForFirstTime(db, dataSource);
+    } else { // offline-first - do an update asynchronously
+      this._lazyUpdate = checkForUpdates(db, dataSource);
+    }
+  }
+
+  async ready () {
+    const checkReady = async () => {
+      if (!this._ready) {
+        this._ready = this._init();
+      }
+      return this._ready
+    };
+    await checkReady();
+    // There's a possibility of a race condition where the element gets added, removed, and then added again
+    // with a particular timing, which would set the _db to undefined.
+    // We *could* do a while loop here, but that seems excessive and could lead to an infinite loop.
+    if (!this._db) {
+      await checkReady();
+    }
+  }
+
+  async getEmojiByGroup (group) {
+    assertNumber(group);
+    await this.ready();
+    return uniqEmoji(await getEmojiByGroup(this._db, group)).map(cleanEmoji)
+  }
+
+  async getEmojiBySearchQuery (query) {
+    assertNonEmptyString(query);
+    await this.ready();
+    const customs = this._custom.search(query);
+    const natives = uniqEmoji(await getEmojiBySearchQuery(this._db, query)).map(cleanEmoji);
+    return [
+      ...customs,
+      ...natives
+    ]
+  }
+
+  async getEmojiByShortcode (shortcode) {
+    assertNonEmptyString(shortcode);
+    await this.ready();
+    const custom = this._custom.byShortcode(shortcode);
+    if (custom) {
+      return custom
+    }
+    return cleanEmoji(await getEmojiByShortcode(this._db, shortcode))
+  }
+
+  async getEmojiByUnicodeOrName (unicodeOrName) {
+    assertNonEmptyString(unicodeOrName);
+    await this.ready();
+    const custom = this._custom.byName(unicodeOrName);
+    if (custom) {
+      return custom
+    }
+    return cleanEmoji(await getEmojiByUnicode(this._db, unicodeOrName))
+  }
+
+  async getPreferredSkinTone () {
+    await this.ready();
+    return (await get(this._db, STORE_KEYVALUE, KEY_PREFERRED_SKINTONE)) || 0
+  }
+
+  async setPreferredSkinTone (skinTone) {
+    assertNumber(skinTone);
+    await this.ready();
+    return set(this._db, STORE_KEYVALUE, KEY_PREFERRED_SKINTONE, skinTone)
+  }
+
+  async incrementFavoriteEmojiCount (unicodeOrName) {
+    assertNonEmptyString(unicodeOrName);
+    await this.ready();
+    return incrementFavoriteEmojiCount(this._db, unicodeOrName)
+  }
+
+  async getTopFavoriteEmoji (limit) {
+    assertNumber(limit);
+    await this.ready();
+    return (await getTopFavoriteEmoji(this._db, this._custom, limit)).map(cleanEmoji)
+  }
+
+  set customEmoji (customEmojis) {
+    this._custom = customEmojiIndex(customEmojis);
+  }
+
+  get customEmoji () {
+    return this._custom.all
+  }
+
+  async _shutdown () {
+    await this.ready(); // reopen if we've already been closed/deleted
+    try {
+      await this._lazyUpdate; // allow any lazy updates to process before closing/deleting
+    } catch (err) { /* ignore network errors (offline-first) */ }
+  }
+
+  // clear references to IDB, e.g. during a close event
+  _clear () {
+    // We don't need to call removeEventListener or remove the manual "close" listeners.
+    // The memory leak tests prove this is unnecessary. It's because:
+    // 1) IDBDatabases that can no longer fire "close" automatically have listeners GCed
+    // 2) we clear the manual close listeners in databaseLifecycle.js.
+    this._db = this._ready = this._lazyUpdate = undefined;
+  }
+
+  async close () {
+    await this._shutdown();
+    await closeDatabase(this._dbName);
+  }
+
+  async delete () {
+    await this._shutdown();
+    await deleteDatabase(this._dbName);
+  }
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/emoji-picker-element/index.js":
+/*!****************************************************!*\
+  !*** ./node_modules/emoji-picker-element/index.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Database: () => (/* reexport safe */ _database_js__WEBPACK_IMPORTED_MODULE_1__["default"]),
+/* harmony export */   Picker: () => (/* reexport safe */ _picker_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _picker_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./picker.js */ "./node_modules/emoji-picker-element/picker.js");
+/* harmony import */ var _database_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./database.js */ "./node_modules/emoji-picker-element/database.js");
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/emoji-picker-element/picker.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/emoji-picker-element/picker.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ PickerElement)
+/* harmony export */ });
+/* harmony import */ var _database_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./database.js */ "./node_modules/emoji-picker-element/database.js");
+
+
+// via https://unpkg.com/browse/emojibase-data@6.0.0/meta/groups.json
+const allGroups = [
+  [-1, '✨', 'custom'],
+  [0, '😀', 'smileys-emotion'],
+  [1, '👋', 'people-body'],
+  [3, '🐱', 'animals-nature'],
+  [4, '🍎', 'food-drink'],
+  [5, '🏠️', 'travel-places'],
+  [6, '⚽', 'activities'],
+  [7, '📝', 'objects'],
+  [8, '⛔️', 'symbols'],
+  [9, '🏁', 'flags']
+].map(([id, emoji, name]) => ({ id, emoji, name }));
+
+const groups = allGroups.slice(1);
+
+const MIN_SEARCH_TEXT_LENGTH = 2;
+const NUM_SKIN_TONES = 6;
+
+/* istanbul ignore next */
+const rIC = typeof requestIdleCallback === 'function' ? requestIdleCallback : setTimeout;
+
+// check for ZWJ (zero width joiner) character
+function hasZwj (emoji) {
+  return emoji.unicode.includes('\u200d')
+}
+
+// Find one good representative emoji from each version to test by checking its color.
+// Ideally it should have color in the center. For some inspiration, see:
+// https://about.gitlab.com/blog/2018/05/30/journey-in-native-unicode-emoji/
+//
+// Note that for certain versions (12.1, 13.1), there is no point in testing them explicitly, because
+// all the emoji from this version are compound-emoji from previous versions. So they would pass a color
+// test, even in browsers that display them as double emoji. (E.g. "face in clouds" might render as
+// "face without mouth" plus "fog".) These emoji can only be filtered using the width test,
+// which happens in checkZwjSupport.js.
+const versionsAndTestEmoji = {
+  '🫨': 15.1, // shaking head, technically from v15 but see note above
+  '🫠': 14,
+  '🥲': 13.1, // smiling face with tear, technically from v13 but see note above
+  '🥻': 12.1, // sari, technically from v12 but see note above
+  '🥰': 11,
+  '🤩': 5,
+  '👱‍♀️': 4,
+  '🤣': 3,
+  '👁️‍🗨️': 2,
+  '😀': 1,
+  '😐️': 0.7,
+  '😃': 0.6
+};
+
+const TIMEOUT_BEFORE_LOADING_MESSAGE = 1000; // 1 second
+const DEFAULT_SKIN_TONE_EMOJI = '🖐️';
+const DEFAULT_NUM_COLUMNS = 8;
+
+// Based on https://fivethirtyeight.com/features/the-100-most-used-emojis/ and
+// https://blog.emojipedia.org/facebook-reveals-most-and-least-used-emojis/ with
+// a bit of my own curation. (E.g. avoid the "OK" gesture because of connotations:
+// https://emojipedia.org/ok-hand/)
+const MOST_COMMONLY_USED_EMOJI = [
+  '😊',
+  '😒',
+  '❤️',
+  '👍️',
+  '😍',
+  '😂',
+  '😭',
+  '☺️',
+  '😔',
+  '😩',
+  '😏',
+  '💕',
+  '🙌',
+  '😘'
+];
+
+// It's important to list Twemoji Mozilla before everything else, because Mozilla bundles their
+// own font on some platforms (notably Windows and Linux as of this writing). Typically, Mozilla
+// updates faster than the underlying OS, and we don't want to render older emoji in one font and
+// newer emoji in another font:
+// https://github.com/nolanlawson/emoji-picker-element/pull/268#issuecomment-1073347283
+const FONT_FAMILY = '"Twemoji Mozilla","Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol",' +
+  '"Noto Color Emoji","EmojiOne Color","Android Emoji",sans-serif';
+
+/* istanbul ignore next */
+const DEFAULT_CATEGORY_SORTING = (a, b) => a < b ? -1 : a > b ? 1 : 0;
+
+// Test if an emoji is supported by rendering it to canvas and checking that the color is not black
+// See https://about.gitlab.com/blog/2018/05/30/journey-in-native-unicode-emoji/
+// and https://www.npmjs.com/package/if-emoji for inspiration
+// This implementation is largely borrowed from if-emoji, adding the font-family
+
+
+const getTextFeature = (text, color) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 1;
+
+  const ctx = canvas.getContext('2d');
+  ctx.textBaseline = 'top';
+  ctx.font = `100px ${FONT_FAMILY}`;
+  ctx.fillStyle = color;
+  ctx.scale(0.01, 0.01);
+  ctx.fillText(text, 0, 0);
+
+  return ctx.getImageData(0, 0, 1, 1).data
+};
+
+const compareFeatures = (feature1, feature2) => {
+  const feature1Str = [...feature1].join(',');
+  const feature2Str = [...feature2].join(',');
+  // This is RGBA, so for 0,0,0, we are checking that the first RGB is not all zeroes.
+  // Most of the time when unsupported this is 0,0,0,0, but on Chrome on Mac it is
+  // 0,0,0,61 - there is a transparency here.
+  return feature1Str === feature2Str && !feature1Str.startsWith('0,0,0,')
+};
+
+function testColorEmojiSupported (text) {
+  // Render white and black and then compare them to each other and ensure they're the same
+  // color, and neither one is black. This shows that the emoji was rendered in color.
+  const feature1 = getTextFeature(text, '#000');
+  const feature2 = getTextFeature(text, '#fff');
+  return feature1 && feature2 && compareFeatures(feature1, feature2)
+}
+
+// rather than check every emoji ever, which would be expensive, just check some representatives from the
+// different emoji releases to determine what the font supports
+
+function determineEmojiSupportLevel () {
+  const entries = Object.entries(versionsAndTestEmoji);
+  try {
+    // start with latest emoji and work backwards
+    for (const [emoji, version] of entries) {
+      if (testColorEmojiSupported(emoji)) {
+        return version
+      }
+    }
+  } catch (e) { // canvas error
+  } finally {
+  }
+  // In case of an error, be generous and just assume all emoji are supported (e.g. for canvas errors
+  // due to anti-fingerprinting add-ons). Better to show some gray boxes than nothing at all.
+  return entries[0][1] // first one in the list is the most recent version
+}
+
+// Check which emojis we know for sure aren't supported, based on Unicode version level
+let promise;
+const detectEmojiSupportLevel = () => {
+  if (!promise) {
+    // Delay so it can run while the IDB database is being created by the browser (on another thread).
+    // This helps especially with first load – we want to start pre-populating the database on the main thread,
+    // and then wait for IDB to commit everything, and while waiting we run this check.
+    promise = new Promise(resolve => (
+      rIC(() => (
+        resolve(determineEmojiSupportLevel()) // delay so ideally this can run while IDB is first populating
+      ))
+    ));
+  }
+  return promise
+};
+// determine which emojis containing ZWJ (zero width joiner) characters
+// are supported (rendered as one glyph) rather than unsupported (rendered as two or more glyphs)
+const supportedZwjEmojis = new Map();
+
+const VARIATION_SELECTOR = '\ufe0f';
+const SKINTONE_MODIFIER = '\ud83c';
+const ZWJ = '\u200d';
+const LIGHT_SKIN_TONE = 0x1F3FB;
+const LIGHT_SKIN_TONE_MODIFIER = 0xdffb;
+
+// TODO: this is a naive implementation, we can improve it later
+// It's only used for the skintone picker, so as long as people don't customize with
+// really exotic emoji then it should work fine
+function applySkinTone (str, skinTone) {
+  if (skinTone === 0) {
+    return str
+  }
+  const zwjIndex = str.indexOf(ZWJ);
+  if (zwjIndex !== -1) {
+    return str.substring(0, zwjIndex) +
+      String.fromCodePoint(LIGHT_SKIN_TONE + skinTone - 1) +
+      str.substring(zwjIndex)
+  }
+  if (str.endsWith(VARIATION_SELECTOR)) {
+    str = str.substring(0, str.length - 1);
+  }
+  return str + SKINTONE_MODIFIER + String.fromCodePoint(LIGHT_SKIN_TONE_MODIFIER + skinTone - 1)
+}
+
+function halt (event) {
+  event.preventDefault();
+  event.stopPropagation();
+}
+
+// Implementation left/right or up/down navigation, circling back when you
+// reach the start/end of the list
+function incrementOrDecrement (decrement, val, arr) {
+  val += (decrement ? -1 : 1);
+  if (val < 0) {
+    val = arr.length - 1;
+  } else if (val >= arr.length) {
+    val = 0;
+  }
+  return val
+}
+
+// like lodash's uniqBy but much smaller
+function uniqBy (arr, func) {
+  const set = new Set();
+  const res = [];
+  for (const item of arr) {
+    const key = func(item);
+    if (!set.has(key)) {
+      set.add(key);
+      res.push(item);
+    }
+  }
+  return res
+}
+
+// We don't need all the data on every emoji, and there are specific things we need
+// for the UI, so build a "view model" from the emoji object we got from the database
+
+function summarizeEmojisForUI (emojis, emojiSupportLevel) {
+  const toSimpleSkinsMap = skins => {
+    const res = {};
+    for (const skin of skins) {
+      // ignore arrays like [1, 2] with multiple skin tones
+      // also ignore variants that are in an unsupported emoji version
+      // (these do exist - variants from a different version than their base emoji)
+      if (typeof skin.tone === 'number' && skin.version <= emojiSupportLevel) {
+        res[skin.tone] = skin.unicode;
+      }
+    }
+    return res
+  };
+
+  return emojis.map(({ unicode, skins, shortcodes, url, name, category, annotation }) => ({
+    unicode,
+    name,
+    shortcodes,
+    url,
+    category,
+    annotation,
+    id: unicode || name,
+    skins: skins && toSimpleSkinsMap(skins)
+  }))
+}
+
+// import rAF from one place so that the bundle size is a bit smaller
+const rAF = requestAnimationFrame;
+
+// Svelte action to calculate the width of an element and auto-update
+// using ResizeObserver. If ResizeObserver is unsupported, we just use rAF once
+// and don't bother to update.
+
+
+let resizeObserverSupported = typeof ResizeObserver === 'function';
+
+function calculateWidth (node, abortSignal, onUpdate) {
+  let resizeObserver;
+  if (resizeObserverSupported) {
+    resizeObserver = new ResizeObserver(entries => (
+      onUpdate(entries[0].contentRect.width)
+    ));
+    resizeObserver.observe(node);
+  } else { // just set the width once, don't bother trying to track it
+    rAF(() => (
+      onUpdate(node.getBoundingClientRect().width)
+    ));
+  }
+
+  // cleanup function (called on destroy)
+  abortSignal.addEventListener('abort', () => {
+    if (resizeObserver) {
+      resizeObserver.disconnect();
+    }
+  });
+}
+
+// get the width of the text inside of a DOM node, via https://stackoverflow.com/a/59525891/680742
+function calculateTextWidth (node) {
+  /* istanbul ignore else */
+  {
+    const range = document.createRange();
+    range.selectNode(node.firstChild);
+    return range.getBoundingClientRect().width
+  }
+}
+
+let baselineEmojiWidth;
+
+function checkZwjSupport (zwjEmojisToCheck, baselineEmoji, emojiToDomNode) {
+  for (const emoji of zwjEmojisToCheck) {
+    const domNode = emojiToDomNode(emoji);
+    const emojiWidth = calculateTextWidth(domNode);
+    if (typeof baselineEmojiWidth === 'undefined') { // calculate the baseline emoji width only once
+      baselineEmojiWidth = calculateTextWidth(baselineEmoji);
+    }
+    // On Windows, some supported emoji are ~50% bigger than the baseline emoji, but what we really want to guard
+    // against are the ones that are 2x the size, because those are truly broken (person with red hair = person with
+    // floating red wig, black cat = cat with black square, polar bear = bear with snowflake, etc.)
+    // So here we set the threshold at 1.8 times the size of the baseline emoji.
+    const supported = emojiWidth / 1.8 < baselineEmojiWidth;
+    supportedZwjEmojis.set(emoji.unicode, supported);
+  }
+}
+
+// like lodash's uniq
+
+function uniq (arr) {
+  return uniqBy(arr, _ => _)
+}
+
+// Note we put this in its own function outside Picker.js to avoid Svelte doing an invalidation on the "setter" here.
+// At best the invalidation is useless, at worst it can cause infinite loops:
+// https://github.com/nolanlawson/emoji-picker-element/pull/180
+// https://github.com/sveltejs/svelte/issues/6521
+// Also note tabpanelElement can be null if the element is disconnected immediately after connected
+function resetScrollTopIfPossible (element) {
+  /* istanbul ignore else */
+  if (element) { // Makes me nervous not to have this `if` guard
+    element.scrollTop = 0;
+  }
+}
+
+function getFromMap (cache, key, func) {
+  let cached = cache.get(key);
+  if (!cached) {
+    cached = func();
+    cache.set(key, cached);
+  }
+  return cached
+}
+
+function toString (value) {
+  return '' + value
+}
+
+function parseTemplate (htmlString) {
+  const template = document.createElement('template');
+  template.innerHTML = htmlString;
+  return template
+}
+
+const parseCache = new WeakMap();
+const domInstancesCache = new WeakMap();
+// This needs to be a symbol because it needs to be different from any possible output of a key function
+const unkeyedSymbol = Symbol('un-keyed');
+
+// Not supported in Safari <=13
+const hasReplaceChildren = 'replaceChildren' in Element.prototype;
+function replaceChildren (parentNode, newChildren) {
+  /* istanbul ignore else */
+  if (hasReplaceChildren) {
+    parentNode.replaceChildren(...newChildren);
+  } else { // minimal polyfill for Element.prototype.replaceChildren
+    parentNode.innerHTML = '';
+    parentNode.append(...newChildren);
+  }
+}
+
+function doChildrenNeedRerender (parentNode, newChildren) {
+  let oldChild = parentNode.firstChild;
+  let oldChildrenCount = 0;
+  // iterate using firstChild/nextSibling because browsers use a linked list under the hood
+  while (oldChild) {
+    const newChild = newChildren[oldChildrenCount];
+    // check if the old child and new child are the same
+    if (newChild !== oldChild) {
+      return true
+    }
+    oldChild = oldChild.nextSibling;
+    oldChildrenCount++;
+  }
+  // if new children length is different from old, we must re-render
+  return oldChildrenCount !== newChildren.length
+}
+
+function patchChildren (newChildren, instanceBinding) {
+  const { targetNode } = instanceBinding;
+  let { targetParentNode } = instanceBinding;
+
+  let needsRerender = false;
+
+  if (targetParentNode) { // already rendered once
+    needsRerender = doChildrenNeedRerender(targetParentNode, newChildren);
+  } else { // first render of list
+    needsRerender = true;
+    instanceBinding.targetNode = undefined; // placeholder node not needed anymore, free memory
+    instanceBinding.targetParentNode = targetParentNode = targetNode.parentNode;
+  }
+  // avoid re-rendering list if the dom nodes are exactly the same before and after
+  if (needsRerender) {
+    replaceChildren(targetParentNode, newChildren);
+  }
+}
+
+function patch (expressions, instanceBindings) {
+  for (const instanceBinding of instanceBindings) {
+    const {
+      targetNode,
+      currentExpression,
+      binding: {
+        expressionIndex,
+        attributeName,
+        attributeValuePre,
+        attributeValuePost
+      }
+    } = instanceBinding;
+
+    const expression = expressions[expressionIndex];
+
+    if (currentExpression === expression) {
+      // no need to update, same as before
+      continue
+    }
+
+    instanceBinding.currentExpression = expression;
+
+    if (attributeName) { // attribute replacement
+      targetNode.setAttribute(attributeName, attributeValuePre + toString(expression) + attributeValuePost);
+    } else { // text node / child element / children replacement
+      let newNode;
+      if (Array.isArray(expression)) { // array of DOM elements produced by tag template literals
+        patchChildren(expression, instanceBinding);
+      } else if (expression instanceof Element) { // html tag template returning a DOM element
+        newNode = expression;
+        targetNode.replaceWith(newNode);
+      } else { // primitive - string, number, etc
+        // nodeValue is faster than textContent supposedly https://www.youtube.com/watch?v=LY6y3HbDVmg
+        // note we may be replacing the value in a placeholder text node
+        targetNode.nodeValue = toString(expression);
+      }
+      if (newNode) {
+        instanceBinding.targetNode = newNode;
+      }
+    }
+  }
+}
+
+function parse (tokens) {
+  let htmlString = '';
+
+  let withinTag = false;
+  let withinAttribute = false;
+  let elementIndexCounter = -1; // depth-first traversal order
+
+  const elementsToBindings = new Map();
+  const elementIndexes = [];
+
+  for (let i = 0, len = tokens.length; i < len; i++) {
+    const token = tokens[i];
+    htmlString += token;
+
+    if (i === len - 1) {
+      break // no need to process characters - no more expressions to be found
+    }
+
+    for (let j = 0; j < token.length; j++) {
+      const char = token.charAt(j);
+      switch (char) {
+        case '<': {
+          const nextChar = token.charAt(j + 1);
+          if (nextChar === '/') { // closing tag
+            // leaving an element
+            elementIndexes.pop();
+          } else { // not a closing tag
+            withinTag = true;
+            elementIndexes.push(++elementIndexCounter);
+          }
+          break
+        }
+        case '>': {
+          withinTag = false;
+          withinAttribute = false;
+          break
+        }
+        case '=': {
+          withinAttribute = true;
+          break
+        }
+      }
+    }
+
+    const elementIndex = elementIndexes[elementIndexes.length - 1];
+    const bindings = getFromMap(elementsToBindings, elementIndex, () => []);
+
+    let attributeName;
+    let attributeValuePre;
+    let attributeValuePost;
+    if (withinAttribute) {
+      // I never use single-quotes for attribute values in HTML, so just support double-quotes or no-quotes
+      const match = /(\S+)="?([^"=]*)$/.exec(token);
+      attributeName = match[1];
+      attributeValuePre = match[2];
+      attributeValuePost = /^[^">]*/.exec(tokens[i + 1])[0];
+    }
+
+    const binding = {
+      attributeName,
+      attributeValuePre,
+      attributeValuePost,
+      expressionIndex: i
+    };
+
+    bindings.push(binding);
+
+    if (!withinTag && !withinAttribute) {
+      // Add a placeholder text node, so we can find it later. Note we only support one dynamic child text node
+      htmlString += ' ';
+    }
+  }
+
+  const template = parseTemplate(htmlString);
+
+  return {
+    template,
+    elementsToBindings
+  }
+}
+
+function traverseAndSetupBindings (dom, elementsToBindings) {
+  const instanceBindings = [];
+  // traverse dom
+  const treeWalker = document.createTreeWalker(dom, NodeFilter.SHOW_ELEMENT);
+
+  let element = dom;
+  let elementIndex = -1;
+  do {
+    const bindings = elementsToBindings.get(++elementIndex);
+    if (bindings) {
+      for (let i = 0; i < bindings.length; i++) {
+        const binding = bindings[i];
+
+        const targetNode = binding.attributeName
+          ? element // attribute binding, just use the element itself
+          : element.firstChild; // not an attribute binding, so has a placeholder text node
+
+        const instanceBinding = {
+          binding,
+          targetNode,
+          targetParentNode: undefined,
+          currentExpression: undefined
+        };
+
+        instanceBindings.push(instanceBinding);
+      }
+    }
+  } while ((element = treeWalker.nextNode()))
+
+  return instanceBindings
+}
+
+function parseHtml (tokens) {
+  // All templates and bound expressions are unique per tokens array
+  const { template, elementsToBindings } = getFromMap(parseCache, tokens, () => parse(tokens));
+
+  // When we parseHtml, we always return a fresh DOM instance ready to be updated
+  const dom = template.cloneNode(true).content.firstElementChild;
+  const instanceBindings = traverseAndSetupBindings(dom, elementsToBindings);
+
+  return function updateDomInstance (expressions) {
+    patch(expressions, instanceBindings);
+    return dom
+  }
+}
+
+function createFramework (state) {
+  const domInstances = getFromMap(domInstancesCache, state, () => new Map());
+  let domInstanceCacheKey = unkeyedSymbol;
+
+  function html (tokens, ...expressions) {
+    // Each unique lexical usage of map() is considered unique due to the html`` tagged template call it makes,
+    // which has lexically unique tokens. The unkeyed symbol is just used for html`` usage outside of a map().
+    const domInstancesForTokens = getFromMap(domInstances, tokens, () => new Map());
+    const updateDomInstance = getFromMap(domInstancesForTokens, domInstanceCacheKey, () => parseHtml(tokens));
+
+    return updateDomInstance(expressions) // update with expressions
+  }
+
+  function map (array, callback, keyFunction) {
+    return array.map((item, index) => {
+      const originalCacheKey = domInstanceCacheKey;
+      domInstanceCacheKey = keyFunction(item);
+      try {
+        return callback(item, index)
+      } finally {
+        domInstanceCacheKey = originalCacheKey;
+      }
+    })
+  }
+
+  return { map, html }
+}
+
+function render (container, state, helpers, events, actions, refs, abortSignal, firstRender) {
+  const { labelWithSkin, titleForEmoji, unicodeWithSkin } = helpers;
+  const { html, map } = createFramework(state);
+
+  function emojiList (emojis, searchMode, prefix) {
+    return map(emojis, (emoji, i) => {
+      return html`<button role="${searchMode ? 'option' : 'menuitem'}" aria-selected="${state.searchMode ? i === state.activeSearchItem : ''}" aria-label="${labelWithSkin(emoji, state.currentSkinTone)}" title="${titleForEmoji(emoji)}" class="emoji ${searchMode && i === state.activeSearchItem ? 'active' : ''}" id="${`${prefix}-${emoji.id}`}">${
+        emoji.unicode
+          ? unicodeWithSkin(emoji, state.currentSkinTone)
+          : html`<img class="custom-emoji" src="${emoji.url}" alt="" loading="lazy">`
+      }</button>`
+      // It's important for the cache key to be unique based on the prefix, because the framework caches based on the
+      // unique tokens + cache key, and the same emoji may be used in the tab as well as in the fav bar
+    }, emoji => `${prefix}-${emoji.id}`)
+  }
+
+  const section = () => {
+    return html`<section data-ref="rootElement" class="picker" aria-label="${state.i18n.regionLabel}" style="${state.pickerStyle}"><div class="pad-top"></div><div class="search-row"><div class="search-wrapper"><input id="search" class="search" type="search" role="combobox" enterkeyhint="search" placeholder="${state.i18n.searchLabel}" autocapitalize="none" autocomplete="off" spellcheck="true" aria-expanded="${!!(state.searchMode && state.currentEmojis.length)}" aria-controls="search-results" aria-describedby="search-description" aria-autocomplete="list" aria-activedescendant="${state.activeSearchItemId ? `emo-${state.activeSearchItemId}` : ''}" data-ref="searchElement" data-on-input="onSearchInput" data-on-keydown="onSearchKeydown"><label class="sr-only" for="search">${state.i18n.searchLabel}</label> <span id="search-description" class="sr-only">${state.i18n.searchDescription}</span></div><div class="skintone-button-wrapper ${state.skinTonePickerExpandedAfterAnimation ? 'expanded' : ''}"><button id="skintone-button" class="emoji ${state.skinTonePickerExpanded ? 'hide-focus' : ''}" aria-label="${state.skinToneButtonLabel}" title="${state.skinToneButtonLabel}" aria-describedby="skintone-description" aria-haspopup="listbox" aria-expanded="${state.skinTonePickerExpanded}" aria-controls="skintone-list" data-on-click="onClickSkinToneButton">${state.skinToneButtonText}</button></div><span id="skintone-description" class="sr-only">${state.i18n.skinToneDescription}</span><div data-ref="skinToneDropdown" id="skintone-list" class="skintone-list hide-focus ${state.skinTonePickerExpanded ? '' : 'hidden no-animate'}" style="transform:translateY(${state.skinTonePickerExpanded ? 0 : 'calc(-1 * var(--num-skintones) * var(--total-emoji-size))'})" role="listbox" aria-label="${state.i18n.skinTonesLabel}" aria-activedescendant="skintone-${state.activeSkinTone}" aria-hidden="${!state.skinTonePickerExpanded}" tabIndex="-1" data-on-focusout="onSkinToneOptionsFocusOut" data-on-click="onSkinToneOptionsClick" data-on-keydown="onSkinToneOptionsKeydown" data-on-keyup="onSkinToneOptionsKeyup">${
+    map(state.skinTones, (skinTone, i) => {
+    return html`<div id="skintone-${i}" class="emoji ${i === state.activeSkinTone ? 'active' : ''}" aria-selected="${i === state.activeSkinTone}" role="option" title="${state.i18n.skinTones[i]}" aria-label="${state.i18n.skinTones[i]}">${skinTone}</div>`
+    }, skinTone => skinTone)
+        }</div></div><div class="nav" role="tablist" style="grid-template-columns:repeat(${state.groups.length},1fr)" aria-label="${state.i18n.categoriesLabel}" data-on-keydown="onNavKeydown" data-on-click="onNavClick">${
+            map(state.groups, (group) => {
+              return html`<button role="tab" class="nav-button" aria-controls="tab-${group.id}" aria-label="${state.i18n.categories[group.name]}" aria-selected="${!state.searchMode && state.currentGroup.id === group.id}" title="${state.i18n.categories[group.name]}" data-group-id="${group.id}"><div class="nav-emoji emoji">${group.emoji}</div></button>`
+            }, group => group.id)
+          }</div><div class="indicator-wrapper"><div class="indicator" style="transform:translateX(${(/* istanbul ignore next */ (state.isRtl ? -1 : 1)) * state.currentGroupIndex * 100}%)"></div></div><div class="message ${state.message ? '' : 'gone'}" role="alert" aria-live="polite">${state.message}</div><div data-ref="tabpanelElement" class="tabpanel ${(!state.databaseLoaded || state.message) ? 'gone' : ''}" role="${state.searchMode ? 'region' : 'tabpanel'}" aria-label="${state.searchMode ? state.i18n.searchResultsLabel : state.i18n.categories[state.currentGroup.name]}" id="${state.searchMode ? '' : `tab-${state.currentGroup.id}`}" tabIndex="0" data-on-click="onEmojiClick"><div data-action="calculateEmojiGridStyle">${
+              map(state.currentEmojisWithCategories, (emojiWithCategory, i) => {
+                return html`<div><div id="menu-label-${i}" class="category ${state.currentEmojisWithCategories.length === 1 && state.currentEmojisWithCategories[0].category === '' ? 'gone' : ''}" aria-hidden="true">${
+                  state.searchMode
+                    ? state.i18n.searchResultsLabel
+                    : (
+                      emojiWithCategory.category
+                        ? emojiWithCategory.category
+                        : (
+                          state.currentEmojisWithCategories.length > 1
+                            ? state.i18n.categories.custom
+                            : state.i18n.categories[state.currentGroup.name]
+                        )
+                    )
+                }</div><div class="emoji-menu" role="${state.searchMode ? 'listbox' : 'menu'}" aria-labelledby="menu-label-${i}" id="${state.searchMode ? 'search-results' : ''}">${
+              emojiList(emojiWithCategory.emojis, state.searchMode, /* prefix */ 'emo')
+            }</div></div>`
+              }, emojiWithCategory => emojiWithCategory.category)
+            }</div></div><div class="favorites emoji-menu ${state.message ? 'gone' : ''}" role="menu" aria-label="${state.i18n.favoritesLabel}" style="padding-inline-end:${`${state.scrollbarWidth}px`}" data-on-click="onEmojiClick">${
+            emojiList(state.currentFavorites, /* searchMode */ false, /* prefix */ 'fav')
+          }</div><button data-ref="baselineEmoji" aria-hidden="true" tabindex="-1" class="abs-pos hidden emoji baseline-emoji">😀</button></section>`
+  };
+
+  const rootDom = section();
+
+  if (firstRender) { // not a re-render
+    container.appendChild(rootDom);
+
+    // we only bind events/refs/actions once - there is no need to find them again given this component structure
+
+    // helper for traversing the dom, finding elements by an attribute, and getting the attribute value
+    const forElementWithAttribute = (attributeName, callback) => {
+      for (const element of container.querySelectorAll(`[${attributeName}]`)) {
+        callback(element, element.getAttribute(attributeName));
+      }
+    };
+
+    // bind events
+    for (const eventName of ['click', 'focusout', 'input', 'keydown', 'keyup']) {
+      forElementWithAttribute(`data-on-${eventName}`, (element, listenerName) => {
+        element.addEventListener(eventName, events[listenerName]);
+      });
+    }
+
+    // find refs
+    forElementWithAttribute('data-ref', (element, ref) => {
+      refs[ref] = element;
+    });
+
+    // set up actions
+    forElementWithAttribute('data-action', (element, action) => {
+      actions[action](element);
+    });
+
+    // destroy/abort logic
+    abortSignal.addEventListener('abort', () => {
+      container.removeChild(rootDom);
+    });
+  }
+}
+
+/* istanbul ignore next */
+const qM = typeof queueMicrotask === 'function' ? queueMicrotask : callback => Promise.resolve().then(callback);
+
+function createState (abortSignal) {
+  let destroyed = false;
+  let currentObserver;
+
+  const propsToObservers = new Map();
+  const dirtyObservers = new Set();
+
+  let queued;
+
+  const flush = () => {
+    if (destroyed) {
+      return
+    }
+    const observersToRun = [...dirtyObservers];
+    dirtyObservers.clear(); // clear before running to force any new updates to run in another tick of the loop
+    try {
+      for (const observer of observersToRun) {
+        observer();
+      }
+    } finally {
+      queued = false;
+      if (dirtyObservers.size) { // new updates, queue another one
+        queued = true;
+        qM(flush);
+      }
+    }
+  };
+
+  const state = new Proxy({}, {
+    get (target, prop) {
+      if (currentObserver) {
+        let observers = propsToObservers.get(prop);
+        if (!observers) {
+          observers = new Set();
+          propsToObservers.set(prop, observers);
+        }
+        observers.add(currentObserver);
+      }
+      return target[prop]
+    },
+    set (target, prop, newValue) {
+      target[prop] = newValue;
+      const observers = propsToObservers.get(prop);
+      if (observers) {
+        for (const observer of observers) {
+          dirtyObservers.add(observer);
+        }
+        if (!queued) {
+          queued = true;
+          qM(flush);
+        }
+      }
+      return true
+    }
+  });
+
+  const createEffect = (callback) => {
+    const runnable = () => {
+      const oldObserver = currentObserver;
+      currentObserver = runnable;
+      try {
+        return callback()
+      } finally {
+        currentObserver = oldObserver;
+      }
+    };
+    return runnable()
+  };
+
+  // destroy logic
+  abortSignal.addEventListener('abort', () => {
+    destroyed = true;
+  });
+
+  return {
+    state,
+    createEffect
+  }
+}
+
+// Compare two arrays, with a function called on each item in the two arrays that returns true if the items are equal
+function arraysAreEqualByFunction (left, right, areEqualFunc) {
+  if (left.length !== right.length) {
+    return false
+  }
+  for (let i = 0; i < left.length; i++) {
+    if (!areEqualFunc(left[i], right[i])) {
+      return false
+    }
+  }
+  return true
+}
+
+/* eslint-disable prefer-const,no-labels,no-inner-declarations */
+
+// constants
+const EMPTY_ARRAY = [];
+
+const { assign } = Object;
+
+function createRoot (shadowRoot, props) {
+  const refs = {};
+  const abortController = new AbortController();
+  const abortSignal = abortController.signal;
+  const { state, createEffect } = createState(abortSignal);
+
+  // initial state
+  assign(state, {
+    skinToneEmoji: undefined,
+    i18n: undefined,
+    database: undefined,
+    customEmoji: undefined,
+    customCategorySorting: undefined,
+    emojiVersion: undefined
+  });
+
+  // public props
+  assign(state, props);
+
+  // private props
+  assign(state, {
+    initialLoad: true,
+    currentEmojis: [],
+    currentEmojisWithCategories: [],
+    rawSearchText: '',
+    searchText: '',
+    searchMode: false,
+    activeSearchItem: -1,
+    message: undefined,
+    skinTonePickerExpanded: false,
+    skinTonePickerExpandedAfterAnimation: false,
+    currentSkinTone: 0,
+    activeSkinTone: 0,
+    skinToneButtonText: undefined,
+    pickerStyle: undefined,
+    skinToneButtonLabel: '',
+    skinTones: [],
+    currentFavorites: [],
+    defaultFavoriteEmojis: undefined,
+    numColumns: DEFAULT_NUM_COLUMNS,
+    isRtl: false,
+    scrollbarWidth: 0,
+    currentGroupIndex: 0,
+    groups: groups,
+    databaseLoaded: false,
+    activeSearchItemId: undefined
+  });
+
+  //
+  // Update the current group based on the currentGroupIndex
+  //
+  createEffect(() => {
+    if (state.currentGroup !== state.groups[state.currentGroupIndex]) {
+      state.currentGroup = state.groups[state.currentGroupIndex];
+    }
+  });
+
+  //
+  // Utils/helpers
+  //
+
+  const focus = id => {
+    shadowRoot.getElementById(id).focus();
+  };
+
+  const emojiToDomNode = emoji => shadowRoot.getElementById(`emo-${emoji.id}`);
+
+  // fire a custom event that crosses the shadow boundary
+  const fireEvent = (name, detail) => {
+    refs.rootElement.dispatchEvent(new CustomEvent(name, {
+      detail,
+      bubbles: true,
+      composed: true
+    }));
+  };
+
+  //
+  // Comparison utils
+  //
+
+  const compareEmojiArrays = (a, b) => a.id === b.id;
+
+  const compareCurrentEmojisWithCategories = (a, b) => {
+    const { category: aCategory, emojis: aEmojis } = a;
+    const { category: bCategory, emojis: bEmojis } = b;
+
+    if (aCategory !== bCategory) {
+      return false
+    }
+
+    return arraysAreEqualByFunction(aEmojis, bEmojis, compareEmojiArrays)
+  };
+
+  //
+  // Update utils to avoid excessive re-renders
+  //
+
+  // avoid excessive re-renders by checking the value before setting
+  const updateCurrentEmojis = (newEmojis) => {
+    if (!arraysAreEqualByFunction(state.currentEmojis, newEmojis, compareEmojiArrays)) {
+      state.currentEmojis = newEmojis;
+    }
+  };
+
+  // avoid excessive re-renders
+  const updateSearchMode = (newSearchMode) => {
+    if (state.searchMode !== newSearchMode) {
+      state.searchMode = newSearchMode;
+    }
+  };
+
+  // avoid excessive re-renders
+  const updateCurrentEmojisWithCategories = (newEmojisWithCategories) => {
+    if (!arraysAreEqualByFunction(state.currentEmojisWithCategories, newEmojisWithCategories, compareCurrentEmojisWithCategories)) {
+      state.currentEmojisWithCategories = newEmojisWithCategories;
+    }
+  };
+
+  // Helpers used by PickerTemplate
+
+  const unicodeWithSkin = (emoji, currentSkinTone) => (
+    (currentSkinTone && emoji.skins && emoji.skins[currentSkinTone]) || emoji.unicode
+  );
+
+  const labelWithSkin = (emoji, currentSkinTone) => (
+    uniq([
+      (emoji.name || unicodeWithSkin(emoji, currentSkinTone)),
+      emoji.annotation,
+      ...(emoji.shortcodes || EMPTY_ARRAY)
+    ].filter(Boolean)).join(', ')
+  );
+
+  const titleForEmoji = (emoji) => (
+    emoji.annotation || (emoji.shortcodes || EMPTY_ARRAY).join(', ')
+  );
+
+  const helpers = {
+    labelWithSkin, titleForEmoji, unicodeWithSkin
+  };
+  const events = {
+    onClickSkinToneButton,
+    onEmojiClick,
+    onNavClick,
+    onNavKeydown,
+    onSearchKeydown,
+    onSkinToneOptionsClick,
+    onSkinToneOptionsFocusOut,
+    onSkinToneOptionsKeydown,
+    onSkinToneOptionsKeyup,
+    onSearchInput
+  };
+  const actions = {
+    calculateEmojiGridStyle
+  };
+
+  let firstRender = true;
+  createEffect(() => {
+    render(shadowRoot, state, helpers, events, actions, refs, abortSignal, firstRender);
+    firstRender = false;
+  });
+
+  //
+  // Determine the emoji support level (in requestIdleCallback)
+  //
+
+  // mount logic
+  if (!state.emojiVersion) {
+    detectEmojiSupportLevel().then(level => {
+      // Can't actually test emoji support in Jest/Vitest/JSDom, emoji never render in color in Cairo
+      /* istanbul ignore next */
+      if (!level) {
+        state.message = state.i18n.emojiUnsupportedMessage;
+      }
+    });
+  }
+
+  //
+  // Set or update the database object
+  //
+
+  createEffect(() => {
+    // show a Loading message if it takes a long time, or show an error if there's a network/IDB error
+    async function handleDatabaseLoading () {
+      let showingLoadingMessage = false;
+      const timeoutHandle = setTimeout(() => {
+        showingLoadingMessage = true;
+        state.message = state.i18n.loadingMessage;
+      }, TIMEOUT_BEFORE_LOADING_MESSAGE);
+      try {
+        await state.database.ready();
+        state.databaseLoaded = true; // eslint-disable-line no-unused-vars
+      } catch (err) {
+        console.error(err);
+        state.message = state.i18n.networkErrorMessage;
+      } finally {
+        clearTimeout(timeoutHandle);
+        if (showingLoadingMessage) { // Seems safer than checking the i18n string, which may change
+          showingLoadingMessage = false;
+          state.message = ''; // eslint-disable-line no-unused-vars
+        }
+      }
+    }
+
+    if (state.database) {
+      /* no await */
+      handleDatabaseLoading();
+    }
+  });
+
+  //
+  // Global styles for the entire picker
+  //
+
+  createEffect(() => {
+    state.pickerStyle = `
+      --num-groups: ${state.groups.length}; 
+      --indicator-opacity: ${state.searchMode ? 0 : 1}; 
+      --num-skintones: ${NUM_SKIN_TONES};`;
+  });
+
+  //
+  // Set or update the customEmoji
+  //
+
+  createEffect(() => {
+    if (state.customEmoji && state.database) {
+      updateCustomEmoji(); // re-run whenever customEmoji change
+    }
+  });
+
+  createEffect(() => {
+    if (state.customEmoji && state.customEmoji.length) {
+      if (state.groups !== allGroups) { // don't update unnecessarily
+        state.groups = allGroups;
+      }
+    } else if (state.groups !== groups) {
+      if (state.currentGroupIndex) {
+        // If the current group is anything other than "custom" (which is first), decrement.
+        // This fixes the odd case where you set customEmoji, then pick a category, then unset customEmoji
+        state.currentGroupIndex--;
+      }
+      state.groups = groups;
+    }
+  });
+
+  //
+  // Set or update the preferred skin tone
+  //
+
+  createEffect(() => {
+    async function updatePreferredSkinTone () {
+      if (state.databaseLoaded) {
+        state.currentSkinTone = await state.database.getPreferredSkinTone();
+      }
+    }
+
+    /* no await */ updatePreferredSkinTone();
+  });
+
+  createEffect(() => {
+    state.skinTones = Array(NUM_SKIN_TONES).fill().map((_, i) => applySkinTone(state.skinToneEmoji, i));
+  });
+
+  createEffect(() => {
+    state.skinToneButtonText = state.skinTones[state.currentSkinTone];
+  });
+
+  createEffect(() => {
+    state.skinToneButtonLabel = state.i18n.skinToneLabel.replace('{skinTone}', state.i18n.skinTones[state.currentSkinTone]);
+  });
+
+  //
+  // Set or update the favorites emojis
+  //
+
+  createEffect(() => {
+    async function updateDefaultFavoriteEmojis () {
+      const { database } = state;
+      const favs = (await Promise.all(MOST_COMMONLY_USED_EMOJI.map(unicode => (
+        database.getEmojiByUnicodeOrName(unicode)
+      )))).filter(Boolean); // filter because in Jest/Vitest tests we don't have all the emoji in the DB
+      state.defaultFavoriteEmojis = favs;
+    }
+
+    if (state.databaseLoaded) {
+      /* no await */ updateDefaultFavoriteEmojis();
+    }
+  });
+
+  function updateCustomEmoji () {
+    // Certain effects have an implicit dependency on customEmoji since it affects the database
+    // Getting it here on the state ensures this effect re-runs when customEmoji change.
+    // Setting it on the database is pointless but prevents this code from being removed by a minifier.
+    state.database.customEmoji = state.customEmoji || EMPTY_ARRAY;
+  }
+
+  createEffect(() => {
+    async function updateFavorites () {
+      updateCustomEmoji(); // re-run whenever customEmoji change
+      const { database, defaultFavoriteEmojis, numColumns } = state;
+      const dbFavorites = await database.getTopFavoriteEmoji(numColumns);
+      const favorites = await summarizeEmojis(uniqBy([
+        ...dbFavorites,
+        ...defaultFavoriteEmojis
+      ], _ => (_.unicode || _.name)).slice(0, numColumns));
+      state.currentFavorites = favorites;
+    }
+
+    if (state.databaseLoaded && state.defaultFavoriteEmojis) {
+      /* no await */ updateFavorites();
+    }
+  });
+
+  //
+  // Calculate the width of the emoji grid. This serves two purposes:
+  // 1) Re-calculate the --num-columns var because it may have changed
+  // 2) Re-calculate the scrollbar width because it may have changed
+  //   (i.e. because the number of items changed)
+  // 3) Re-calculate whether we're in RTL mode or not.
+  //
+  // The benefit of doing this in one place is to align with rAF/ResizeObserver
+  // and do all the calculations in one go. RTL vs LTR is not strictly width-related,
+  // but since we're already reading the style here, and since it's already aligned with
+  // the rAF loop, this is the most appropriate place to do it perf-wise.
+  //
+
+  function calculateEmojiGridStyle (node) {
+    calculateWidth(node, abortSignal, width => {
+      /* istanbul ignore next */
+      { // jsdom throws errors for this kind of fancy stuff
+        // read all the style/layout calculations we need to make
+        const style = getComputedStyle(refs.rootElement);
+        const newNumColumns = parseInt(style.getPropertyValue('--num-columns'), 10);
+        const newIsRtl = style.getPropertyValue('direction') === 'rtl';
+        const parentWidth = node.parentElement.getBoundingClientRect().width;
+        const newScrollbarWidth = parentWidth - width;
+
+        // write to state variables
+        state.numColumns = newNumColumns;
+        state.scrollbarWidth = newScrollbarWidth; // eslint-disable-line no-unused-vars
+        state.isRtl = newIsRtl; // eslint-disable-line no-unused-vars
+      }
+    });
+  }
+
+  //
+  // Set or update the currentEmojis. Check for invalid ZWJ renderings
+  // (i.e. double emoji).
+  //
+
+  createEffect(() => {
+    async function updateEmojis () {
+      const { searchText, currentGroup, databaseLoaded, customEmoji } = state;
+      if (!databaseLoaded) {
+        state.currentEmojis = [];
+        state.searchMode = false;
+      } else if (searchText.length >= MIN_SEARCH_TEXT_LENGTH) {
+        const newEmojis = await getEmojisBySearchQuery(searchText);
+        if (state.searchText === searchText) { // if the situation changes asynchronously, do not update
+          updateCurrentEmojis(newEmojis);
+          updateSearchMode(true);
+        }
+      } else { // database is loaded and we're not in search mode, so we're in normal category mode
+        const { id: currentGroupId } = currentGroup;
+        // avoid race condition where currentGroupId is -1 and customEmoji is undefined/empty
+        if (currentGroupId !== -1 || (customEmoji && customEmoji.length)) {
+          const newEmojis = await getEmojisByGroup(currentGroupId);
+          if (state.currentGroup.id === currentGroupId) { // if the situation changes asynchronously, do not update
+            updateCurrentEmojis(newEmojis);
+            updateSearchMode(false);
+          }
+        }
+      }
+    }
+
+    /* no await */ updateEmojis();
+  });
+
+  // Some emojis have their ligatures rendered as two or more consecutive emojis
+  // We want to treat these the same as unsupported emojis, so we compare their
+  // widths against the baseline widths and remove them as necessary
+  createEffect(() => {
+    const { currentEmojis, emojiVersion } = state;
+    const zwjEmojisToCheck = currentEmojis
+      .filter(emoji => emoji.unicode) // filter custom emoji
+      .filter(emoji => hasZwj(emoji) && !supportedZwjEmojis.has(emoji.unicode));
+    if (!emojiVersion && zwjEmojisToCheck.length) {
+      // render now, check their length later
+      updateCurrentEmojis(currentEmojis);
+      rAF(() => checkZwjSupportAndUpdate(zwjEmojisToCheck));
+    } else {
+      const newEmojis = emojiVersion ? currentEmojis : currentEmojis.filter(isZwjSupported);
+      updateCurrentEmojis(newEmojis);
+      // Reset scroll top to 0 when emojis change
+      rAF(() => resetScrollTopIfPossible(refs.tabpanelElement));
+    }
+  });
+
+  function checkZwjSupportAndUpdate (zwjEmojisToCheck) {
+    checkZwjSupport(zwjEmojisToCheck, refs.baselineEmoji, emojiToDomNode);
+    // force update
+    // eslint-disable-next-line no-self-assign
+    state.currentEmojis = state.currentEmojis;
+  }
+
+  function isZwjSupported (emoji) {
+    return !emoji.unicode || !hasZwj(emoji) || supportedZwjEmojis.get(emoji.unicode)
+  }
+
+  async function filterEmojisByVersion (emojis) {
+    const emojiSupportLevel = state.emojiVersion || await detectEmojiSupportLevel();
+    // !version corresponds to custom emoji
+    return emojis.filter(({ version }) => !version || version <= emojiSupportLevel)
+  }
+
+  async function summarizeEmojis (emojis) {
+    return summarizeEmojisForUI(emojis, state.emojiVersion || await detectEmojiSupportLevel())
+  }
+
+  async function getEmojisByGroup (group) {
+    // -1 is custom emoji
+    const emoji = group === -1 ? state.customEmoji : await state.database.getEmojiByGroup(group);
+    return summarizeEmojis(await filterEmojisByVersion(emoji))
+  }
+
+  async function getEmojisBySearchQuery (query) {
+    return summarizeEmojis(await filterEmojisByVersion(await state.database.getEmojiBySearchQuery(query)))
+  }
+
+  createEffect(() => {
+  });
+
+  //
+  // Derive currentEmojisWithCategories from currentEmojis. This is always done even if there
+  // are no categories, because it's just easier to code the HTML this way.
+  //
+
+  createEffect(() => {
+    function calculateCurrentEmojisWithCategories () {
+      const { searchMode, currentEmojis } = state;
+      if (searchMode) {
+        return [
+          {
+            category: '',
+            emojis: currentEmojis
+          }
+        ]
+      }
+      const categoriesToEmoji = new Map();
+      for (const emoji of currentEmojis) {
+        const category = emoji.category || '';
+        let emojis = categoriesToEmoji.get(category);
+        if (!emojis) {
+          emojis = [];
+          categoriesToEmoji.set(category, emojis);
+        }
+        emojis.push(emoji);
+      }
+      return [...categoriesToEmoji.entries()]
+        .map(([category, emojis]) => ({ category, emojis }))
+        .sort((a, b) => state.customCategorySorting(a.category, b.category))
+    }
+
+    const newEmojisWithCategories = calculateCurrentEmojisWithCategories();
+    updateCurrentEmojisWithCategories(newEmojisWithCategories);
+  });
+
+  //
+  // Handle active search item (i.e. pressing up or down while searching)
+  //
+
+  createEffect(() => {
+    state.activeSearchItemId = state.activeSearchItem !== -1 && state.currentEmojis[state.activeSearchItem].id;
+  });
+
+  //
+  // Handle user input on the search input
+  //
+
+  createEffect(() => {
+    const { rawSearchText } = state;
+    rIC(() => {
+      state.searchText = (rawSearchText || '').trim(); // defer to avoid input delays, plus we can trim here
+      state.activeSearchItem = -1;
+    });
+  });
+
+  function onSearchKeydown (event) {
+    if (!state.searchMode || !state.currentEmojis.length) {
+      return
+    }
+
+    const goToNextOrPrevious = (previous) => {
+      halt(event);
+      state.activeSearchItem = incrementOrDecrement(previous, state.activeSearchItem, state.currentEmojis);
+    };
+
+    switch (event.key) {
+      case 'ArrowDown':
+        return goToNextOrPrevious(false)
+      case 'ArrowUp':
+        return goToNextOrPrevious(true)
+      case 'Enter':
+        if (state.activeSearchItem === -1) {
+          // focus the first option in the list since the list must be non-empty at this point (it's verified above)
+          state.activeSearchItem = 0;
+        } else { // there is already an active search item
+          halt(event);
+          return clickEmoji(state.currentEmojis[state.activeSearchItem].id)
+        }
+    }
+  }
+
+  //
+  // Handle user input on nav
+  //
+
+  function onNavClick (event) {
+    const { target } = event;
+    const closestTarget = target.closest('.nav-button');
+    /* istanbul ignore if */
+    if (!closestTarget) {
+      return // This should never happen, but makes me nervous not to have it
+    }
+    const groupId = parseInt(closestTarget.dataset.groupId, 10);
+    refs.searchElement.value = ''; // clear search box input
+    state.rawSearchText = '';
+    state.searchText = '';
+    state.activeSearchItem = -1;
+    state.currentGroupIndex = state.groups.findIndex(_ => _.id === groupId);
+  }
+
+  function onNavKeydown (event) {
+    const { target, key } = event;
+
+    const doFocus = el => {
+      if (el) {
+        halt(event);
+        el.focus();
+      }
+    };
+
+    switch (key) {
+      case 'ArrowLeft':
+        return doFocus(target.previousElementSibling)
+      case 'ArrowRight':
+        return doFocus(target.nextElementSibling)
+      case 'Home':
+        return doFocus(target.parentElement.firstElementChild)
+      case 'End':
+        return doFocus(target.parentElement.lastElementChild)
+    }
+  }
+
+  //
+  // Handle user input on an emoji
+  //
+
+  async function clickEmoji (unicodeOrName) {
+    const emoji = await state.database.getEmojiByUnicodeOrName(unicodeOrName);
+    const emojiSummary = [...state.currentEmojis, ...state.currentFavorites]
+      .find(_ => (_.id === unicodeOrName));
+    const skinTonedUnicode = emojiSummary.unicode && unicodeWithSkin(emojiSummary, state.currentSkinTone);
+    await state.database.incrementFavoriteEmojiCount(unicodeOrName);
+    fireEvent('emoji-click', {
+      emoji,
+      skinTone: state.currentSkinTone,
+      ...(skinTonedUnicode && { unicode: skinTonedUnicode }),
+      ...(emojiSummary.name && { name: emojiSummary.name })
+    });
+  }
+
+  async function onEmojiClick (event) {
+    const { target } = event;
+    /* istanbul ignore if */
+    if (!target.classList.contains('emoji')) {
+      // This should never happen, but makes me nervous not to have it
+      return
+    }
+    halt(event);
+    const id = target.id.substring(4); // replace 'emo-' or 'fav-' prefix
+
+    /* no await */ clickEmoji(id);
+  }
+
+  //
+  // Handle user input on the skintone picker
+  //
+
+  function changeSkinTone (skinTone) {
+    state.currentSkinTone = skinTone;
+    state.skinTonePickerExpanded = false;
+    focus('skintone-button');
+    fireEvent('skin-tone-change', { skinTone });
+    /* no await */ state.database.setPreferredSkinTone(skinTone);
+  }
+
+  function onSkinToneOptionsClick (event) {
+    const { target: { id } } = event;
+    const match = id && id.match(/^skintone-(\d)/); // skintone option format
+    /* istanbul ignore if */
+    if (!match) { // not a skintone option
+      return // This should never happen, but makes me nervous not to have it
+    }
+    halt(event);
+    const skinTone = parseInt(match[1], 10); // remove 'skintone-' prefix
+    changeSkinTone(skinTone);
+  }
+
+  function onClickSkinToneButton (event) {
+    state.skinTonePickerExpanded = !state.skinTonePickerExpanded;
+    state.activeSkinTone = state.currentSkinTone;
+    // this should always be true, since the button is obscured by the listbox, so this `if` is just to be sure
+    if (state.skinTonePickerExpanded) {
+      halt(event);
+      rAF(() => focus('skintone-list'));
+    }
+  }
+
+  // To make the animation nicer, change the z-index of the skintone picker button
+  // *after* the animation has played. This makes it appear that the picker box
+  // is expanding "below" the button
+  createEffect(() => {
+    if (state.skinTonePickerExpanded) {
+      refs.skinToneDropdown.addEventListener('transitionend', () => {
+        state.skinTonePickerExpandedAfterAnimation = true; // eslint-disable-line no-unused-vars
+      }, { once: true });
+    } else {
+      state.skinTonePickerExpandedAfterAnimation = false; // eslint-disable-line no-unused-vars
+    }
+  });
+
+  function onSkinToneOptionsKeydown (event) {
+    // this should never happen, but makes me nervous not to have it
+    /* istanbul ignore if */
+    if (!state.skinTonePickerExpanded) {
+      return
+    }
+    const changeActiveSkinTone = async nextSkinTone => {
+      halt(event);
+      state.activeSkinTone = nextSkinTone;
+    };
+
+    switch (event.key) {
+      case 'ArrowUp':
+        return changeActiveSkinTone(incrementOrDecrement(true, state.activeSkinTone, state.skinTones))
+      case 'ArrowDown':
+        return changeActiveSkinTone(incrementOrDecrement(false, state.activeSkinTone, state.skinTones))
+      case 'Home':
+        return changeActiveSkinTone(0)
+      case 'End':
+        return changeActiveSkinTone(state.skinTones.length - 1)
+      case 'Enter':
+        // enter on keydown, space on keyup. this is just how browsers work for buttons
+        // https://lists.w3.org/Archives/Public/w3c-wai-ig/2019JanMar/0086.html
+        halt(event);
+        return changeSkinTone(state.activeSkinTone)
+      case 'Escape':
+        halt(event);
+        state.skinTonePickerExpanded = false;
+        return focus('skintone-button')
+    }
+  }
+
+  function onSkinToneOptionsKeyup (event) {
+    // this should never happen, but makes me nervous not to have it
+    /* istanbul ignore if */
+    if (!state.skinTonePickerExpanded) {
+      return
+    }
+    switch (event.key) {
+      case ' ':
+        // enter on keydown, space on keyup. this is just how browsers work for buttons
+        // https://lists.w3.org/Archives/Public/w3c-wai-ig/2019JanMar/0086.html
+        halt(event);
+        return changeSkinTone(state.activeSkinTone)
+    }
+  }
+
+  async function onSkinToneOptionsFocusOut (event) {
+    // On blur outside of the skintone listbox, collapse the skintone picker.
+    const { relatedTarget } = event;
+    // The `else` should never happen, but makes me nervous not to have it
+    /* istanbul ignore else */
+    if (!relatedTarget || relatedTarget.id !== 'skintone-list') {
+      state.skinTonePickerExpanded = false;
+    }
+  }
+
+  function onSearchInput (event) {
+    state.rawSearchText = event.target.value;
+  }
+
+  return {
+    $set (newState) {
+      assign(state, newState);
+    },
+    $destroy () {
+      abortController.abort();
+    }
+  }
+}
+
+const DEFAULT_DATA_SOURCE = 'https://cdn.jsdelivr.net/npm/emoji-picker-element-data@^1/en/emojibase/data.json';
+const DEFAULT_LOCALE = 'en';
+
+var enI18n = {
+  categoriesLabel: 'Categories',
+  emojiUnsupportedMessage: 'Your browser does not support color emoji.',
+  favoritesLabel: 'Favorites',
+  loadingMessage: 'Loading…',
+  networkErrorMessage: 'Could not load emoji.',
+  regionLabel: 'Emoji picker',
+  searchDescription: 'When search results are available, press up or down to select and enter to choose.',
+  searchLabel: 'Search',
+  searchResultsLabel: 'Search results',
+  skinToneDescription: 'When expanded, press up or down to select and enter to choose.',
+  skinToneLabel: 'Choose a skin tone (currently {skinTone})',
+  skinTonesLabel: 'Skin tones',
+  skinTones: [
+    'Default',
+    'Light',
+    'Medium-Light',
+    'Medium',
+    'Medium-Dark',
+    'Dark'
+  ],
+  categories: {
+    custom: 'Custom',
+    'smileys-emotion': 'Smileys and emoticons',
+    'people-body': 'People and body',
+    'animals-nature': 'Animals and nature',
+    'food-drink': 'Food and drink',
+    'travel-places': 'Travel and places',
+    activities: 'Activities',
+    objects: 'Objects',
+    symbols: 'Symbols',
+    flags: 'Flags'
+  }
+};
+
+var baseStyles = ":host{--emoji-size:1.375rem;--emoji-padding:0.5rem;--category-emoji-size:var(--emoji-size);--category-emoji-padding:var(--emoji-padding);--indicator-height:3px;--input-border-radius:0.5rem;--input-border-size:1px;--input-font-size:1rem;--input-line-height:1.5;--input-padding:0.25rem;--num-columns:8;--outline-size:2px;--border-size:1px;--skintone-border-radius:1rem;--category-font-size:1rem;display:flex;width:min-content;height:400px}:host,:host(.light){color-scheme:light;--background:#fff;--border-color:#e0e0e0;--indicator-color:#385ac1;--input-border-color:#999;--input-font-color:#111;--input-placeholder-color:#999;--outline-color:#999;--category-font-color:#111;--button-active-background:#e6e6e6;--button-hover-background:#d9d9d9}:host(.dark){color-scheme:dark;--background:#222;--border-color:#444;--indicator-color:#5373ec;--input-border-color:#ccc;--input-font-color:#efefef;--input-placeholder-color:#ccc;--outline-color:#fff;--category-font-color:#efefef;--button-active-background:#555555;--button-hover-background:#484848}@media (prefers-color-scheme:dark){:host{color-scheme:dark;--background:#222;--border-color:#444;--indicator-color:#5373ec;--input-border-color:#ccc;--input-font-color:#efefef;--input-placeholder-color:#ccc;--outline-color:#fff;--category-font-color:#efefef;--button-active-background:#555555;--button-hover-background:#484848}}:host([hidden]){display:none}button{margin:0;padding:0;border:0;background:0 0;box-shadow:none;-webkit-tap-highlight-color:transparent}button::-moz-focus-inner{border:0}input{padding:0;margin:0;line-height:1.15;font-family:inherit}input[type=search]{-webkit-appearance:none}:focus{outline:var(--outline-color) solid var(--outline-size);outline-offset:calc(-1*var(--outline-size))}:host([data-js-focus-visible]) :focus:not([data-focus-visible-added]){outline:0}:focus:not(:focus-visible){outline:0}.hide-focus{outline:0}*{box-sizing:border-box}.picker{contain:content;display:flex;flex-direction:column;background:var(--background);border:var(--border-size) solid var(--border-color);width:100%;height:100%;overflow:hidden;--total-emoji-size:calc(var(--emoji-size) + (2 * var(--emoji-padding)));--total-category-emoji-size:calc(var(--category-emoji-size) + (2 * var(--category-emoji-padding)))}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}.hidden{opacity:0;pointer-events:none}.abs-pos{position:absolute;left:0;top:0}.gone{display:none!important}.skintone-button-wrapper,.skintone-list{background:var(--background);z-index:3}.skintone-button-wrapper.expanded{z-index:1}.skintone-list{position:absolute;inset-inline-end:0;top:0;z-index:2;overflow:visible;border-bottom:var(--border-size) solid var(--border-color);border-radius:0 0 var(--skintone-border-radius) var(--skintone-border-radius);will-change:transform;transition:transform .2s ease-in-out;transform-origin:center 0}@media (prefers-reduced-motion:reduce){.skintone-list{transition-duration:.001s}}@supports not (inset-inline-end:0){.skintone-list{right:0}}.skintone-list.no-animate{transition:none}.tabpanel{overflow-y:auto;-webkit-overflow-scrolling:touch;will-change:transform;min-height:0;flex:1;contain:content}.emoji-menu{display:grid;grid-template-columns:repeat(var(--num-columns),var(--total-emoji-size));justify-content:space-around;align-items:flex-start;width:100%}.category{padding:var(--emoji-padding);font-size:var(--category-font-size);color:var(--category-font-color)}.custom-emoji,.emoji,button.emoji{height:var(--total-emoji-size);width:var(--total-emoji-size)}.emoji,button.emoji{font-size:var(--emoji-size);display:flex;align-items:center;justify-content:center;border-radius:100%;line-height:1;overflow:hidden;font-family:var(--emoji-font-family);cursor:pointer}@media (hover:hover) and (pointer:fine){.emoji:hover,button.emoji:hover{background:var(--button-hover-background)}}.emoji.active,.emoji:active,button.emoji.active,button.emoji:active{background:var(--button-active-background)}.custom-emoji{padding:var(--emoji-padding);object-fit:contain;pointer-events:none;background-repeat:no-repeat;background-position:center center;background-size:var(--emoji-size) var(--emoji-size)}.nav,.nav-button{align-items:center}.nav{display:grid;justify-content:space-between;contain:content}.nav-button{display:flex;justify-content:center}.nav-emoji{font-size:var(--category-emoji-size);width:var(--total-category-emoji-size);height:var(--total-category-emoji-size)}.indicator-wrapper{display:flex;border-bottom:1px solid var(--border-color)}.indicator{width:calc(100%/var(--num-groups));height:var(--indicator-height);opacity:var(--indicator-opacity);background-color:var(--indicator-color);will-change:transform,opacity;transition:opacity .1s linear,transform .25s ease-in-out}@media (prefers-reduced-motion:reduce){.indicator{will-change:opacity;transition:opacity .1s linear}}.pad-top,input.search{background:var(--background);width:100%}.pad-top{height:var(--emoji-padding);z-index:3}.search-row{display:flex;align-items:center;position:relative;padding-inline-start:var(--emoji-padding);padding-bottom:var(--emoji-padding)}.search-wrapper{flex:1;min-width:0}input.search{padding:var(--input-padding);border-radius:var(--input-border-radius);border:var(--input-border-size) solid var(--input-border-color);color:var(--input-font-color);font-size:var(--input-font-size);line-height:var(--input-line-height)}input.search::placeholder{color:var(--input-placeholder-color)}.favorites{display:flex;flex-direction:row;border-top:var(--border-size) solid var(--border-color);contain:content}.message{padding:var(--emoji-padding)}";
+
+const PROPS = [
+  'customEmoji',
+  'customCategorySorting',
+  'database',
+  'dataSource',
+  'i18n',
+  'locale',
+  'skinToneEmoji',
+  'emojiVersion'
+];
+
+// Styles injected ourselves, so we can declare the FONT_FAMILY variable in one place
+const EXTRA_STYLES = `:host{--emoji-font-family:${FONT_FAMILY}}`;
+
+class PickerElement extends HTMLElement {
+  constructor (props) {
+    super();
+    this.attachShadow({ mode: 'open' });
+    const style = document.createElement('style');
+    style.textContent = baseStyles + EXTRA_STYLES;
+    this.shadowRoot.appendChild(style);
+    this._ctx = {
+      // Set defaults
+      locale: DEFAULT_LOCALE,
+      dataSource: DEFAULT_DATA_SOURCE,
+      skinToneEmoji: DEFAULT_SKIN_TONE_EMOJI,
+      customCategorySorting: DEFAULT_CATEGORY_SORTING,
+      customEmoji: null,
+      i18n: enI18n,
+      emojiVersion: null,
+      ...props
+    };
+    // Handle properties set before the element was upgraded
+    for (const prop of PROPS) {
+      if (prop !== 'database' && Object.prototype.hasOwnProperty.call(this, prop)) {
+        this._ctx[prop] = this[prop];
+        delete this[prop];
+      }
+    }
+    this._dbFlush(); // wait for a flush before creating the db, in case the user calls e.g. a setter or setAttribute
+  }
+
+  connectedCallback () {
+    // The _cmp may be defined if the component was immediately disconnected and then reconnected. In that case,
+    // do nothing (preserve the state)
+    if (!this._cmp) {
+      this._cmp = createRoot(this.shadowRoot, this._ctx);
+    }
+  }
+
+  disconnectedCallback () {
+    // Check in a microtask if the element is still connected. If so, treat this as a "move" rather than a disconnect
+    // Inspired by Vue: https://vuejs.org/guide/extras/web-components.html#building-custom-elements-with-vue
+    qM(() => {
+      // this._cmp may be defined if connect-disconnect-connect-disconnect occurs synchronously
+      if (!this.isConnected && this._cmp) {
+        this._cmp.$destroy();
+        this._cmp = undefined;
+
+        const { database } = this._ctx;
+        database.close()
+          // only happens if the database failed to load in the first place, so we don't care
+          .catch(err => console.error(err));
+      }
+    });
+  }
+
+  static get observedAttributes () {
+    return ['locale', 'data-source', 'skin-tone-emoji', 'emoji-version'] // complex objects aren't supported, also use kebab-case
+  }
+
+  attributeChangedCallback (attrName, oldValue, newValue) {
+    this._set(
+      // convert from kebab-case to camelcase
+      // see https://github.com/sveltejs/svelte/issues/3852#issuecomment-665037015
+      attrName.replace(/-([a-z])/g, (_, up) => up.toUpperCase()),
+      // convert string attribute to float if necessary
+      attrName === 'emoji-version' ? parseFloat(newValue) : newValue
+    );
+  }
+
+  _set (prop, newValue) {
+    this._ctx[prop] = newValue;
+    if (this._cmp) {
+      this._cmp.$set({ [prop]: newValue });
+    }
+    if (['locale', 'dataSource'].includes(prop)) {
+      this._dbFlush();
+    }
+  }
+
+  _dbCreate () {
+    const { locale, dataSource, database } = this._ctx;
+    // only create a new database if we really need to
+    if (!database || database.locale !== locale || database.dataSource !== dataSource) {
+      this._set('database', new _database_js__WEBPACK_IMPORTED_MODULE_0__["default"]({ locale, dataSource }));
+    }
+  }
+
+  // Update the Database in one microtask if the locale/dataSource change. We do one microtask
+  // so we don't create two Databases if e.g. both the locale and the dataSource change
+  _dbFlush () {
+    qM(() => (
+      this._dbCreate()
+    ));
+  }
+}
+
+const definitions = {};
+
+for (const prop of PROPS) {
+  definitions[prop] = {
+    get () {
+      if (prop === 'database') {
+        // in rare cases, the microtask may not be flushed yet, so we need to instantiate the DB
+        // now if the user is asking for it
+        this._dbCreate();
+      }
+      return this._ctx[prop]
+    },
+    set (val) {
+      if (prop === 'database') {
+        throw new Error('database is read-only')
+      }
+      this._set(prop, val);
+    }
+  };
+}
+
+Object.defineProperties(PickerElement.prototype, definitions);
+
+/* istanbul ignore else */
+if (!customElements.get('emoji-picker')) { // if already defined, do nothing (e.g. same script imported twice)
+  customElements.define('emoji-picker', PickerElement);
+}
+
+
+
 
 /***/ }),
 

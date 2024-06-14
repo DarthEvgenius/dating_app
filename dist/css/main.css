@@ -1828,6 +1828,7 @@ a {
   overflow-y: scroll;
 }
 .find__title {
+  margin-bottom: 20px;
   font-family: var(--font-nebulous);
   font-weight: 400;
   font-size: var(--fs-app-match-title);
@@ -1978,6 +1979,9 @@ a {
   font-weight: 400;
   font-size: var(--fs-app-text);
   line-height: 1.6;
+}
+.chat-form__smiles-container {
+  position: relative;
 }
 .chat-form__smiles {
   width: 24px;

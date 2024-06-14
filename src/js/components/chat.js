@@ -10,6 +10,7 @@ import { getCookie } from './getCookie.js'
 import { fetchChatInfo } from './chat/fetchChatInfo.js'
 import { socketConnect } from './chat/socketConnect.js'
 import { handleSocketMessage } from './chat/chatViewScripts/handleSocketMessage.js'
+import './chat/emoji-picker.js'
 
 window.addEventListener('resize', setChatElementSizes)
 

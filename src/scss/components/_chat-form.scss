@@ -22,6 +22,10 @@
     line-height: 1.6;
   }
 
+  &__smiles-container {
+    position: relative;
+  }
+
   &__smiles {
     width: 24px;
     height: 24px;
@@ -34,3 +38,7 @@
     fill: var(--grey-color);
   }
 }
+
+// .emoji-tooltip:not(.shown) {
+//   display: none;
+// }

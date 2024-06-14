@@ -85,3 +85,6 @@
 // };
 
 // validateForms('.form-1', rules1, afterForm);
+
+// Emoji picker
+// import 'emoji-picker-element';
