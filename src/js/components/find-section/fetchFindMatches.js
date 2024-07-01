@@ -3,7 +3,7 @@
 import { returnUsers } from "../API-mock.js"
 
 // fetch amount of accounts
-const AMOUNT = 5
+const AMOUNT = 4
 
 // return an array of users' profiles
 export async function fetchFindMatches() {

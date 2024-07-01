@@ -30,8 +30,19 @@ const user = {
       'work_strategy': null,
       'skills': null
     }
-  }
+  },
+  'matches': [ // user id's
+    1, 3
+  ],
+  'chats': [ // chat id's
+    0, 1
+  ]
 }
+
+// localStorage.removeItem('userInfo')
+const userJSON = JSON.stringify(user)
+
+localStorage.setItem('userInfo', userJSON)
 
 // example of users fetch
 // let a = await returnUsers(5)
@@ -66,11 +77,15 @@ function createUsers(amount) {
           'languages': null,
           'avatars': [
             {
-              'image_path': '/img/avatar1.jpg'
+              'image_path': `/img/avatar${counter}.jpg`,
+            },
+            {
+              'image_path': '/img/avatar3.jpg'
             },
             {
               'image_path': '/img/avatar2.jpg',
             },
+
           ] // urls for images
         },
         'subscription': {
@@ -92,3 +107,49 @@ function createUsers(amount) {
     return users
   }
 }
+
+// chat mock db
+
+const chats = [
+  {
+    'id': 0,
+    'users': createUsers(2),
+    'messages': [
+      {
+        'id': 0,
+        'from_user': 0,
+        'to_user': 1,
+        'text': 'hello you!'
+      },
+      {
+        'id': 1,
+        'from_user': 1,
+        'to_user': 0,
+        'text': 'U 2 hi'
+      },
+    ],
+    'created_at': '',
+    'updated_at': '',
+  },
+  {
+    'id': 2,
+    'users': createUsers(2),
+    'messages': [
+      {
+        'id': 0,
+        'from_user': 0,
+        'to_user': 1,
+        'text': 'alalalalalalala'
+      },
+      {
+        'id': 1,
+        'from_user': 1,
+        'to_user': 0,
+        'text': 'dubidubidu'
+      },
+    ],
+    'created_at': '',
+    'updated_at': '',
+  }
+]
+

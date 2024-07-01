@@ -28,14 +28,16 @@ if (+user?.id !== +userId &&
   const loader = createLoader(document.querySelector('.page__body'))
   if(userId) {
     // let userOrigin = await getUserInfo(userId).catch(handleError)
-
-    // for local usage =========================================
-    let userOrigin = await getUserLocal()
-    // =========================================================
-
     user = new User(userOrigin)
     localStorage.setItem('userInfo', JSON.stringify(user))
     loader.hide()
+  } else {
+    // for local usage =========================================
+    let userOrigin = await getUserLocal()
+    console.log(userOrigin);
+    loader.hide()
+    // =========================================================
+
   }
 } else {
   console.log('user:', user);

@@ -30,3 +30,6 @@ import './components/chat.js';
 // find section scripts
 import './components/findSection.js'
 import './components/find-section/findSwiperHideToggle.js';
+
+// matches and messages section scripts
+import './components/matches-messages.js'

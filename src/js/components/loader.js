@@ -34,8 +34,3 @@ function showLoader(loaderElem) {
 export function hideLoader(loaderElem) {
   loaderElem.classList.add('hidden')
 }
-
-// setTimeout(() => {
-//   const loaderContainer = document.querySelector('.loader')
-//   loaderContainer.classList.add('hidden')
-// }, 2000)

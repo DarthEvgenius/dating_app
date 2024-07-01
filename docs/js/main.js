@@ -3242,6 +3242,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_chat_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/chat.js */ "./src/js/components/chat.js");
 /* harmony import */ var _components_findSection_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/findSection.js */ "./src/js/components/findSection.js");
 /* harmony import */ var _components_find_section_findSwiperHideToggle_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/find-section/findSwiperHideToggle.js */ "./src/js/components/find-section/findSwiperHideToggle.js");
+/* harmony import */ var _components_matches_messages_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/matches-messages.js */ "./src/js/components/matches-messages.js");
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_9__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_11__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_12__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_14__]);
 ([_components_userObject_js__WEBPACK_IMPORTED_MODULE_2__, _components_mainApp_js__WEBPACK_IMPORTED_MODULE_9__, _components_profileSection_js__WEBPACK_IMPORTED_MODULE_11__, _components_plansSection_js__WEBPACK_IMPORTED_MODULE_12__, _components_findSection_js__WEBPACK_IMPORTED_MODULE_14__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
@@ -3270,6 +3271,9 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_com
 
 // find section scripts
 
+
+
+// matches and messages section scripts
 
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
@@ -3316,8 +3320,18 @@ const user = {
       'work_strategy': null,
       'skills': null
     }
-  }
+  },
+  'matches': [
+  // user id's
+  1, 3],
+  'chats': [
+  // chat id's
+  0, 1]
 };
+
+// localStorage.removeItem('userInfo')
+const userJSON = JSON.stringify(user);
+localStorage.setItem('userInfo', userJSON);
 
 // example of users fetch
 // let a = await returnUsers(5)
@@ -3348,7 +3362,9 @@ function createUsers(amount) {
         'location': null,
         'languages': null,
         'avatars': [{
-          'image_path': '/img/avatar1.jpg'
+          'image_path': `/img/avatar${counter}.jpg`
+        }, {
+          'image_path': '/img/avatar3.jpg'
         }, {
           'image_path': '/img/avatar2.jpg'
         }] // urls for images
@@ -3371,6 +3387,42 @@ function createUsers(amount) {
     return users;
   };
 }
+
+// chat mock db
+
+const chats = [{
+  'id': 0,
+  'users': createUsers(2),
+  'messages': [{
+    'id': 0,
+    'from_user': 0,
+    'to_user': 1,
+    'text': 'hello you!'
+  }, {
+    'id': 1,
+    'from_user': 1,
+    'to_user': 0,
+    'text': 'U 2 hi'
+  }],
+  'created_at': '',
+  'updated_at': ''
+}, {
+  'id': 2,
+  'users': createUsers(2),
+  'messages': [{
+    'id': 0,
+    'from_user': 0,
+    'to_user': 1,
+    'text': 'alalalalalalala'
+  }, {
+    'id': 1,
+    'from_user': 1,
+    'to_user': 0,
+    'text': 'dubidubidu'
+  }],
+  'created_at': '',
+  'updated_at': ''
+}];
 
 /***/ }),
 
@@ -4421,7 +4473,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // fetch amount of accounts
-const AMOUNT = 5;
+const AMOUNT = 4;
 
 // return an array of users' profiles
 async function fetchFindMatches() {
@@ -4823,11 +4875,6 @@ function hideLoader(loaderElem) {
   loaderElem.classList.add('hidden');
 }
 
-// setTimeout(() => {
-//   const loaderContainer = document.querySelector('.loader')
-//   loaderContainer.classList.add('hidden')
-// }, 2000)
-
 /***/ }),
 
 /***/ "./src/js/components/mainApp.js":
@@ -4859,6 +4906,48 @@ function setAppPlan(plan) {
 }
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
+
+/***/ }),
+
+/***/ "./src/js/components/matches-messages.js":
+/*!***********************************************!*\
+  !*** ./src/js/components/matches-messages.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _matches_messages_renderMatches_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./matches-messages/renderMatches.js */ "./src/js/components/matches-messages/renderMatches.js");
+
+(0,_matches_messages_renderMatches_js__WEBPACK_IMPORTED_MODULE_0__.renderMatches)();
+
+/***/ }),
+
+/***/ "./src/js/components/matches-messages/renderMatches.js":
+/*!*************************************************************!*\
+  !*** ./src/js/components/matches-messages/renderMatches.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   renderMatches: () => (/* binding */ renderMatches)
+/* harmony export */ });
+function renderMatches() {}
+function buildMatchItem(profile) {
+  return `
+    <li class="matches-tab__item">
+      <button class="matches-tab__btn chat-enter" aria-label="Enter chat with ${profile.profile.full_name}" data-chat-id="${0}">
+
+        <div class="matches-tab__image">
+          <img loading="lazy" src="${profile.profile.avatars[0]}" class="image" width="110" height="140" alt="Paola photo">
+        </div>
+
+        <h3 class="matches-tab__name">${profile.profile.full_name}</h3>
+
+      </button>
+    </li>
+  `;
+}
 
 /***/ }),
 
@@ -5403,14 +5492,15 @@ if (+user?.id !== +userId && (window.location.href != 'http://localhost:3000/ind
   const loader = (0,_loader_js__WEBPACK_IMPORTED_MODULE_3__.createLoader)(document.querySelector('.page__body'));
   if (userId) {
     // let userOrigin = await getUserInfo(userId).catch(handleError)
-
-    // for local usage =========================================
-    let userOrigin = await getUserLocal();
-    // =========================================================
-
     user = new User(userOrigin);
     localStorage.setItem('userInfo', JSON.stringify(user));
     loader.hide();
+  } else {
+    // for local usage =========================================
+    let userOrigin = await getUserLocal();
+    console.log(userOrigin);
+    loader.hide();
+    // =========================================================
   }
 } else {
   console.log('user:', user);
